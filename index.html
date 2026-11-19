@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baitul Qur'an Al-Hidayah — Taman Pendidikan Al-Qur'an</title>
+  <meta name="description" content="Baitul Qur'an Al-Hidayah, taman pendidikan Al-Qur'an di Desa Keluang, Kec. Kuaro, Kab. Paser, Kalimantan Timur. Program Iqra, tahsin, dan tahfidz Juz Amma.">
+  <meta name="theme-color" content="#113D40">
+  <link rel="canonical" href="https://USERNAME.github.io/tpa-alhidayah/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Baitul Qur'an Al-Hidayah">
+  <meta property="og:title" content="Baitul Qur'an Al-Hidayah — Taman Pendidikan Al-Qur'an">
+  <meta property="og:description" content="Membina generasi Qur'ani di Desa Keluang, Kec. Kuaro, Kab. Paser, Kalimantan Timur.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta property="og:locale" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Baitul Qur'an Al-Hidayah">
+  <meta name="twitter:image" content="assets/img/og-image.jpg">
+
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Baitul Qur'an Al-Hidayah",
+    "description": "Taman Pendidikan Al-Qur'an di Desa Keluang, Kecamatan Kuaro, Kabupaten Paser, Kalimantan Timur.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Desa Keluang, Paser Jaya",
+      "addressLocality": "Kuaro",
+      "addressRegion": "Kalimantan Timur",
+      "addressCountry": "ID"
+    },
+    "telephone": "+628315345931",
+    "areaServed": "Kabupaten Paser"
+  }
+  </script>
+</head>
+
+<body class="flex min-h-screen flex-col">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-brand-900">Lewati ke konten</a>
+
+  <!-- Bar atas -->
+  <div class="hidden bg-brand-950 text-[13px] text-brand-200 md:block">
+    <div class="container-bq flex items-center justify-between py-2">
+      <p class="flex items-center gap-2">
+        <i class="fa-solid fa-location-dot text-gold-500"></i>
+        <span data-site="alamat1"></span><span class="text-brand-500">·</span><span data-site="alamat2"></span>
+      </p>
+      <p class="flex items-center gap-4">
+        <span class="flex items-center gap-2"><i class="fa-regular fa-clock text-gold-500"></i><span data-site="jam"></span></span>
+        <a data-wa href="#" class="flex items-center gap-2 font-medium text-white transition hover:text-gold-300">
+          <i class="fa-brands fa-whatsapp text-gold-500"></i><span data-site="wa"></span>
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-brand-800/95 shadow-soft backdrop-blur">
+    <div class="container-bq flex items-center justify-between gap-4 py-3">
+      <a href="#beranda" class="flex items-center gap-3" aria-label="Beranda Baitul Qur'an Al-Hidayah">
+        <img src="assets/img/logo-mark.png" alt="Logo Baitul Qur'an Al-Hidayah" width="44" height="44" class="h-11 w-11 rounded-full ring-1 ring-gold-500/40">
+        <span class="leading-tight">
+          <span class="block font-display text-lg font-semibold text-white sm:text-xl">Baitul Qur'an</span>
+          <span class="block text-[11px] font-medium uppercase tracking-[.2em] text-gold-400">Al-Hidayah</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
+        <a href="#beranda" data-route="beranda" class="nav-link">Beranda</a>
+        <a href="#profil" data-route="profil" class="nav-link">Profil</a>
+        <a href="#program" data-route="program" class="nav-link">Program</a>
+        <a href="#jadwal" data-route="jadwal" class="nav-link">Jadwal</a>
+        <a href="#galeri" data-route="galeri" class="nav-link">Galeri</a>
+        <a href="#berita" data-route="berita" class="nav-link">Berita</a>
+
+        <div class="relative">
+          <button id="dropdown-btn" type="button" class="nav-link flex items-center gap-1.5" aria-expanded="false" aria-haspopup="true">
+            Layanan <i class="fa-solid fa-chevron-down text-[10px] opacity-70"></i>
+          </button>
+          <div id="dropdown-layanan" class="absolute right-0 top-full z-50 mt-2 hidden w-52 overflow-hidden rounded-xl border border-brand-100 bg-white py-1.5 shadow-card">
+            <a href="#pengajar" data-route="pengajar" class="block px-4 py-2.5 text-sm text-brand-800 hover:bg-brand-50">Pengajar</a>
+            <a href="#materi" data-route="materi" class="block px-4 py-2.5 text-sm text-brand-800 hover:bg-brand-50">Materi Belajar</a>
+            <a href="#absensi" data-route="absensi" class="block px-4 py-2.5 text-sm text-brand-800 hover:bg-brand-50">Cek Absensi</a>
+            <a href="#progres" data-route="progres" class="block px-4 py-2.5 text-sm text-brand-800 hover:bg-brand-50">Cek Progres</a>
+            <a href="#live" data-route="live" class="block px-4 py-2.5 text-sm text-brand-800 hover:bg-brand-50">Siaran Langsung</a>
+          </div>
+        </div>
+
+        <a href="#pendaftaran" class="btn-gold ml-2 !px-5 !py-2.5"><i class="fa-solid fa-user-plus text-xs"></i> Daftar</a>
+      </nav>
+
+      <button id="menu-btn" type="button" class="rounded-lg p-2.5 text-2xl text-white transition hover:bg-white/10 lg:hidden" aria-expanded="false" aria-controls="mobile-panel" aria-label="Buka menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Panel mobile -->
+    <div id="mobile-panel" class="hidden lg:hidden">
+      <div id="mobile-backdrop" class="fixed inset-0 top-0 z-40 bg-brand-950/60"></div>
+      <nav class="relative z-50 max-h-[calc(100vh-70px)] overflow-y-auto border-t border-white/10 bg-brand-900 px-4 py-4" aria-label="Navigasi mobile">
+        <div class="grid gap-1 text-sm">
+          <a href="#beranda" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Beranda</a>
+          <a href="#profil" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Profil</a>
+          <a href="#program" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Program</a>
+          <a href="#jadwal" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Jadwal</a>
+          <a href="#galeri" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Galeri</a>
+          <a href="#berita" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Berita</a>
+          <p class="mt-2 px-3 pt-2 text-[11px] font-semibold uppercase tracking-widest text-gold-400">Layanan</p>
+          <a href="#pengajar" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Pengajar</a>
+          <a href="#materi" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Materi Belajar</a>
+          <a href="#absensi" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Cek Absensi</a>
+          <a href="#progres" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Cek Progres</a>
+          <a href="#live" class="rounded-lg px-3 py-3 text-white/90 hover:bg-white/10">Siaran Langsung</a>
+          <a href="#pendaftaran" class="btn-gold mt-3"><i class="fa-solid fa-user-plus text-xs"></i> Daftar Santri Baru</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="flex-grow">
+
+    <!-- ================= BERANDA ================= -->
+    <section id="beranda" class="page-section active" aria-label="Beranda">
+      <div class="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white">
+        <div class="pattern-dots absolute inset-0 opacity-50"></div>
+        <div class="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-gold-500/10 blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-40 left-1/4 h-80 w-80 rounded-full bg-brand-400/20 blur-3xl"></div>
+
+        <div class="container-bq relative grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[1.1fr_.9fr]">
+          <div>
+            <p class="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[.22em] text-gold-400">
+              <span class="h-px w-8 bg-gold-500"></span> Taman Pendidikan Al-Qur'an
+            </p>
+            <h1 class="mt-5 font-display text-4xl font-bold leading-[1.1] text-balance sm:text-5xl md:text-[3.4rem]">
+              Baitul Qur'an <span class="text-gold-400">Al-Hidayah</span>
+            </h1>
+            <p class="mt-5 max-w-xl text-base leading-relaxed text-brand-100/90 md:text-lg" data-site="tagline"></p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#pendaftaran" class="btn-gold"><i class="fa-solid fa-user-plus text-xs"></i> Daftar Santri Baru</a>
+              <a href="#progres" class="btn-outline-light"><i class="fa-solid fa-chart-line text-xs"></i> Cek Progres Santri</a>
+            </div>
+
+            <dl class="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-white/15 pt-6">
+              <div>
+                <dt class="text-[11px] uppercase tracking-wider text-brand-300">Program</dt>
+                <dd class="mt-1 font-display text-3xl font-semibold text-gold-300">4</dd>
+              </div>
+              <div>
+                <dt class="text-[11px] uppercase tracking-wider text-brand-300">Jilid Iqra</dt>
+                <dd class="mt-1 font-display text-3xl font-semibold text-gold-300">6</dd>
+              </div>
+              <div>
+                <dt class="text-[11px] uppercase tracking-wider text-brand-300">Surah Juz Amma</dt>
+                <dd class="mt-1 font-display text-3xl font-semibold text-gold-300">37</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="relative mx-auto w-full max-w-sm">
+            <div class="absolute inset-0 -rotate-6 rounded-[2rem] border border-gold-500/25"></div>
+            <div class="absolute inset-0 rotate-3 rounded-[2rem] border border-white/10"></div>
+            <div class="relative rounded-[2rem] border border-white/15 bg-white/5 p-8 text-center backdrop-blur">
+              <img src="assets/img/logo-full.png" alt="Logo Baitul Qur'an Al-Hidayah" width="256" height="256" class="mx-auto h-44 w-44 drop-shadow-2xl md:h-52 md:w-52">
+              <p class="mt-6 font-arabic text-2xl leading-relaxed text-gold-300" dir="rtl">رَبِّ زِدْنِي عِلْمًا</p>
+              <p class="mt-1 text-sm text-brand-200">“Ya Tuhanku, tambahkanlah ilmu kepadaku.”</p>
+              <p class="mt-4 text-[11px] uppercase tracking-[.18em] text-brand-300">Desa Keluang · Kuaro · Paser</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nilai utama -->
+      <div class="container-bq relative z-10 -mt-8 grid gap-4 sm:grid-cols-3">
+        <div class="card p-6">
+          <i class="fa-solid fa-book-open-reader text-2xl text-gold-600"></i>
+          <h3 class="mt-4 font-semibold text-brand-900">Belajar Bertahap</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-brand-600">Dari pengenalan huruf hijaiyah dengan Iqra hingga lancar membaca Al-Qur'an.</p>
+        </div>
+        <div class="card p-6">
+          <i class="fa-solid fa-kaaba text-2xl text-gold-600"></i>
+          <h3 class="mt-4 font-semibold text-brand-900">Hafalan Terarah</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-brand-600">Setoran hafalan Juz Amma yang dicatat dan dilaporkan secara berkala.</p>
+        </div>
+        <div class="card p-6">
+          <i class="fa-solid fa-hands-praying text-2xl text-gold-600"></i>
+          <h3 class="mt-4 font-semibold text-brand-900">Adab & Ibadah</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-brand-600">Pembiasaan doa harian, adab, dan praktik ibadah dalam kehidupan sehari-hari.</p>
+        </div>
+      </div>
+
+      <!-- Program ringkas -->
+      <div class="container-bq py-20">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="eyebrow">Program Pembelajaran</p>
+            <h2 class="h-section mt-2">Jenjang belajar yang jelas</h2>
+          </div>
+          <a href="#program" class="link-underline text-sm">Lihat semua program <i class="fa-solid fa-arrow-right text-xs"></i></a>
+        </div>
+
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <a href="#program" class="group card flex flex-col p-6 transition hover:-translate-y-1 hover:border-gold-300">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-800 group-hover:text-gold-300"><i class="fa-solid fa-1"></i></span>
+            <h3 class="mt-4 font-display text-lg font-semibold text-brand-900">Iqra</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-brand-600">Pengenalan huruf hijaiyah dan bacaan bertahap jilid 1–6.</p>
+            <span class="mt-4 text-xs font-semibold uppercase tracking-wider text-gold-700">Pemula</span>
+          </a>
+          <a href="#program" class="group card flex flex-col p-6 transition hover:-translate-y-1 hover:border-gold-300">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-800 group-hover:text-gold-300"><i class="fa-solid fa-book-quran"></i></span>
+            <h3 class="mt-4 font-display text-lg font-semibold text-brand-900">Al-Qur'an & Tahsin</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-brand-600">Perbaikan makhorijul huruf, tajwid, dan kelancaran bacaan.</p>
+            <span class="mt-4 text-xs font-semibold uppercase tracking-wider text-gold-700">Lanjutan</span>
+          </a>
+          <a href="#program" class="group card flex flex-col p-6 transition hover:-translate-y-1 hover:border-gold-300">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-800 group-hover:text-gold-300"><i class="fa-solid fa-star"></i></span>
+            <h3 class="mt-4 font-display text-lg font-semibold text-brand-900">Tahfidz Juz Amma</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-brand-600">Hafalan 37 surah Juz Amma serta surah pilihan.</p>
+            <span class="mt-4 text-xs font-semibold uppercase tracking-wider text-gold-700">Hafalan</span>
+          </a>
+          <a href="#program" class="group card flex flex-col p-6 transition hover:-translate-y-1 hover:border-gold-300">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-800 group-hover:text-gold-300"><i class="fa-solid fa-seedling"></i></span>
+            <h3 class="mt-4 font-display text-lg font-semibold text-brand-900">Adab & Doa</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-brand-600">Doa harian, adab, dan pembiasaan ibadah bersama.</p>
+            <span class="mt-4 text-xs font-semibold uppercase tracking-wider text-gold-700">Pembinaan</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Banner CTA -->
+      <div class="container-bq pb-20">
+        <div class="relative overflow-hidden rounded-3xl bg-brand-800 px-6 py-12 text-center text-white md:px-16">
+          <div class="pattern-dots absolute inset-0 opacity-40"></div>
+          <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gold-500/15 blur-3xl"></div>
+          <div class="relative">
+            <h2 class="font-display text-2xl font-bold md:text-3xl">Siap mendaftarkan putra-putri Anda?</h2>
+            <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-200">
+              Isi formulir pendaftaran, lalu kirim melalui WhatsApp. Admin akan membantu proses selanjutnya.
+            </p>
+            <div class="mt-7 flex flex-wrap justify-center gap-3">
+              <a href="#pendaftaran" class="btn-gold"><i class="fa-solid fa-pen-to-square text-xs"></i> Isi Formulir</a>
+              <a data-wa href="#" class="btn-outline-light"><i class="fa-brands fa-whatsapp"></i> Tanya Admin</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROFIL ================= -->
+    <section id="profil" class="page-section" aria-label="Profil">
+      <div class="container-bq py-14 md:py-20">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Tentang Kami</p>
+          <h1 class="h-section mt-2">Profil Baitul Qur'an Al-Hidayah</h1>
+          <p class="mt-4 leading-relaxed text-brand-600">
+            Baitul Qur'an Al-Hidayah adalah taman pendidikan Al-Qur'an yang berkedudukan di Desa Keluang,
+            Kecamatan Kuaro, Kabupaten Paser, Kalimantan Timur. Kami mendampingi santri untuk belajar
+            membaca, memahami, dan menghafal Al-Qur'an secara bertahap, disertai pembinaan adab dan doa harian.
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-3">
+          <div class="card p-7 lg:col-span-2">
+            <h2 class="font-display text-2xl font-semibold text-brand-900">Visi</h2>
+            <p class="mt-3 leading-relaxed text-brand-600">
+              Menjadi lembaga pendidikan Al-Qur'an yang membina generasi Qur'ani — lancar membaca,
+              kuat hafalan, dan berakhlak mulia dalam kehidupan sehari-hari.
+            </p>
+
+            <h2 class="mt-8 font-display text-2xl font-semibold text-brand-900">Misi</h2>
+            <ul class="mt-3 space-y-3 text-brand-600">
+              <li class="flex gap-3"><i class="fa-solid fa-check mt-1.5 text-xs text-gold-600"></i><span>Menyelenggarakan pembelajaran Iqra dan Al-Qur'an secara bertahap dan terukur.</span></li>
+              <li class="flex gap-3"><i class="fa-solid fa-check mt-1.5 text-xs text-gold-600"></i><span>Membina hafalan Juz Amma dengan setoran rutin dan muroja'ah.</span></li>
+              <li class="flex gap-3"><i class="fa-solid fa-check mt-1.5 text-xs text-gold-600"></i><span>Menanamkan adab, doa harian, dan kebiasaan ibadah sejak dini.</span></li>
+              <li class="flex gap-3"><i class="fa-solid fa-check mt-1.5 text-xs text-gold-600"></i><span>Menjalin komunikasi dengan orang tua melalui laporan capaian santri.</span></li>
+            </ul>
+          </div>
+
+          <div class="space-y-6">
+            <div class="card overflow-hidden">
+              <div class="relative bg-brand-800 p-6 text-center">
+                <div class="pattern-dots absolute inset-0 opacity-50"></div>
+                <img src="assets/img/logo-mark.png" alt="Logo" class="relative mx-auto h-24 w-24 rounded-full ring-1 ring-gold-500/40">
+              </div>
+              <div class="p-6 text-sm">
+                <h3 class="font-semibold text-brand-900">Identitas</h3>
+                <dl class="mt-3 space-y-2 text-brand-600">
+                  <div class="flex justify-between gap-4"><dt>Nama</dt><dd class="text-right font-medium text-brand-800">Baitul Qur'an Al-Hidayah</dd></div>
+                  <div class="flex justify-between gap-4"><dt>Bentuk</dt><dd class="text-right font-medium text-brand-800">Taman Pendidikan Al-Qur'an</dd></div>
+                  <div class="flex justify-between gap-4"><dt>Wilayah</dt><dd class="text-right font-medium text-brand-800">Desa Keluang, Kuaro</dd></div>
+                </dl>
+              </div>
+            </div>
+
+            <div class="card border-gold-200 bg-gold-50 p-6">
+              <p class="font-arabic text-xl leading-loose text-brand-800" dir="rtl">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</p>
+              <p class="mt-3 text-sm leading-relaxed text-brand-700">“Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya.”</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <div class="card p-5"><p class="text-sm font-semibold text-brand-900">Pembelajaran terjadwal</p><p class="mt-1 text-sm text-brand-600">Kelas rutin dengan bimbingan langsung.</p></div>
+          <div class="card p-5"><p class="text-sm font-semibold text-brand-900">Pencatatan capaian</p><p class="mt-1 text-sm text-brand-600">Buku prestasi dan setoran hafalan.</p></div>
+          <div class="card p-5"><p class="text-sm font-semibold text-brand-900">Laporan untuk wali</p><p class="mt-1 text-sm text-brand-600">Progres dapat dicek melalui website.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROGRAM ================= -->
+    <section id="program" class="page-section" aria-label="Program">
+      <div class="bg-brand-50/70 py-14 md:py-20">
+        <div class="container-bq">
+          <div class="max-w-3xl">
+            <p class="eyebrow">Program</p>
+            <h1 class="h-section mt-2">Jenjang pembelajaran</h1>
+            <p class="mt-4 leading-relaxed text-brand-600">
+              Santri belajar sesuai kemampuan masing-masing. Penempatan kelas dilakukan setelah
+              pemetaan awal bersama pengajar.
+            </p>
+          </div>
+
+          <div class="mt-10 grid gap-5 md:grid-cols-2">
+            <article class="card p-7">
+              <div class="flex items-center gap-4">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-800 text-gold-300"><i class="fa-solid fa-1"></i></span>
+                <div><h2 class="font-display text-xl font-semibold text-brand-900">Iqra</h2><p class="text-xs uppercase tracking-wider text-gold-700">Pemula</p></div>
+              </div>
+              <p class="mt-4 text-sm leading-relaxed text-brand-600">Pengenalan huruf hijaiyah, harakat, dan latihan membaca bertahap dari Iqra jilid 1 hingga 6.</p>
+              <ul class="mt-4 space-y-2 text-sm text-brand-600">
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Makhorijul huruf dasar</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Latihan membaca per jilid</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Setoran bacaan setiap pertemuan</li>
+              </ul>
+            </article>
+
+            <article class="card p-7">
+              <div class="flex items-center gap-4">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-800 text-gold-300"><i class="fa-solid fa-book-quran"></i></span>
+                <div><h2 class="font-display text-xl font-semibold text-brand-900">Al-Qur'an & Tahsin</h2><p class="text-xs uppercase tracking-wider text-gold-700">Lanjutan</p></div>
+              </div>
+              <p class="mt-4 text-sm leading-relaxed text-brand-600">Perbaikan bacaan, hukum tajwid, dan kelancaran membaca Al-Qur'an dengan bimbingan langsung.</p>
+              <ul class="mt-4 space-y-2 text-sm text-brand-600">
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Tahsin dan tajwid</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Latihan tartil</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Setoran bacaan rutin</li>
+              </ul>
+            </article>
+
+            <article class="card p-7">
+              <div class="flex items-center gap-4">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-800 text-gold-300"><i class="fa-solid fa-star"></i></span>
+                <div><h2 class="font-display text-xl font-semibold text-brand-900">Tahfidz Juz Amma</h2><p class="text-xs uppercase tracking-wider text-gold-700">Hafalan</p></div>
+              </div>
+              <p class="mt-4 text-sm leading-relaxed text-brand-600">Hafalan bertahap 37 surah Juz Amma, dilengkapi surah pilihan: Yasin, Al-Waqi'ah, Al-Mulk, dan Al-Kahfi.</p>
+              <ul class="mt-4 space-y-2 text-sm text-brand-600">
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Setoran hafalan baru (ziyadah)</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Muroja'ah hafalan lama</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Buku setoran hafalan</li>
+              </ul>
+            </article>
+
+            <article class="card p-7">
+              <div class="flex items-center gap-4">
+                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-800 text-gold-300"><i class="fa-solid fa-seedling"></i></span>
+                <div><h2 class="font-display text-xl font-semibold text-brand-900">Adab & Doa Harian</h2><p class="text-xs uppercase tracking-wider text-gold-700">Pembinaan</p></div>
+              </div>
+              <p class="mt-4 text-sm leading-relaxed text-brand-600">Pembiasaan adab sehari-hari, hafalan doa, dan praktik ibadah sederhana bersama santri.</p>
+              <ul class="mt-4 space-y-2 text-sm text-brand-600">
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Doa harian</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Praktik wudu dan salat</li>
+                <li class="flex gap-2"><i class="fa-solid fa-circle text-[5px] mt-2 text-gold-600"></i>Adab kepada guru dan orang tua</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gold-200 bg-gold-50 px-6 py-5">
+            <p class="text-sm text-brand-700"><i class="fa-solid fa-circle-info mr-2 text-gold-600"></i>Informasi biaya dan persyaratan pendaftaran dapat ditanyakan langsung kepada admin.</p>
+            <a data-wa href="#" class="btn-primary !py-2.5"><i class="fa-brands fa-whatsapp"></i> Tanya Admin</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PENGAJAR ================= -->
+    <section id="pengajar" class="page-section" aria-label="Pengajar">
+      <div class="container-bq py-14 md:py-20">
+        <div class="max-w-2xl">
+          <p class="eyebrow">Pengajar</p>
+          <h1 class="h-section mt-2">Tenaga Pendidik</h1>
+          <p class="mt-4 leading-relaxed text-brand-600">Pembelajaran dibimbing langsung oleh pengajar yang mendampingi santri secara rutin.</p>
+        </div>
+        <div id="grid-pengajar" class="mt-10 grid gap-6 sm:grid-cols-2 lg:max-w-3xl"></div>
+        <p class="mt-6 text-sm text-brand-500"><i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Ingin bergabung sebagai pengajar? Hubungi admin melalui WhatsApp.</p>
+      </div>
+    </section>
+
+    <!-- ================= JADWAL ================= -->
+    <section id="jadwal" class="page-section" aria-label="Jadwal">
+      <div class="bg-brand-50/70 py-14 md:py-20">
+        <div class="container-bq">
+          <div class="max-w-2xl">
+            <p class="eyebrow">Jadwal</p>
+            <h1 class="h-section mt-2">Jadwal kegiatan</h1>
+            <p class="mt-4 leading-relaxed text-brand-600">Jadwal berikut dapat berubah. Silakan konfirmasi kepada admin untuk informasi terbaru.</p>
+          </div>
+
+          <div class="mt-8 overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-card">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead class="bg-brand-800 text-white">
+                  <tr>
+                    <th class="px-5 py-3.5 font-semibold">Hari</th>
+                    <th class="px-5 py-3.5 font-semibold">Waktu</th>
+                    <th class="px-5 py-3.5 font-semibold">Kegiatan</th>
+                    <th class="px-5 py-3.5 font-semibold">Kelas</th>
+                  </tr>
+                </thead>
+                <tbody id="body-jadwal" class="divide-y divide-brand-100"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-brand-600">
+            <i class="fa-regular fa-clock text-gold-600"></i>
+            <span>Waktu Indonesia Tengah (WITA) · <span data-site="jam"></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GALERI ================= -->
+    <section id="galeri" class="page-section" aria-label="Galeri">
+      <div class="container-bq py-14 md:py-20">
+        <div class="max-w-2xl">
+          <p class="eyebrow">Galeri</p>
+          <h1 class="h-section mt-2">Dokumentasi kegiatan</h1>
+          <p class="mt-4 leading-relaxed text-brand-600">Foto kegiatan belajar, setoran hafalan, dan acara santri.</p>
+        </div>
+
+        <div id="galeri-kosong" class="mt-10 rounded-2xl border border-dashed border-brand-200 bg-white px-6 py-16 text-center">
+          <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-2xl text-brand-400"><i class="fa-regular fa-images"></i></span>
+          <h2 class="mt-5 font-display text-xl font-semibold text-brand-900">Galeri segera hadir</h2>
+          <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-brand-500">
+            Dokumentasi foto kegiatan sedang disiapkan. Sementara itu, Anda dapat melihat aktivitas terbaru melalui WhatsApp admin.
+          </p>
+          <a data-wa href="#" class="btn-ghost mt-6"><i class="fa-brands fa-whatsapp text-emerald-600"></i> Hubungi Admin</a>
+        </div>
+        <div id="grid-galeri" class="mt-10 hidden grid-cols-2 gap-4 md:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ================= BERITA ================= -->
+    <section id="berita" class="page-section" aria-label="Berita">
+      <div class="bg-brand-50/70 py-14 md:py-20">
+        <div class="container-bq">
+          <div class="max-w-2xl">
+            <p class="eyebrow">Informasi</p>
+            <h1 class="h-section mt-2">Berita & pengumuman</h1>
+            <p class="mt-4 leading-relaxed text-brand-600">Kabar terbaru seputar kegiatan dan pendaftaran santri.</p>
+          </div>
+          <div id="grid-berita" class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MATERI ================= -->
+    <section id="materi" class="page-section" aria-label="Materi">
+      <div class="container-bq py-14 md:py-20">
+        <div class="max-w-2xl">
+          <p class="eyebrow">Materi</p>
+          <h1 class="h-section mt-2">Berkas pendukung belajar</h1>
+          <p class="mt-4 leading-relaxed text-brand-600">Buku prestasi dan lembar setoran yang dapat diunduh untuk dicetak.</p>
+        </div>
+        <div id="grid-materi" class="mt-10 grid gap-4 md:grid-cols-2"></div>
+      </div>
+    </section>
+
+    <!-- ================= ABSENSI ================= -->
+    <section id="absensi" class="page-section" aria-label="Cek absensi">
+      <div class="bg-brand-50/70 py-14 md:py-20">
+        <div class="container-bq max-w-3xl">
+          <div class="text-center">
+            <p class="eyebrow">Layanan Santri</p>
+            <h1 class="h-section mt-2">Cek absensi harian</h1>
+            <p class="mt-4 leading-relaxed text-brand-600">Masukkan Nomor Induk Santri (NIS) untuk melihat status kehadiran terakhir.</p>
+          </div>
+
+          <form id="form-absensi" class="card mt-8 flex flex-col gap-3 p-5 sm:flex-row">
+            <label for="input-nis-absensi" class="sr-only">NIS santri</label>
+            <div class="relative flex-1">
+              <i class="fa-solid fa-id-card pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-brand-300"></i>
+              <input id="input-nis-absensi" name="nis" type="text" inputmode="numeric" autocomplete="off" required placeholder="Contoh: 101" class="input !pl-11">
+            </div>
+            <button type="submit" class="btn-primary sm:w-auto"><i class="fa-solid fa-magnifying-glass text-xs"></i> Cari</button>
+          </form>
+          <p class="mt-3 text-center text-xs text-brand-400">Data contoh untuk uji coba: NIS 101, 102, atau 103.</p>
+
+          <div id="loading-absensi" class="hidden py-10 text-center">
+            <i class="fa-solid fa-circle-notch fa-spin text-3xl text-brand-500"></i>
+            <p class="mt-3 text-sm text-brand-500">Mencari data…</p>
+          </div>
+
+          <div id="result-absensi" class="card mt-6 hidden overflow-hidden">
+            <div class="flex items-center justify-between border-b border-brand-100 bg-brand-50 px-6 py-4">
+              <h2 class="font-display text-lg font-semibold text-brand-900">Hasil pencarian</h2>
+              <span id="date-absensi" class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-600"></span>
+            </div>
+            <div class="grid grid-cols-[auto_1fr] gap-y-4 p-6 text-sm">
+              <span class="text-brand-500">Nama santri</span><span id="res-nama-absensi" class="text-right font-semibold text-brand-900"></span>
+              <span class="text-brand-500">NIS</span><span id="res-nis-absensi" class="text-right font-semibold text-brand-900"></span>
+              <span class="text-brand-500">Kelas</span><span id="res-kelas-absensi" class="text-right font-semibold text-brand-900"></span>
+            </div>
+            <div class="flex items-center justify-between border-t border-brand-100 px-6 py-4">
+              <span class="text-sm font-medium text-brand-600">Status kehadiran</span>
+              <span id="res-status-absensi" class="rounded-lg bg-brand-50 px-4 py-1 text-sm font-black uppercase text-brand-700"></span>
+            </div>
+            <p id="note-absensi" class="hidden border-t border-gold-200 bg-gold-50 px-6 py-3 text-xs text-brand-700">
+              <i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Data di atas adalah contoh. Data sebenarnya akan ditampilkan setelah sistem absensi terhubung.
+            </p>
+          </div>
+
+          <div id="notfound-absensi" class="mt-6 hidden rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
+            <i class="fa-solid fa-triangle-exclamation text-2xl text-rose-500"></i>
+            <h2 class="mt-3 font-semibold text-rose-700">Data tidak ditemukan</h2>
+            <p class="mt-1 text-sm text-rose-600">Pastikan NIS yang dimasukkan benar atau hubungi admin.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROGRES ================= -->
+    <section id="progres" class="page-section" aria-label="Cek progres">
+      <div class="container-bq max-w-3xl py-14 md:py-20">
+        <div class="text-center">
+          <p class="eyebrow">Laporan Belajar</p>
+          <h1 class="h-section mt-2">Cek capaian santri</h1>
+          <p class="mt-4 leading-relaxed text-brand-600">Pantau perkembangan bacaan dan hafalan santri berdasarkan laporan pengajar.</p>
+        </div>
+
+        <form id="form-progres" class="card mt-8 flex flex-col gap-3 p-5 sm:flex-row">
+          <label for="input-nis-progres" class="sr-only">NIS santri</label>
+          <div class="relative flex-1">
+            <i class="fa-solid fa-chart-line pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-brand-300"></i>
+            <input id="input-nis-progres" name="nis" type="text" inputmode="numeric" autocomplete="off" required placeholder="Contoh: 101" class="input !pl-11">
+          </div>
+          <button type="submit" class="btn-gold sm:w-auto"><i class="fa-solid fa-magnifying-glass text-xs"></i> Cek Progres</button>
+        </form>
+        <p class="mt-3 text-center text-xs text-brand-400">Data contoh untuk uji coba: NIS 101, 102, atau 103.</p>
+
+        <div id="loading-progres" class="hidden py-10 text-center">
+          <i class="fa-solid fa-circle-notch fa-spin text-3xl text-gold-600"></i>
+          <p class="mt-3 text-sm text-brand-500">Memuat data capaian…</p>
+        </div>
+
+        <div id="result-progres" class="card mt-6 hidden overflow-hidden">
+          <div class="flex items-center justify-between border-b border-brand-100 bg-gold-50 px-6 py-4">
+            <h2 class="font-display text-lg font-semibold text-brand-900">Laporan capaian</h2>
+            <span id="date-progres" class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-600"></span>
+          </div>
+          <div class="flex items-center gap-4 border-b border-brand-100 p-6">
+            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-xl text-brand-700"><i class="fa-solid fa-user-graduate"></i></span>
+            <div><h3 id="res-nama-progres" class="font-display text-xl font-semibold text-brand-900"></h3><p id="res-nis-progres" class="text-sm text-brand-500"></p></div>
+          </div>
+          <div class="space-y-3 p-6">
+            <div class="rounded-xl bg-brand-50/70 p-4">
+              <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Capaian bacaan</p>
+              <p id="res-bacaan-progres" class="mt-1 font-semibold text-brand-800"></p>
+            </div>
+            <div class="rounded-xl bg-brand-50/70 p-4">
+              <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Capaian hafalan</p>
+              <p id="res-hafalan-progres" class="mt-1 font-semibold text-brand-800"></p>
+            </div>
+            <div class="rounded-xl border border-gold-200 bg-gold-50/60 p-4">
+              <p class="text-[11px] font-semibold uppercase tracking-wider text-gold-700">Catatan pengajar</p>
+              <p id="res-catatan-progres" class="mt-1 text-sm italic leading-relaxed text-brand-700"></p>
+            </div>
+          </div>
+          <p id="note-progres" class="hidden border-t border-gold-200 bg-gold-50 px-6 py-3 text-xs text-brand-700">
+            <i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Data di atas adalah contoh. Data sebenarnya akan ditampilkan setelah sistem terhubung.
+          </p>
+        </div>
+
+        <div id="notfound-progres" class="mt-6 hidden rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center">
+          <i class="fa-solid fa-triangle-exclamation text-2xl text-rose-500"></i>
+          <h2 class="mt-3 font-semibold text-rose-700">Data tidak ditemukan</h2>
+          <p class="mt-1 text-sm text-rose-600">Pastikan NIS yang dimasukkan benar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LIVE ================= -->
+    <section id="live" class="page-section" aria-label="Siaran langsung">
+      <div class="bg-brand-900 py-14 text-white md:py-20">
+        <div class="container-bq">
+          <div class="max-w-2xl">
+            <p class="text-xs font-semibold uppercase tracking-[.18em] text-gold-400">Siaran Langsung</p>
+            <h1 class="mt-2 font-display text-3xl font-bold md:text-4xl">Ikuti kegiatan secara daring</h1>
+            <p class="mt-4 leading-relaxed text-brand-200">Siaran kegiatan seperti tasmi' hafalan dan acara santri dapat disaksikan melalui channel YouTube kami.</p>
+          </div>
+
+          <div class="mt-10 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+            <div class="flex aspect-video items-center justify-center rounded-2xl border border-white/10 bg-brand-950">
+              <div class="px-8 text-center">
+                <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-rose-600 text-2xl"><i class="fa-brands fa-youtube"></i></span>
+                <h2 class="mt-5 font-display text-xl font-semibold">Baitul Quran Al Hidayah</h2>
+                <p class="mt-2 text-sm text-brand-300">Buka channel YouTube untuk melihat video dan jadwal siaran.</p>
+                <a data-youtube href="#" target="_blank" rel="noopener" class="btn-gold mt-6"><i class="fa-brands fa-youtube"></i> Buka Channel</a>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 class="font-semibold text-gold-300">Catatan</h3>
+              <p class="mt-2 text-sm leading-relaxed text-brand-200">Tautan siaran langsung akan ditampilkan di sini ketika kegiatan berlangsung. Ikuti channel agar tidak tertinggal informasi.</p>
+              <div class="mt-5 space-y-3 text-sm">
+                <p class="flex items-center gap-3"><i class="fa-solid fa-bell w-4 text-gold-400"></i>Aktifkan notifikasi channel</p>
+                <p class="flex items-center gap-3"><i class="fa-solid fa-comments w-4 text-gold-400"></i>Sampaikan pertanyaan di kolom komentar</p>
+                <p class="flex items-center gap-3"><i class="fa-solid fa-share-nodes w-4 text-gold-400"></i>Bagikan kepada wali santri lain</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PENDAFTARAN ================= -->
+    <section id="pendaftaran" class="page-section" aria-label="Pendaftaran">
+      <div class="container-bq py-14 md:py-20">
+        <div class="max-w-2xl">
+          <p class="eyebrow">Pendaftaran</p>
+          <h1 class="h-section mt-2">Formulir santri baru</h1>
+          <p class="mt-4 leading-relaxed text-brand-600">
+            Lengkapi data berikut, lalu tekan tombol kirim. Pesan akan terbuka di WhatsApp admin
+            dalam format yang sudah tersusun.
+          </p>
+        </div>
+
+        <div class="mt-10 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <form id="form-daftar" class="card p-6 md:p-8">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label class="label" for="nama">Nama lengkap santri <span class="text-rose-500">*</span></label>
+                <input class="input" id="nama" name="nama" required maxlength="80" placeholder="Nama sesuai akta/KK">
+              </div>
+              <div>
+                <label class="label" for="jk">Jenis kelamin <span class="text-rose-500">*</span></label>
+                <select class="input" id="jk" name="jk" required>
+                  <option value="">Pilih…</option>
+                  <option>Laki-laki</option>
+                  <option>Perempuan</option>
+                </select>
+              </div>
+              <div>
+                <label class="label" for="lahir">Tanggal lahir <span class="text-rose-500">*</span></label>
+                <input class="input" id="lahir" name="lahir" type="date" required>
+              </div>
+              <div>
+                <label class="label" for="wali">Nama wali <span class="text-rose-500">*</span></label>
+                <input class="input" id="wali" name="wali" required maxlength="80" placeholder="Nama orang tua/wali">
+              </div>
+              <div>
+                <label class="label" for="wa">WhatsApp wali <span class="text-rose-500">*</span></label>
+                <input class="input" id="wa" name="wa" type="tel" inputmode="tel" required pattern="[0-9+\s-]{9,16}" placeholder="08xx-xxxx-xxxx">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="label" for="alamat">Alamat <span class="text-rose-500">*</span></label>
+                <textarea class="input min-h-[88px]" id="alamat" name="alamat" required maxlength="200" placeholder="Desa/RT/RW"></textarea>
+              </div>
+              <div>
+                <label class="label" for="program">Program <span class="text-rose-500">*</span></label>
+                <select class="input" id="program" name="program" required>
+                  <option value="">Pilih…</option>
+                  <option>Iqra</option>
+                  <option>Al-Qur'an & Tahsin</option>
+                  <option>Tahfidz Juz Amma</option>
+                  <option>Belum tahu, mohon arahan</option>
+                </select>
+              </div>
+              <div>
+                <label class="label" for="sekolah">Sekolah formal</label>
+                <input class="input" id="sekolah" name="sekolah" maxlength="80" placeholder="Opsional">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="label" for="catatan">Catatan</label>
+                <textarea class="input min-h-[88px]" id="catatan" name="catatan" maxlength="300" placeholder="Riwayat belajar, kebutuhan khusus, atau pertanyaan"></textarea>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <button type="submit" class="btn-gold"><i class="fa-brands fa-whatsapp text-base"></i> Kirim via WhatsApp</button>
+              <p class="text-xs text-brand-400">Data hanya dikirim ke admin, tidak disimpan di website.</p>
+            </div>
+          </form>
+
+          <aside class="space-y-5">
+            <div class="card p-6">
+              <h2 class="font-display text-lg font-semibold text-brand-900">Alur pendaftaran</h2>
+              <ol class="mt-4 space-y-4 text-sm text-brand-600">
+                <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-800 text-[11px] font-bold text-gold-300">1</span>Isi formulir pendaftaran.</li>
+                <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-800 text-[11px] font-bold text-gold-300">2</span>Kirim pesan ke WhatsApp admin.</li>
+                <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-800 text-[11px] font-bold text-gold-300">3</span>Admin mengonfirmasi jadwal dan persyaratan.</li>
+                <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-800 text-[11px] font-bold text-gold-300">4</span>Santri mulai mengikuti pembelajaran.</li>
+              </ol>
+            </div>
+            <div class="card border-gold-200 bg-gold-50 p-6">
+              <h2 class="font-semibold text-brand-900">Butuh bantuan?</h2>
+              <p class="mt-2 text-sm text-brand-700">Hubungi admin pada jam layanan berikut.</p>
+              <p class="mt-3 text-sm font-medium text-brand-800" data-site="jam"></p>
+              <a data-wa href="#" class="btn-primary mt-4 w-full"><i class="fa-brands fa-whatsapp"></i> <span data-site="wa"></span></a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= KONTAK ================= -->
+    <section id="kontak" class="page-section" aria-label="Kontak">
+      <div class="bg-brand-900 py-14 text-white md:py-20">
+        <div class="container-bq grid gap-12 lg:grid-cols-2">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[.18em] text-gold-400">Kontak</p>
+            <h1 class="mt-2 font-display text-3xl font-bold md:text-4xl">Hubungi kami</h1>
+            <p class="mt-4 max-w-md leading-relaxed text-brand-200">
+              Silakan hubungi admin untuk informasi pendaftaran, jadwal, atau pertanyaan lain seputar pembelajaran.
+            </p>
+
+            <div class="mt-8 space-y-5">
+              <div class="flex gap-4">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-gold-300"><i class="fa-solid fa-location-dot"></i></span>
+                <div>
+                  <h2 class="font-semibold">Alamat</h2>
+                  <p class="mt-1 text-sm leading-relaxed text-brand-200">
+                    <span data-site="alamat1"></span><br><span data-site="alamat2"></span><br>Indonesia
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-gold-300"><i class="fa-brands fa-whatsapp"></i></span>
+                <div>
+                  <h2 class="font-semibold">WhatsApp</h2>
+                  <a data-wa href="#" class="mt-1 block text-sm text-brand-200 underline-offset-4 hover:text-white hover:underline"><span data-site="wa"></span></a>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-gold-300"><i class="fa-regular fa-clock"></i></span>
+                <div>
+                  <h2 class="font-semibold">Jam layanan</h2>
+                  <p class="mt-1 text-sm text-brand-200" data-site="jam"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a data-wa href="#" class="btn-gold"><i class="fa-brands fa-whatsapp"></i> Chat Admin</a>
+              <a data-maps href="#" target="_blank" rel="noopener" class="btn-outline-light"><i class="fa-solid fa-map-location-dot"></i> Lihat Peta</a>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h2 class="font-display text-xl font-semibold text-gold-300">Pendaftaran santri baru</h2>
+            <p class="mt-2 text-sm leading-relaxed text-brand-200">
+              Pendaftaran dibuka sepanjang tahun. Isi formulir untuk memulai proses pendaftaran.
+            </p>
+            <a href="#pendaftaran" class="btn-gold mt-5 w-full"><i class="fa-solid fa-user-plus text-xs"></i> Buka Formulir</a>
+            <div class="mt-6 border-t border-white/10 pt-6">
+              <p class="text-sm text-brand-200">Ikuti juga channel YouTube kami untuk melihat kegiatan santri.</p>
+              <a data-youtube href="#" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 text-sm font-medium text-white hover:text-gold-300">
+                <i class="fa-brands fa-youtube"></i> Baitul Quran Al Hidayah
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-brand-950 text-brand-300">
+    <div class="container-bq grid gap-10 py-14 md:grid-cols-4">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3">
+          <img src="assets/img/logo-mark.png" alt="Logo" class="h-10 w-10 rounded-full ring-1 ring-gold-500/30">
+          <div>
+            <p class="font-display text-lg font-semibold text-white">Baitul Qur'an Al-Hidayah</p>
+            <p class="text-xs uppercase tracking-[.18em] text-gold-500">Taman Pendidikan Al-Qur'an</p>
+          </div>
+        </div>
+        <p class="mt-5 max-w-md text-sm leading-relaxed">
+          Membina generasi Qur'ani melalui pembelajaran membaca, memahami, dan menghafal Al-Qur'an.
+        </p>
+        <p class="mt-4 max-w-sm font-arabic text-base leading-loose text-gold-400" dir="rtl">رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا</p>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-semibold uppercase tracking-[.18em] text-gold-500">Halaman</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><a href="#profil" class="hover:text-white">Profil</a></li>
+          <li><a href="#program" class="hover:text-white">Program</a></li>
+          <li><a href="#jadwal" class="hover:text-white">Jadwal</a></li>
+          <li><a href="#materi" class="hover:text-white">Materi Belajar</a></li>
+          <li><a href="#pendaftaran" class="hover:text-white">Pendaftaran</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-semibold uppercase tracking-[.18em] text-gold-500">Kontak</h2>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li class="flex gap-2.5"><i class="fa-solid fa-location-dot mt-1 text-gold-600"></i><span><span data-site="alamat1"></span><br><span data-site="alamat2"></span></span></li>
+          <li class="flex gap-2.5"><i class="fa-brands fa-whatsapp mt-1 text-gold-600"></i><a data-wa href="#" class="hover:text-white"><span data-site="wa"></span></a></li>
+          <li class="flex gap-2.5"><i class="fa-regular fa-clock mt-1 text-gold-600"></i><span data-site="jam"></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10">
+      <div class="container-bq flex flex-col items-center justify-between gap-3 py-5 text-xs sm:flex-row">
+        <p>© <span id="tahun-footer">2026</span> Baitul Qur'an Al-Hidayah. Seluruh hak cipta dilindungi.</p>
+        <p>Desa Keluang · Kec. Kuaro · Kab. Paser · Kalimantan Timur</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-brand-950/70 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+      <div class="flex items-start justify-between gap-4">
+        <h2 id="modal-title" class="font-display text-lg font-semibold text-brand-900"></h2>
+        <button id="modal-close" type="button" class="rounded-lg p-1.5 text-brand-400 hover:bg-brand-50 hover:text-brand-700" aria-label="Tutup">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div id="modal-body" class="mt-3 whitespace-pre-line text-sm leading-relaxed text-brand-600"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/site.config.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
