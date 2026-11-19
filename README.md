@@ -36,13 +36,25 @@ Buka `assets/js/site.config.js`, ubah bagian berikut:
 
 | Variabel | Keterangan |
 |---|---|
-| `wa.tampil` | nomor yang tampil di layar, contoh `0831-5345-931` |
-| `wa.internasional` | untuk tautan WhatsApp, contoh `628315345931` |
+| `wa.tampil` | nomor yang tampil di layar, contoh `0831-5314-5931` |
+| `wa.internasional` | untuk tautan WhatsApp, contoh `6283153145931` |
+| `grupWa` | tautan grup WhatsApp wali santri; kosongkan bila tidak dipakai |
+| `youtube` | tautan channel YouTube |
+| `youtubeChannelId` | ID channel (`UC…`) untuk keperluan embed |
+| `youtubePlaylist` | ID playlist unggahan (`UU…`) yang diputar di halaman Siaran Langsung |
+| `youtubeThumb` | ID video untuk gambar sampul pemutar |
+| `youtubeEmbed` | `true` bila video boleh diputar di dalam situs (lihat catatan di bawah) |
 | `alamat.mapsUrl` | tempel tautan *Share* pin lokasi dari Google Maps |
 | `jamLayanan` | jam operasional |
 | `youtube` | tautan channel, contoh `https://youtube.com/@namaChannel` |
 
 Setelah disimpan, cukup refresh browser.
+
+> **Catatan penyematan YouTube.** Saat ini channel menonaktifkan pemutaran di
+> situs lain, sehingga tombol putar membuka YouTube. Agar video bisa diputar
+> langsung di halaman Siaran Langsung: buka YouTube Studio → **Konten** → pilih
+> video → **Detail** → *Tampilkan lebih banyak* → centang **Izinkan penyematan**
+> → simpan. Setelah itu ubah `youtubeEmbed` menjadi `true` di `site.config.js`.
 
 ### b. Pengajar, jadwal, materi, berita, galeri
 Semua ada di `assets/js/data.js`. Contoh menambah pengajar:

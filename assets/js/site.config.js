@@ -26,14 +26,26 @@ window.SITE = {
 
   /* --- Kontak ---------------------------------------------------------- */
   wa: {
-    tampil: "0831-5345-931", // tampilan di layar
-    internasional: "628315345931", // untuk wa.me (tanpa + dan tanpa 0 di depan)
+    tampil: "0831-5314-5931", // tampilan di layar
+    internasional: "6283153145931", // untuk wa.me (tanpa + dan tanpa 0 di depan)
   },
+  // Grup WhatsApp wali santri. Kosongkan ("") jika grup tidak dipakai.
+  grupWa: "https://chat.whatsapp.com/F35Y5YqGXYaDK8jWjGnrtt",
   email: "", // kosongkan jika belum ada
   jamLayanan: "Senin–Kamis 15.30–17.00 WITA · Sabtu 08.00–10.00 WITA",
 
   /* --- Media sosial ---------------------------------------------------- */
-  youtube: "", // isi link channel, contoh: "https://youtube.com/@baitulquranalhidayah"
+  youtube: "https://www.youtube.com/@baitulquranalhidayah-e5h",
+  // ID channel (bukan nama). Dipakai untuk embed dan tautan siaran langsung.
+  youtubeChannelId: "UCFsJPrreyC_BqSk-N1XtHcg",
+  // Playlist unggahan channel: ID channel diawali "UC" diganti "UU".
+  youtubePlaylist: "UUFsJPrreyC_BqSk-N1XtHcg",
+  // Video untuk gambar sampul pemutar (video terbaru).
+  youtubeThumb: "IvZvck9q5XY",
+  // Pemutaran di dalam halaman (embed). Channel ini saat ini menonaktifkan
+  // pemutaran di situs lain, sehingga tombol putar membuka YouTube.
+  // Aktifkan "Izinkan penyematan" di YouTube Studio, lalu ubah menjadi true.
+  youtubeEmbed: false,
   instagram: "",
   facebook: "",
 

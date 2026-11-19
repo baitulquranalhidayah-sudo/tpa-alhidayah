@@ -71,6 +71,15 @@
       a.href = yt;
       if (!SITE.youtube) a.title = "Cari channel di YouTube";
     });
+    $$("a[data-youtube-live]").forEach((a) => {
+      a.href = SITE.youtube
+        ? SITE.youtube.replace(/\/+$/, "") + "/live"
+        : "https://www.youtube.com/results?search_query=Baitul+Quran+Al+Hidayah+live";
+    });
+
+    // Grup WhatsApp: sembunyikan seluruh blok bila tautan belum diisi.
+    $$("a[data-grup-wa]").forEach((a) => a.href = SITE.grupWa || "#");
+    $$("[data-grup-wa-box]").forEach((el) => el.classList.toggle("hidden", !SITE.grupWa));
     $$("[data-sosial]").forEach((el) => {
       const key = el.dataset.sosial;
       const url = SITE[key];
@@ -515,11 +524,63 @@
   }
 
   /* --------------------------------------------------------------------
+     Pemutar YouTube (click-to-play, privasi lebih aman)
+  -------------------------------------------------------------------- */
+  function initYoutubeEmbed() {
+    const box = document.getElementById("yt-player");
+    if (!box) return;
+
+    const thumb = box.querySelector("[data-yt-thumb]");
+    if (thumb) {
+      if (SITE.youtubeThumb) {
+        thumb.src = "https://i.ytimg.com/vi/" + SITE.youtubeThumb + "/hqdefault.jpg";
+      } else {
+        thumb.remove();
+      }
+    }
+
+    const btn = box.querySelector("[data-yt-play]");
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+      // Channel ini menonaktifkan penyematan; buka YouTube agar tidak muncul
+      // kotak "Video tidak tersedia". Bisa diubah lewat youtubeEmbed.
+      if (!SITE.youtubeEmbed) {
+        window.open(SITE.youtube, "_blank", "noopener");
+        return;
+      }
+
+      const base = "https://www.youtube-nocookie.com/embed/";
+      let src;
+      if (SITE.youtubePlaylist) {
+        src = base + "videoseries?list=" + encodeURIComponent(SITE.youtubePlaylist) + "&autoplay=1&rel=0";
+      } else if (SITE.youtubeThumb) {
+        src = base + encodeURIComponent(SITE.youtubeThumb) + "?autoplay=1&rel=0";
+      } else {
+        window.open(SITE.youtube, "_blank", "noopener");
+        return;
+      }
+
+      const frame = document.createElement("iframe");
+      frame.src = src;
+      frame.title = "Video Baitul Qur'an Al-Hidayah";
+      frame.className = "absolute inset-0 h-full w-full";
+      frame.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+
+      box.replaceChildren(frame);
+    });
+  }
+
+  /* --------------------------------------------------------------------
      Boot
   -------------------------------------------------------------------- */
   function boot() {
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     hydrateSite();
+    initYoutubeEmbed();
     renderPengajar();
     renderJadwal();
     renderMateri();
