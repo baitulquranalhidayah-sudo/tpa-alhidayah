@@ -303,9 +303,18 @@ service cloud.firestore {
 - [x] Foto Fatimah (`assets/img/pengajar/fatimah.webp`)
 - [x] Foto kegiatan (`assets/img/kegiatan/` + `data.js` → `galeri`)
 - [x] Aset dirapikan jadi 4 folder: `logo`, `icons`, `pengajar`, `kegiatan`
-- [ ] Isi baris kehadiran & progres di spreadsheet (template masih kosong)
 - [ ] Berita tambahan (`data.js` → `berita`)
 - [ ] Alamat surel, Instagram, Facebook (opsional)
+
+### Catatan operasional: kehadiran & progres
+
+Data kehadiran dan progres **dibaca langsung dari spreadsheet**, bukan disalin
+ke dalam kode. Pengajar cukup mengisi baris pada tab `Kehadiran` dan `Progres`;
+situs otomatis menampilkan perubahannya (maks. 2 menit karena cache, atau
+langsung setelah tombol **Perbarui data** diklik pada form pencarian).
+
+Saat ini tab `Progres` sudah berisi catatan pertama untuk Galih dan Azam
+(21/11/2026), sedangkan tab `Kehadiran` masih menunggu diisi pengajar.
 
 ---
 
