@@ -42,8 +42,10 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
 
-  const waLink = (text) =>
-    "https://wa.me/" + SITE.wa.internasional + (text ? "?text=" + encodeURIComponent(text) : "");
+  const waLink = (text, nomor) =>
+    "https://wa.me/" +
+    (nomor || SITE.wa.internasional) +
+    (text ? "?text=" + encodeURIComponent(text) : "");
 
   /* --------------------------------------------------------------------
      Isi data kontak ke seluruh halaman
@@ -63,6 +65,12 @@
     );
     $$("[data-site='tahun']").forEach((el) => (el.textContent = new Date().getFullYear()));
     $$("a[data-wa]").forEach((a) => (a.href = waLink(a.dataset.wa || "")));
+    $$("a[data-pilih-admin]").forEach((a) =>
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        bukaPilihanAdmin(a.dataset.pesan || "");
+      })
+    );
     $$("a[data-maps]").forEach((a) => (a.href = SITE.alamat.mapsUrl));
 
     // YouTube: pakai link channel bila ada, jika belum arahkan ke pencarian.
@@ -464,6 +472,45 @@
     document.body.classList.remove("overflow-hidden");
   }
 
+  /** Modal pilih admin: dipakai tombol Tanya Admin dan Kirim via WhatsApp. */
+  function bukaPilihanAdmin(pesan) {
+    const daftar =
+      Array.isArray(SITE.admin) && SITE.admin.length
+        ? SITE.admin
+        : [{ nama: "Admin", wa: SITE.wa || {} }];
+
+    const kartu = daftar
+      .map((a) => {
+        const wa = a.wa || {};
+        const nomor =
+          wa.internasional || String(wa.tampil || "").replace(/\D/g, "").replace(/^0/, "62");
+        const tampil = wa.tampil || nomor;
+        return `<button type="button" data-admin-pilih="${esc(nomor)}" class="flex w-full items-center justify-between gap-3 rounded-xl border border-brand-200 bg-white p-4 text-left transition hover:border-gold-500 hover:bg-gold-50 focus:border-gold-500 focus:outline-none">
+          <span>
+            <span class="block font-semibold text-brand-900">${esc(a.nama || "Admin")}</span>
+            <span class="mt-0.5 block text-xs text-brand-500">${esc(tampil)}</span>
+          </span>
+          <span class="shrink-0 rounded-lg bg-brand-800 px-3 py-2 text-xs font-semibold text-white"><i class="fa-brands fa-whatsapp mr-1"></i>Chat</span>
+        </button>`;
+      })
+      .join("");
+
+    const isi = `${
+      pesan
+        ? `<p class="mb-4 text-sm leading-relaxed text-brand-600">Pilih admin penerima pesan pendaftaran Anda.</p>`
+        : `<p class="mb-4 text-sm leading-relaxed text-brand-600">Pilih admin yang ingin dihubungi.</p>`
+    }<div class="space-y-2">${kartu}</div>`;
+
+    openModal(pesan ? "Kirim pesan ke admin" : "Hubungi admin", isi, true);
+
+    $$("#modal-body [data-admin-pilih]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        closeModal();
+        window.open(waLink(pesan, btn.dataset.adminPilih), "_blank", "noopener");
+      });
+    });
+  }
+
   /* --------------------------------------------------------------------
      Cek santri: Firebase → Google Sheets → data contoh lokal
   -------------------------------------------------------------------- */
@@ -750,7 +797,7 @@
         "Mohon informasi jadwal dan persyaratan pendaftaran. Terima kasih.",
       ].join("\n");
 
-      window.open(waLink(pesan), "_blank", "noopener");
+      bukaPilihanAdmin(pesan);
     });
   }
 
