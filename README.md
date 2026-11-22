@@ -20,7 +20,10 @@ tpa-alhidayah/
 │  ├─ js/data.js              ← pengajar, jadwal, materi, berita, galeri, santri
 │  ├─ js/sumber.js            ← pengambil data absensi/progres (Sheets/Firebase)
 │  ├─ js/app.js               ← logika navigasi & formulir
-│  ├─ img/                    ← logo, favicon, og-image
+│  ├─ img/logo/               ← logo-full, logo-mark, og-image
+│  ├─ img/icons/              ← favicon, icon-192/512, apple-touch-icon
+│  ├─ img/pengajar/           ← foto Nur Hidayat & Fatimah (webp)
+│  └─ img/kegiatan/           ← foto galeri (kegiatan-1 … 5.webp)
 │  └─ dokumen/                ← berkas unduhan (buku prestasi)
 ├─ src/input.css              ← sumber CSS (Tailwind)
 ├─ tailwind.config.js         ← palet warna & font
@@ -66,7 +69,7 @@ pengajar: [
     nama: "Nur Hidayat",
     peran: "Pengajar",
     bidang: "Bimbingan membaca Al-Qur'an",
-    foto: "assets/img/nur-hidayat.webp",
+    foto: "assets/img/pengajar/nur-hidayat.webp",
     inisial: "NH",
     pendidikan: "",   // opsional
     pengalaman: "",   // opsional
@@ -83,12 +86,13 @@ Menambah foto galeri:
 
 ```js
 galeri: [
-  { src: "assets/img/galeri/kegiatan-1.jpg", judul: "Setoran hafalan" },
+  { src: "assets/img/kegiatan/kegiatan-1.webp", judul: "Setoran hafalan" },
 ],
 ```
 
-Letakkan foto di `assets/img/galeri/`. Setelah `galeri` terisi, tampilan
-"Galeri segera hadir" otomatis berganti menjadi grid foto.
+Letakkan foto di `assets/img/kegiatan/`. Setelah `galeri` terisi, tampilan
+"Galeri segera hadir" otomatis berganti menjadi grid foto. Klik foto untuk
+membukanya dalam ukuran penuh. Foto sebaiknya WebP agar ukurannya ringan.
 
 ### c. Teks panjang (visi, misi, profil)
 Diedit langsung di `index.html` pada bagian `<section id="profil">`.
@@ -164,7 +168,7 @@ di dua tempat pada `index.html`:
 
 - `<link rel="canonical" ...>`
 - `<meta property="og:image" ...>` → jadikan URL lengkap,
-  contoh `https://USERNAME.github.io/tpa-alhidayah/assets/img/og-image.jpg`
+  contoh `https://USERNAME.github.io/tpa-alhidayah/assets/img/logo/og-image.jpg`
 
 Ini membuat gambar pratinjau muncul saat tautan dibagikan di WhatsApp/Facebook.
 
@@ -295,10 +299,11 @@ service cloud.firestore {
 - [x] Tautan channel YouTube (`site.config.js` → `youtube`)
 - [x] Tautan pin Google Maps (`site.config.js` → `alamat.mapsUrl`)
 - [x] `canonical` dan `og:image` sudah memakai domain GitHub Pages
-- [x] Foto Nur Hidayat (`assets/img/nur-hidayat.webp`)
+- [x] Foto Nur Hidayat (`assets/img/pengajar/nur-hidayat.webp`)
+- [x] Foto Fatimah (`assets/img/pengajar/fatimah.webp`)
+- [x] Foto kegiatan (`assets/img/kegiatan/` + `data.js` → `galeri`)
+- [x] Aset dirapikan jadi 4 folder: `logo`, `icons`, `pengajar`, `kegiatan`
 - [ ] Isi baris kehadiran & progres di spreadsheet (template masih kosong)
-- [ ] Foto Fatimah (`data.js` → `pengajar[1].foto`)
-- [ ] Foto kegiatan (`assets/img/galeri/` + `data.js` → `galeri`)
 - [ ] Berita tambahan (`data.js` → `berita`)
 - [ ] Alamat surel, Instagram, Facebook (opsional)
 

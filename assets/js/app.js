@@ -416,14 +416,14 @@
     grid.innerHTML = list
       .map(
         (g) => `<button type="button" class="group relative aspect-[4/3] overflow-hidden rounded-xl bg-brand-100" data-galeri="${esc(g.src)}">
-          <img src="${esc(g.src)}" alt="${esc(g.judul || "Foto kegiatan")}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <img src="${esc(g.src)}" alt="${esc(g.judul || "Foto kegiatan")}" loading="lazy" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105">
           <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-950/80 to-transparent p-3 text-left text-xs font-medium text-white">${esc(g.judul || "")}</span>
         </button>`
       )
       .join("");
     grid.addEventListener("click", (e) => {
       const b = e.target.closest("[data-galeri]");
-      if (b) openModal("", `<img src='${b.dataset.galeri}' alt='Foto kegiatan' class='w-full rounded-xl'>`, true);
+      if (b) openModal("", `<img src='${b.dataset.galeri}' alt='Foto kegiatan' class='mx-auto max-h-[70vh] w-auto rounded-xl object-contain'>`, true);
     });
   }
 

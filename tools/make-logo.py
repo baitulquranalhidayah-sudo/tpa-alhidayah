@@ -4,8 +4,12 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 SRC = "/home/day21/Gambar/watermarked_img_13261785207651445904.png"
-OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "img")
-os.makedirs(OUT, exist_ok=True)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+IMG = os.path.join(ROOT, "assets", "img")
+LOGO_DIR = os.path.join(IMG, "logo")
+ICON_DIR = os.path.join(IMG, "icons")
+os.makedirs(LOGO_DIR, exist_ok=True)
+os.makedirs(ICON_DIR, exist_ok=True)
 
 im = Image.open(SRC).convert("RGB")
 W, H = im.size
@@ -42,23 +46,23 @@ def circle_mask(size, scale=4):
     d.ellipse((0, 0, size*scale-1, size*scale-1), fill=255)
     return m.resize((size, size), Image.LANCZOS)
 
-def save_mark(size, name, bg=None):
+def save_mark(size, name, bg=None, folder=LOGO_DIR):
     img = base.resize((size, size), Image.LANCZOS).convert("RGBA")
     img.putalpha(circle_mask(size))
     if bg:
         canvas = Image.new("RGBA", (size, size), bg)
         canvas.alpha_composite(img)
         img = canvas
-    img.save(os.path.join(OUT, name))
+    img.save(os.path.join(folder, name))
     print("tulis", name, size)
 
 # aset utama
-base.resize((512, 512), Image.LANCZOS).save(os.path.join(OUT, "logo-raw.png"))
+base.resize((512, 512), Image.LANCZOS).save(os.path.join(LOGO_DIR, "logo-raw.png"))
 save_mark(512, "logo-full.png")
 save_mark(256, "logo-mark.png")
-save_mark(512, "icon-512.png")
-save_mark(192, "icon-192.png")
-save_mark(180, "apple-touch-icon.png", bg=(251, 249, 236, 255))
+save_mark(512, "icon-512.png", folder=ICON_DIR)
+save_mark(192, "icon-192.png", folder=ICON_DIR)
+save_mark(180, "apple-touch-icon.png", bg=(251, 249, 236, 255), folder=ICON_DIR)
 
 # favicon multi-size
 icons = []
@@ -66,7 +70,7 @@ for s in (16, 32, 48, 64):
     im2 = base.resize((s, s), Image.LANCZOS).convert("RGBA")
     im2.putalpha(circle_mask(s))
     icons.append(im2)
-icons[-1].save(os.path.join(OUT, "favicon.ico"), format="ICO", sizes=[(16,16),(32,32),(48,48),(64,64)])
+icons[-1].save(os.path.join(ICON_DIR, "favicon.ico"), format="ICO", sizes=[(16,16),(32,32),(48,48),(64,64)])
 print("tulis favicon.ico")
 
 # --- OG image 1200x630 ---
@@ -95,5 +99,5 @@ d.text((x, 365), "Taman Pendidikan Al-Qur'an", font=f_sub, fill=(231, 198, 129))
 d.text((x, 410), "Desa Keluang, Kec. Kuaro, Kab. Paser", font=f_small, fill=(214, 224, 220))
 d.text((x, 442), "Kalimantan Timur", font=f_small, fill=(214, 224, 220))
 d.rectangle([455, 500, 655, 504], fill=(213, 173, 103))
-og.save(os.path.join(OUT, "og-image.jpg"), quality=90)
+og.save(os.path.join(LOGO_DIR, "og-image.jpg"), quality=90)
 print("tulis og-image.jpg")

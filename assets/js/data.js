@@ -13,7 +13,7 @@ window.DATA = {
       nama: "Nur Hidayat",
       peran: "Pengajar",
       bidang: "Bimbingan membaca Al-Qur'an",
-      foto: "assets/img/nur-hidayat.webp",
+      foto: "assets/img/pengajar/nur-hidayat.webp",
       inisial: "NH",
       pendidikan: "Universitas Terbuka — Ilmu Hukum, Semester 7\nPernah menempuh pendidikan di Ponpes Almadaniyah Jaro",
       pengalaman: "",
@@ -23,7 +23,7 @@ window.DATA = {
       nama: "Fatimah",
       peran: "Pengajar",
       bidang: "Bimbingan Iqra & hafalan",
-      foto: "",
+      foto: "assets/img/pengajar/fatimah.webp",
       inisial: "F",
       pendidikan: "",
       pengalaman: "",
@@ -85,10 +85,16 @@ window.DATA = {
   ],
 
   /* --- Galeri ----------------------------------------------------------
-     Isi dengan objek { src, judul } setelah foto tersedia.
-     Contoh: { src: "assets/img/galeri/kegiatan-1.jpg", judul: "Kegiatan belajar" }
+     Foto kegiatan ada di assets/img/kegiatan/ (kegiatan-1 … kegiatan-5.webp).
+     Klik foto untuk membuka versi besar di modal.
   -------------------------------------------------------------------- */
-  galeri: [],
+  galeri: [
+    { src: "assets/img/kegiatan/kegiatan-1.webp", judul: "Kegiatan belajar Al-Qur'an" },
+    { src: "assets/img/kegiatan/kegiatan-2.webp", judul: "Kegiatan belajar Al-Qur'an" },
+    { src: "assets/img/kegiatan/kegiatan-3.webp", judul: "Kegiatan belajar Al-Qur'an" },
+    { src: "assets/img/kegiatan/kegiatan-4.webp", judul: "Kegiatan belajar Al-Qur'an" },
+    { src: "assets/img/kegiatan/kegiatan-5.webp", judul: "Kegiatan belajar Al-Qur'an" },
+  ],
 
   /* --- Data santri ------------------------------------------------------
      Cadangan bila Google Sheets / Firebase belum aktif atau gagal dimuat.
