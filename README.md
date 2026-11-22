@@ -12,8 +12,12 @@ di-host gratis di GitHub Pages, tanpa server dan tanpa biaya bulanan.
 
 ```
 tpa-alhidayah/
-├─ index.html                 ← seluruh halaman
+├─ index.html                 ← halaman utama (beranda + semua section)
 ├─ 404.html                   ← halaman galat
+├─ berita/                    ← halaman berita full-page (hasil generate)
+│  ├─ index.html              ← arsip semua berita
+│  ├─ peluncuran-website/     ← halaman artikel peluncuran
+│  └─ pendaftaran-santri/     ← halaman artikel pendaftaran
 ├─ assets/
 │  ├─ css/style.css           ← hasil build Tailwind (jangan diedit manual)
 │  ├─ js/site.config.js       ← DATA KONTAK & IDENTITAS  ← paling sering diedit
@@ -23,11 +27,13 @@ tpa-alhidayah/
 │  ├─ img/logo/               ← logo-full, logo-mark, og-image
 │  ├─ img/icons/              ← favicon, icon-192/512, apple-touch-icon
 │  ├─ img/pengajar/           ← foto Nur Hidayat & Fatimah (webp)
-│  └─ img/kegiatan/           ← foto galeri (kegiatan-1 … 5.webp)
+│  ├─ img/kegiatan/           ← foto galeri (kegiatan-1 … 5.webp)
+│  ├─ img/berita/             ← gambar artikel (webp)
 │  └─ dokumen/                ← berkas unduhan (buku prestasi)
 ├─ src/input.css              ← sumber CSS (Tailwind)
 ├─ tailwind.config.js         ← palet warna & font
 ├─ tools/make-logo.py         ← pembuat ulang aset logo dari file sumber
+├─ tools/build-berita.mjs     ← generator halaman berita
 └─ .github/workflows/deploy.yml ← deploy otomatis ke GitHub Pages
 ```
 
@@ -40,6 +46,7 @@ Buka `assets/js/site.config.js`, ubah bagian berikut:
 
 | Variabel | Keterangan |
 |---|---|
+| `url` | alamat lengkap situs, dipakai canonical & OG tiap artikel |
 | `wa.tampil` | nomor admin utama yang tampil di tombol & formulir |
 | `wa.internasional` | untuk tautan WhatsApp, contoh `6283153145931` |
 | `admin` | daftar admin (nama + nomor) yang tampil di halaman Kontak |
@@ -93,6 +100,33 @@ galeri: [
 Letakkan foto di `assets/img/kegiatan/`. Setelah `galeri` terisi, tampilan
 "Galeri segera hadir" otomatis berganti menjadi grid foto. Klik foto untuk
 membukanya dalam ukuran penuh. Foto sebaiknya WebP agar ukurannya ringan.
+
+#### Berita: halaman penuh per artikel
+
+Tiap berita punya halaman HTML sendiri di folder `berita/<slug>/`, plus arsip
+di `berita/index.html`. Kartu berita di beranda menuju ke halaman tersebut
+(bukan lagi modal).
+
+Menambah berita baru:
+
+1. Tambah objek di `DATA.berita` (`assets/js/data.js`) dengan `slug` unik,
+   misalnya `slug: "ramadhan-1448"`.
+2. Isi `judul`, `tanggal`, `kategori`, `ringkas`, `gambar`, dan `isi`.
+3. Di `isi`, gunakan `## Judul` untuk subjudul dan `- item` untuk daftar.
+4. Jalankan generator:
+
+   ```bash
+   npm run build:berita
+   ```
+
+5. Commit hasil generate beserta perubahan `data.js`.
+
+Generator juga mengisi canonical, OG, schema.org Article, breadcrumb, tombol
+bagikan, Tanya Admin, dan artikel terkait. Jalankan ulang generator setiap kali
+mengubah `data.js` atau ingin menyelaraskan header/footer artikel dengan beranda.
+
+Artikel pendaftaran otomatis mendapat tiga tombol: daftar lewat website, chat
+admin dengan template pesan pendaftaran, dan lihat peta untuk datang langsung.
 
 ### c. Teks panjang (visi, misi, profil)
 Diedit langsung di `index.html` pada bagian `<section id="profil">`.
@@ -302,8 +336,8 @@ service cloud.firestore {
 - [x] Foto Nur Hidayat (`assets/img/pengajar/nur-hidayat.webp`)
 - [x] Foto Fatimah (`assets/img/pengajar/fatimah.webp`)
 - [x] Foto kegiatan (`assets/img/kegiatan/` + `data.js` → `galeri`)
-- [x] Aset dirapikan jadi 4 folder: `logo`, `icons`, `pengajar`, `kegiatan`
-- [ ] Berita tambahan (`data.js` → `berita`)
+- [x] Aset dirapikan jadi 5 folder: `logo`, `icons`, `pengajar`, `kegiatan`, `berita`
+- [x] Berita tambahan + halaman penuh (`data.js` → `berita`, `berita/`)
 - [ ] Alamat surel, Instagram, Facebook (opsional)
 
 ### Catatan operasional: kehadiran & progres
@@ -329,7 +363,7 @@ Saat ini tab `Progres` sudah berisi catatan pertama untuk Galih dan Azam
 - Ikon: Font Awesome 6 (CDN).
 - Logo aset dibuat ulang dengan `python3 tools/make-logo.py` dari berkas sumber
   di `Gambar/`.
-- Gambar berita "Pendaftaran Santri Baru Dibuka" bersumber dari **Openverse**,
+- Gambar berita "Cara Pendaftaran Santri Baru — Online dan Offline" bersumber dari **Openverse**,
   lisensi **CC0 1.0**: *Writing in Notebook at Desk* oleh Image Catalog via
   Flickr — https://www.flickr.com/photos/132795455@N08/18692128651
 - Gambar berita peluncuran adalah tangkapan layar website ini sendiri.

@@ -392,9 +392,10 @@
       return;
     }
     wrap.innerHTML = list
-      .map(
-        (b, i) => `
-      <article class="card group flex flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-soft">
+      .map((b) => {
+        const href = b.slug ? `berita/${encodeURIComponent(b.slug)}/` : "berita/";
+        return `
+      <a href="${esc(href)}" class="card group flex flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-soft">
         <div class="relative h-40 overflow-hidden bg-gradient-to-br from-brand-800 via-brand-700 to-brand-500">
           ${
             b.gambar
@@ -410,28 +411,11 @@
           <p class="text-xs text-brand-400"><i class="fa-regular fa-calendar mr-1.5"></i>${esc(tanggalPanjang(b.tanggal))}</p>
           <h3 class="mt-2 font-display text-xl font-semibold leading-snug text-brand-900">${esc(b.judul)}</h3>
           <p class="mt-3 flex-1 text-sm leading-relaxed text-brand-600">${esc(b.ringkas)}</p>
-          ${
-            b.isi
-              ? `<button type="button" class="mt-4 self-start text-sm font-semibold text-brand-700 hover:text-brand-600" data-berita="${i}">Baca selengkapnya <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></button>`
-              : `<a href="#pendaftaran" class="mt-4 self-start text-sm font-semibold text-brand-700 hover:text-brand-600">Daftar sekarang <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></a>`
-          }
+          <span class="mt-4 self-start text-sm font-semibold text-brand-700 group-hover:text-brand-600">Baca selengkapnya <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></span>
         </div>
-      </article>`
-      )
+      </a>`;
+      })
       .join("");
-
-    wrap.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-berita]");
-      if (!btn) return;
-      const item = list[Number(btn.dataset.berita)];
-      if (item && item.isi) {
-        const isi =
-          (item.gambar
-            ? `<img src="${esc(item.gambar)}" alt="${esc(item.judul)}" class="mb-4 w-full rounded-xl object-cover">`
-            : "") + esc(item.isi);
-        openModal(item.judul, isi, true);
-      }
-    });
   }
 
   function renderGaleri() {
@@ -897,23 +881,7 @@
     });
   }
 
-  /* --------------------------------------------------------------------
-     Boot
-  -------------------------------------------------------------------- */
-  function boot() {
-    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-    hydrateSite();
-    initYoutubeEmbed();
-    renderPengajar();
-    renderJadwal();
-    renderMateri();
-    renderBerita();
-    renderGaleri();
-    bindMenus();
-    bindPendaftaran();
-    bindLookup("form-absensi", "absensi");
-    bindLookup("form-progres", "progres");
-
+  function bindModal() {
     $("#modal")?.addEventListener("click", (e) => {
       if (e.target.id === "modal") closeModal();
     });
@@ -921,6 +889,30 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeModal();
     });
+  }
+
+  /* --------------------------------------------------------------------
+     Boot
+  -------------------------------------------------------------------- */
+  function boot() {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    hydrateSite();
+    bindMenus();
+    bindModal();
+
+    // Halaman artikel/arsip berita memakai header & footer yang sama, tetapi
+    // tidak memakai router hash beranda. Judul halaman tidak boleh ditimpa.
+    if (document.body.dataset.page === "artikel") return;
+
+    initYoutubeEmbed();
+    renderPengajar();
+    renderJadwal();
+    renderMateri();
+    renderBerita();
+    renderGaleri();
+    bindPendaftaran();
+    bindLookup("form-absensi", "absensi");
+    bindLookup("form-progres", "progres");
 
     $("#tahun-footer").textContent = new Date().getFullYear();
     bindRouter();

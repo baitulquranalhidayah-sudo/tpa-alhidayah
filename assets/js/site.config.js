@@ -7,6 +7,7 @@ window.SITE = {
   /* --- Identitas ------------------------------------------------------- */
   nama: "Baitul Qur'an Al-Hidayah",
   namaPendek: "BQ Al-Hidayah",
+  url: "https://baitulquranalhidayah-sudo.github.io/tpa-alhidayah/",
   jenis: "Taman Pendidikan Al-Qur'an",
   tagline:
     "Membina generasi Qur'ani melalui pembelajaran membaca, memahami, dan menghafal Al-Qur'an dengan bimbingan yang ramah dan terarah.",

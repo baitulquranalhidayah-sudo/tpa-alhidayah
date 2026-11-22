@@ -5,6 +5,7 @@
   "description": "Website Baitul Qur'an Al-Hidayah — Desa Keluang, Kec. Kuaro, Kab. Paser",
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --minify",
+    "build:berita": "node tools/build-berita.mjs",
     "watch:css": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --watch",
     "serve": "python3 -m http.server 8080",
     "live": "node tools/dev-server.mjs",
