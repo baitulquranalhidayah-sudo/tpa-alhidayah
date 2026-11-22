@@ -495,18 +495,53 @@
       })
       .join("");
 
+    // Tombol Tanya Admin: minta nama, tempat, dan catatan dulu.
+    // Formulir pendaftaran sudah punya pesan sendiri, jadi langsung pilih admin.
+    const butuhForm = !pesan;
+    const formTanya = butuhForm
+      ? `<form id="form-tanya-admin" class="space-y-3">
+          <div>
+            <label class="label" for="ta-nama">Nama <span class="text-rose-500">*</span></label>
+            <input class="input" id="ta-nama" name="nama" required maxlength="80" placeholder="Nama Anda">
+          </div>
+          <div>
+            <label class="label" for="ta-tempat">Tempat <span class="text-rose-500">*</span></label>
+            <input class="input" id="ta-tempat" name="tempat" required maxlength="100" placeholder="Contoh: Desa Keluang, Kuaro">
+          </div>
+          <div>
+            <label class="label" for="ta-catatan">Catatan <span class="text-rose-500">*</span></label>
+            <textarea class="input min-h-[88px]" id="ta-catatan" name="catatan" required maxlength="400" placeholder="Tulis pertanyaan atau pesan yang ingin disampaikan"></textarea>
+          </div>
+        </form>`
+      : "";
+
     const isi = `${
-      pesan
-        ? `<p class="mb-4 text-sm leading-relaxed text-brand-600">Pilih admin penerima pesan pendaftaran Anda.</p>`
-        : `<p class="mb-4 text-sm leading-relaxed text-brand-600">Pilih admin yang ingin dihubungi.</p>`
-    }<div class="space-y-2">${kartu}</div>`;
+      butuhForm
+        ? `<p class="mb-4 text-sm leading-relaxed text-brand-600">Isi data berikut, lalu pilih admin. Pesan langsung terbuka di WhatsApp.</p>`
+        : `<p class="mb-4 text-sm leading-relaxed text-brand-600">Pilih admin penerima pesan pendaftaran Anda.</p>`
+    }${formTanya}<div class="mt-4 space-y-2">${kartu}</div>`;
 
     openModal(pesan ? "Kirim pesan ke admin" : "Hubungi admin", isi, true);
 
     $$("#modal-body [data-admin-pilih]").forEach((btn) => {
       btn.addEventListener("click", () => {
+        let isiPesan = pesan;
+        if (butuhForm) {
+          const form = $("#form-tanya-admin");
+          if (form && !form.reportValidity()) return;
+          const nilai = (id) => ($(id)?.value || "").trim();
+          isiPesan = [
+            "*PESAN DARI WEBSITE BAITUL QUR'AN AL-HIDAYAH*",
+            "",
+            `Nama    : ${nilai("#ta-nama")}`,
+            `Tempat  : ${nilai("#ta-tempat")}`,
+            `Catatan : ${nilai("#ta-catatan")}`,
+            "",
+            "Mohon balasannya. Terima kasih.",
+          ].join("\n");
+        }
         closeModal();
-        window.open(waLink(pesan, btn.dataset.adminPilih), "_blank", "noopener");
+        window.open(waLink(isiPesan, btn.dataset.adminPilih), "_blank", "noopener");
       });
     });
   }
