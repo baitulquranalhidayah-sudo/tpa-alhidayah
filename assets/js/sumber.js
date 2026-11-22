@@ -214,6 +214,19 @@ window.SUMBER = (function () {
 
   const memori = new Map();
 
+  /** Bersihkan cache supaya pencarian berikutnya benar-benar mengambil data baru. */
+  function hapusCache() {
+    memori.clear();
+    try {
+      const awalan = `sumber:${ID}:`;
+      Object.keys(sessionStorage)
+        .filter((k) => k.startsWith(awalan))
+        .forEach((k) => sessionStorage.removeItem(k));
+    } catch (err) {
+      /* sessionStorage tidak tersedia — cache memori sudah ikut dibersihkan */
+    }
+  }
+
   /* --- Ambil satu tab (tabel mentah) ---------------------------------- */
 
   function urlTab(tab) {
@@ -402,5 +415,5 @@ window.SUMBER = (function () {
     };
   }
 
-  return { aktif, mode, ambil, _parseCsv: parseCsv, _parseTanggal: parseTanggal, _keMatriks: keMatriks };
+  return { aktif, mode, ambil, hapusCache, _parseCsv: parseCsv, _parseTanggal: parseTanggal, _keMatriks: keMatriks };
 })();

@@ -81,8 +81,8 @@ window.SITE = {
         absensi: "Kehadiran",
         progres: "Progres",
       },
-      // Lama cache di browser (menit). 0 = selalu ambil terbaru.
-      cacheMenit: 5,
+      // Lama cache di browser (menit). Tombol "Perbarui data" menimpa cache ini.
+      cacheMenit: 2,
     },
   },
 

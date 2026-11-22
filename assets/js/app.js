@@ -584,14 +584,28 @@
     const rekapEl = jenis === "absensi" ? $("#rekap-absensi") : null;
     const note = $(jenis === "absensi" ? "#note-absensi" : "#note-progres");
     const hint = $(jenis === "absensi" ? "#hint-absensi" : "#hint-progres");
+    const refresh = $(jenis === "absensi" ? "#refresh-absensi" : "#refresh-progres");
     const nfText = notfound.querySelector("p");
     const nfPesanAsli = nfText.textContent;
+    const sheetsAktif = !!(window.SUMBER && window.SUMBER.aktif());
+
+    if (refresh) {
+      refresh.classList.toggle("hidden", !sheetsAktif);
+      refresh.addEventListener("click", () => {
+        if (!input.value.trim()) {
+          input.focus();
+          return;
+        }
+        window.SUMBER.hapusCache();
+        if (typeof form.requestSubmit === "function") form.requestSubmit();
+        else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      });
+    }
 
     if (hint) {
-      hint.textContent =
-        window.SUMBER && window.SUMBER.aktif()
-          ? "Masukkan NIS yang terdaftar. Data diperbarui oleh pengajar."
-          : "Masukkan NIS santri, contoh: 01.";
+      hint.textContent = sheetsAktif
+        ? "Masukkan NIS yang terdaftar. Klik Perbarui data bila baru saja ada perubahan."
+        : "Masukkan NIS santri, contoh: 01.";
     }
 
     form.addEventListener("submit", async (e) => {
