@@ -503,11 +503,11 @@
             <label for="input-nis-absensi" class="sr-only">NIS santri</label>
             <div class="relative flex-1">
               <i class="fa-solid fa-id-card pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-brand-300"></i>
-              <input id="input-nis-absensi" name="nis" type="text" inputmode="numeric" autocomplete="off" required placeholder="Contoh: 101" class="input !pl-11">
+              <input id="input-nis-absensi" name="nis" type="text" inputmode="numeric" autocomplete="off" required placeholder="Contoh: 01" class="input !pl-11">
             </div>
             <button type="submit" class="btn-primary sm:w-auto"><i class="fa-solid fa-magnifying-glass text-xs"></i> Cari</button>
           </form>
-          <p class="mt-3 text-center text-xs text-brand-400">Data contoh untuk uji coba: NIS 101, 102, atau 103.</p>
+          <p id="hint-absensi" class="mt-3 text-center text-xs text-brand-400">Masukkan NIS santri, contoh: 01.</p>
 
           <div id="loading-absensi" class="hidden py-10 text-center">
             <i class="fa-solid fa-circle-notch fa-spin text-3xl text-brand-500"></i>
@@ -528,8 +528,10 @@
               <span class="text-sm font-medium text-brand-600">Status kehadiran</span>
               <span id="res-status-absensi" class="rounded-lg bg-brand-50 px-4 py-1 text-sm font-black uppercase text-brand-700"></span>
             </div>
+            <div id="rekap-absensi" class="hidden px-6 pb-5"></div>
+            <div id="riwayat-absensi" class="hidden px-6 pb-5"></div>
             <p id="note-absensi" class="hidden border-t border-gold-200 bg-gold-50 px-6 py-3 text-xs text-brand-700">
-              <i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Data di atas adalah contoh. Data sebenarnya akan ditampilkan setelah sistem absensi terhubung.
+              <i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Menampilkan data kehadiran yang tercatat.
             </p>
           </div>
 
@@ -548,18 +550,18 @@
         <div class="text-center">
           <p class="eyebrow">Laporan Belajar</p>
           <h1 class="h-section mt-2">Cek capaian santri</h1>
-          <p class="mt-4 leading-relaxed text-brand-600">Pantau perkembangan bacaan dan hafalan santri berdasarkan laporan pengajar.</p>
+          <p class="mt-4 leading-relaxed text-brand-600">Pantau perkembangan bacaan santri berdasarkan catatan pengajar.</p>
         </div>
 
         <form id="form-progres" class="card mt-8 flex flex-col gap-3 p-5 sm:flex-row">
           <label for="input-nis-progres" class="sr-only">NIS santri</label>
           <div class="relative flex-1">
             <i class="fa-solid fa-chart-line pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-brand-300"></i>
-            <input id="input-nis-progres" name="nis" type="text" inputmode="numeric" autocomplete="off" required placeholder="Contoh: 101" class="input !pl-11">
+            <input id="input-nis-progres" name="nis" type="text" inputmode="numeric" autocomplete="off" required placeholder="Contoh: 01" class="input !pl-11">
           </div>
           <button type="submit" class="btn-gold sm:w-auto"><i class="fa-solid fa-magnifying-glass text-xs"></i> Cek Progres</button>
         </form>
-        <p class="mt-3 text-center text-xs text-brand-400">Data contoh untuk uji coba: NIS 101, 102, atau 103.</p>
+        <p id="hint-progres" class="mt-3 text-center text-xs text-brand-400">Masukkan NIS santri, contoh: 01.</p>
 
         <div id="loading-progres" class="hidden py-10 text-center">
           <i class="fa-solid fa-circle-notch fa-spin text-3xl text-gold-600"></i>
@@ -580,17 +582,14 @@
               <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Capaian bacaan</p>
               <p id="res-bacaan-progres" class="mt-1 font-semibold text-brand-800"></p>
             </div>
-            <div class="rounded-xl bg-brand-50/70 p-4">
-              <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Capaian hafalan</p>
-              <p id="res-hafalan-progres" class="mt-1 font-semibold text-brand-800"></p>
-            </div>
             <div class="rounded-xl border border-gold-200 bg-gold-50/60 p-4">
               <p class="text-[11px] font-semibold uppercase tracking-wider text-gold-700">Catatan pengajar</p>
               <p id="res-catatan-progres" class="mt-1 text-sm italic leading-relaxed text-brand-700"></p>
             </div>
           </div>
+          <div id="riwayat-progres" class="hidden px-6 pb-5"></div>
           <p id="note-progres" class="hidden border-t border-gold-200 bg-gold-50 px-6 py-3 text-xs text-brand-700">
-            <i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Data di atas adalah contoh. Data sebenarnya akan ditampilkan setelah sistem terhubung.
+            <i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Menampilkan catatan bacaan yang tercatat.
           </p>
         </div>
 
@@ -766,8 +765,10 @@
               <div class="flex gap-4">
                 <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-gold-300"><i class="fa-brands fa-whatsapp"></i></span>
                 <div>
-                  <h2 class="font-semibold">WhatsApp</h2>
-                  <a data-wa href="#" class="mt-1 block text-sm text-brand-200 underline-offset-4 hover:text-white hover:underline"><span data-site="wa"></span></a>
+                  <h2 class="font-semibold">WhatsApp admin</h2>
+                  <ul id="admin-wa-list" class="mt-1 space-y-1 text-sm text-brand-200">
+                    <li><a data-wa href="#" class="underline-offset-4 hover:text-white hover:underline"><span data-site="wa"></span></a></li>
+                  </ul>
                 </div>
               </div>
               <div class="flex gap-4">
@@ -873,6 +874,7 @@
 
   <script src="assets/js/site.config.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/sumber.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

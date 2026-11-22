@@ -26,13 +26,24 @@ window.SITE = {
 
   /* --- Kontak ---------------------------------------------------------- */
   wa: {
-    tampil: "0831-5314-5931", // tampilan di layar
+    tampil: "0831-5314-5931", // admin utama (dipakai tombol & formulir)
     internasional: "6283153145931", // untuk wa.me (tanpa + dan tanpa 0 di depan)
   },
+  // Daftar admin yang ditampilkan di halaman Kontak.
+  admin: [
+    {
+      nama: "Nur Hidayat",
+      wa: { tampil: "0831-5314-5931", internasional: "6283153145931" },
+    },
+    {
+      nama: "Fatimah",
+      wa: { tampil: "0831-6321-7023", internasional: "6283163217023" },
+    },
+  ],
   // Grup WhatsApp wali santri. Kosongkan ("") jika grup tidak dipakai.
   grupWa: "https://chat.whatsapp.com/F35Y5YqGXYaDK8jWjGnrtt",
   email: "", // kosongkan jika belum ada
-  jamLayanan: "Senin–Kamis 15.30–17.00 WITA · Sabtu 08.00–10.00 WITA",
+  jamLayanan: "Senin–Rabu · ba'da Maghrib s.d. Isya (WITA)",
 
   /* --- Media sosial ---------------------------------------------------- */
   youtube: "https://www.youtube.com/@baitulquranalhidayah-e5h",
@@ -48,6 +59,32 @@ window.SITE = {
   youtubeEmbed: false,
   instagram: "",
   facebook: "",
+
+  /* --- Sumber data pendataan santri ------------------------------------
+     "lokal"    : data contoh di assets/js/data.js (tanpa internet)
+     "sheets"   : Google Sheets — cukup isi ID spreadsheet di bawah
+     "firebase" : Firestore (aktifkan lewat blok firebase di bawah)
+
+     Google Sheets cukup dibagikan "Anyone with the link → Viewer".
+     Situs hanya menampilkan kolom yang aman publik (NIS, nama, kelas,
+     status, capaian). Jangan menaruh alamat, HP wali, atau tanggal lahir.
+  -------------------------------------------------------------------- */
+  sumber: {
+    mode: "sheets", // ganti ke "firebase" setelah Firestore siap
+    sheets: {
+      // Tempel ID spreadsheet (atau URL lengkapnya, otomatis diambil ID-nya).
+      // Kosongkan untuk sementara memakai data identitas di data.js.
+      id: "1o6K7IGqrvs8Dsq0XXSlw0Dpa_sEYzuZRhXwOPfACEPg",
+      // Nama tab (bukan nama berkas) di dalam spreadsheet.
+      tab: {
+        santri: "Santri",
+        absensi: "Kehadiran",
+        progres: "Progres",
+      },
+      // Lama cache di browser (menit). 0 = selalu ambil terbaru.
+      cacheMenit: 5,
+    },
+  },
 
   /* --- Firebase (opsional) --------------------------------------------
      Selama enabled = false, halaman Absensi & Progres memakai data contoh

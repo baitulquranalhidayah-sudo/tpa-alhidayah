@@ -80,6 +80,24 @@
     // Grup WhatsApp: sembunyikan seluruh blok bila tautan belum diisi.
     $$("a[data-grup-wa]").forEach((a) => a.href = SITE.grupWa || "#");
     $$("[data-grup-wa-box]").forEach((el) => el.classList.toggle("hidden", !SITE.grupWa));
+
+    // Daftar admin di halaman Kontak.
+    const daftarAdmin =
+      Array.isArray(SITE.admin) && SITE.admin.length
+        ? SITE.admin
+        : [{ nama: "Admin", wa: SITE.wa || {} }];
+    const adminList = $("#admin-wa-list");
+    if (adminList) {
+      adminList.innerHTML = daftarAdmin
+        .map((a) => {
+          const wa = a.wa || {};
+          const nomor = wa.internasional || String(wa.tampil || "").replace(/\D/g, "").replace(/^0/, "62");
+          const tampil = wa.tampil || nomor;
+          return `<li><a href="https://wa.me/${esc(nomor)}" target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:text-white hover:underline">${esc(a.nama || "Admin")} — ${esc(tampil)}</a></li>`;
+        })
+        .join("");
+    }
+
     $$("[data-sosial]").forEach((el) => {
       const key = el.dataset.sosial;
       const url = SITE[key];
@@ -389,7 +407,7 @@
   }
 
   /* --------------------------------------------------------------------
-     Cek santri: Firebase bila aktif, selain itu data contoh lokal
+     Cek santri: Firebase → Google Sheets → data contoh lokal
   -------------------------------------------------------------------- */
   let firestoreReader = null;
   let firestoreTried = false;
@@ -414,15 +432,145 @@
     }
   }
 
-  async function cariSantri(nis) {
+  /** "01" dan "1" dianggap NIS yang sama. */
+  const normalNis = (v) =>
+    String(v == null ? "" : v)
+      .trim()
+      .toLowerCase()
+      .replace(/^0+(?=\d)/, "");
+
+  function cariLokal(nis) {
+    const cari = normalNis(nis);
+    const local = (DATA.santri || []).find((s) => normalNis(s.nis) === cari);
+    if (!local) return { data: null, riwayat: [], sumber: "lokal" };
+    // data.js hanya menyimpan identitas santri, belum ada catatan pertemuan.
+    return { data: local, riwayat: [local], sumber: "lokal" };
+  }
+
+  async function cariSantri(nis, jenis) {
     const reader = await getFirestoreReader();
     if (reader) {
       const data = await reader(nis);
-      if (data) return { data, sumber: "firebase" };
-      return { data: null, sumber: "firebase" };
+      return { data, riwayat: data ? [data] : [], sumber: "firebase" };
     }
-    const local = (DATA.santri || []).find((s) => String(s.nis) === String(nis));
-    return { data: local || null, sumber: "lokal" };
+
+    if (window.SUMBER && window.SUMBER.aktif()) {
+      try {
+        return await window.SUMBER.ambil(nis, jenis);
+      } catch (err) {
+        // Sheets belum dibagikan / offline: situs tetap jalan dengan data contoh.
+        console.warn("Google Sheets gagal dimuat, memakai data contoh:", err);
+      }
+    }
+
+    return cariLokal(nis);
+  }
+
+  function kelasStatus(status) {
+    const s = String(status || "").toLowerCase();
+    if (s === "hadir") return "bg-emerald-100 text-emerald-700";
+    if (s === "izin") return "bg-sky-100 text-sky-700";
+    if (s === "sakit") return "bg-amber-100 text-amber-700";
+    if (s === "alfa" || s === "alpa" || s === "alpha") return "bg-rose-100 text-rose-700";
+    return "bg-brand-100 text-brand-600";
+  }
+
+  function renderRiwayat(el, list, jenis) {
+    if (!el) return;
+    const rows = (list || []).slice(0, 5);
+    if (rows.length < 2) {
+      el.innerHTML = "";
+      el.classList.add("hidden");
+      return;
+    }
+
+    const isi = rows
+      .map((r) => {
+        const tanggal = `<span class="shrink-0 text-brand-500">${esc(tanggalPanjang(r.tanggal))}</span>`;
+        if (jenis === "progres") {
+          return `<li class="rounded-lg bg-brand-50/70 px-3 py-2">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-xs">
+              ${tanggal}
+              <span class="font-semibold text-brand-800">${esc(r.bacaan || "-")}</span>
+            </div>
+            ${r.catatan ? `<p class="mt-1 text-[11px] text-brand-500">${esc(r.catatan)}</p>` : ""}
+          </li>`;
+        }
+        return `<li class="flex items-center justify-between gap-3 rounded-lg bg-brand-50/70 px-3 py-2 text-xs">
+          ${tanggal}
+          <span class="rounded px-2 py-0.5 text-[11px] font-bold uppercase ${kelasStatus(r.status)}">${esc(r.status || "-")}</span>
+        </li>`;
+      })
+      .join("");
+
+    el.innerHTML = `
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Riwayat 5 pertemuan terakhir</p>
+      <ul class="mt-2 space-y-1.5">${isi}</ul>`;
+    el.classList.remove("hidden");
+  }
+
+  /** Ringkasan kehadiran bulan terakhir yang tercatat. */
+  function renderRekap(el, riwayat) {
+    if (!el) return;
+    const list = riwayat || [];
+    const terakhir = list[0];
+    if (!terakhir || !terakhir.tanggal) {
+      el.innerHTML = "";
+      el.classList.add("hidden");
+      return;
+    }
+
+    const bulan = terakhir.tanggal.slice(0, 7);
+    const sebulan = list.filter((r) => String(r.tanggal || "").slice(0, 7) === bulan);
+    const hitung = { Hadir: 0, Izin: 0, Sakit: 0, Alfa: 0 };
+    sebulan.forEach((r) => {
+      const k = String(r.status || "").toLowerCase();
+      if (k === "hadir") hitung.Hadir++;
+      else if (k === "izin") hitung.Izin++;
+      else if (k === "sakit") hitung.Sakit++;
+      else if (k === "alfa" || k === "alpa" || k === "alpha") hitung.Alfa++;
+    });
+
+    const label = new Date(+bulan.slice(0, 4), +bulan.slice(5, 7) - 1, 1).toLocaleDateString("id-ID", {
+      month: "long",
+      year: "numeric",
+    });
+    const kotak = [
+      ["Hadir", "bg-emerald-50", "text-emerald-700", "text-emerald-600"],
+      ["Izin", "bg-sky-50", "text-sky-700", "text-sky-600"],
+      ["Sakit", "bg-amber-50", "text-amber-700", "text-amber-600"],
+      ["Alfa", "bg-rose-50", "text-rose-700", "text-rose-600"],
+    ]
+      .map(
+        ([nama, bg, kuat, lembut]) => `<div class="rounded-lg ${bg} px-2 py-2 text-center">
+          <p class="text-lg font-bold leading-tight ${kuat}">${hitung[nama]}</p>
+          <p class="text-[10px] font-semibold uppercase tracking-wide ${lembut}">${nama}</p>
+        </div>`
+      )
+      .join("");
+
+    el.innerHTML = `
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Rekap ${esc(label)}</p>
+      <div class="mt-2 grid grid-cols-4 gap-2">${kotak}</div>
+      <p class="mt-2 text-[11px] text-brand-500">Dari ${sebulan.length} pertemuan tercatat.</p>`;
+    el.classList.remove("hidden");
+  }
+
+  function aturCatatan(el, res) {
+    if (!el) return;
+    if (res.sumber === "sheets") {
+      el.innerHTML =
+        `<i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Sumber: Google Sheets` +
+        (res.diperbarui ? ` · diperbarui ${esc(tanggalPanjang(res.diperbarui))}` : "");
+      el.classList.remove("hidden");
+    } else if (res.sumber === "lokal") {
+      el.innerHTML = res.data && res.data.tanggal
+        ? `<i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Data di atas berasal dari arsip lokal situs.`
+        : `<i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Catatan pertemuan belum tersambung. Yang tampil baru identitas santri.`;
+      el.classList.remove("hidden");
+    } else {
+      el.classList.add("hidden");
+    }
   }
 
   function bindLookup(formId, jenis) {
@@ -432,7 +580,19 @@
     const loading = $(jenis === "absensi" ? "#loading-absensi" : "#loading-progres");
     const result = $(jenis === "absensi" ? "#result-absensi" : "#result-progres");
     const notfound = $(jenis === "absensi" ? "#notfound-absensi" : "#notfound-progres");
-    const isDemo = !(SITE.firebase && SITE.firebase.enabled);
+    const riwayatEl = $(jenis === "absensi" ? "#riwayat-absensi" : "#riwayat-progres");
+    const rekapEl = jenis === "absensi" ? $("#rekap-absensi") : null;
+    const note = $(jenis === "absensi" ? "#note-absensi" : "#note-progres");
+    const hint = $(jenis === "absensi" ? "#hint-absensi" : "#hint-progres");
+    const nfText = notfound.querySelector("p");
+    const nfPesanAsli = nfText.textContent;
+
+    if (hint) {
+      hint.textContent =
+        window.SUMBER && window.SUMBER.aktif()
+          ? "Masukkan NIS yang terdaftar. Data diperbarui oleh pengajar."
+          : "Masukkan NIS santri, contoh: 01.";
+    }
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -441,14 +601,17 @@
       loading.classList.remove("hidden");
       result.classList.add("hidden");
       notfound.classList.add("hidden");
+      if (riwayatEl) riwayatEl.classList.add("hidden");
+      if (rekapEl) rekapEl.classList.add("hidden");
+      nfText.textContent = nfPesanAsli;
 
       let res;
       try {
-        res = await cariSantri(nis);
+        res = await cariSantri(nis, jenis);
       } catch (err) {
         console.error(err);
         res = { data: null };
-        notfound.querySelector("p").textContent = "Terjadi kesalahan saat mengambil data. Coba lagi.";
+        nfText.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi.";
       }
 
       loading.classList.add("hidden");
@@ -458,34 +621,30 @@
       }
 
       const d = res.data;
+      const belumAda = !d.tanggal;
       if (jenis === "absensi") {
         $("#res-nama-absensi").textContent = d.nama || "-";
         $("#res-nis-absensi").textContent = d.nis || nis;
         $("#res-kelas-absensi").textContent = d.kelas || "-";
-        $("#date-absensi").textContent = tanggalPanjang(d.tanggal);
+        $("#date-absensi").textContent = belumAda ? "Belum ada catatan" : tanggalPanjang(d.tanggal);
         const badge = $("#res-status-absensi");
-        const status = String(d.status || "-");
-        badge.textContent = status;
-        badge.className =
-          "rounded-lg px-4 py-1 text-sm font-black uppercase " +
-          (status.toLowerCase() === "hadir"
-            ? "bg-emerald-100 text-emerald-700"
-            : status.toLowerCase() === "izin"
-            ? "bg-sky-100 text-sky-700"
-            : status.toLowerCase() === "sakit"
-            ? "bg-amber-100 text-amber-700"
-            : "bg-rose-100 text-rose-700");
+        badge.textContent = d.status || "Belum ada catatan";
+        badge.className = "rounded-lg px-4 py-1 text-sm font-black uppercase " + kelasStatus(d.status);
       } else {
-        $("#date-progres").textContent = "Update: " + tanggalPanjang(d.tanggal);
+        $("#date-progres").textContent = belumAda ? "Belum ada catatan" : "Update: " + tanggalPanjang(d.tanggal);
         $("#res-nama-progres").textContent = d.nama || "-";
         $("#res-nis-progres").textContent = "NIS " + (d.nis || nis);
-        $("#res-bacaan-progres").textContent = d.bacaan || "-";
-        $("#res-hafalan-progres").textContent = d.hafalan || "-";
-        $("#res-catatan-progres").textContent = d.catatan ? `“${d.catatan}”` : "-";
+        $("#res-bacaan-progres").textContent = d.bacaan || (belumAda ? "Belum ada catatan" : "-");
+        $("#res-catatan-progres").textContent = d.catatan
+          ? `“${d.catatan}”`
+          : belumAda
+          ? "Belum ada catatan dari pengajar."
+          : "-";
       }
 
-      const note = $(jenis === "absensi" ? "#note-absensi" : "#note-progres");
-      if (note) note.classList.toggle("hidden", !isDemo || res.sumber === "firebase");
+      aturCatatan(note, res);
+      renderRekap(rekapEl, res.riwayat);
+      renderRiwayat(riwayatEl, res.riwayat, jenis);
       result.classList.remove("hidden");
       result.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });

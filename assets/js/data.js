@@ -27,10 +27,8 @@ window.DATA = {
      Jadwal sementara di bawah ini dapat diubah kapan saja.
   -------------------------------------------------------------------- */
   jadwal: [
-    { hari: "Senin – Kamis", waktu: "15.30 – 17.00", kegiatan: "Belajar Iqra, Al-Qur'an, dan setoran hafalan", kelas: "Semua kelas" },
-    { hari: "Jumat", waktu: "—", kegiatan: "Libur", kelas: "—" },
-    { hari: "Sabtu", waktu: "08.00 – 10.00", kegiatan: "Muroja'ah hafalan & pembinaan adab", kelas: "Semua kelas" },
-    { hari: "Ahad", waktu: "—", kegiatan: "Libur", kelas: "—" },
+    { hari: "Senin – Rabu", waktu: "Maghrib – Isya", kegiatan: "Belajar Iqra & Al-Qur'an (wajib)", kelas: "Semua kelas" },
+    { hari: "Kamis – Ahad", waktu: "—", kegiatan: "Libur", kelas: "—" },
   ],
 
   /* --- Materi unduhan --------------------------------------------------
@@ -84,40 +82,28 @@ window.DATA = {
   -------------------------------------------------------------------- */
   galeri: [],
 
-  /* --- Data santri (contoh) --------------------------------------------
-     Dipakai halaman Absensi & Progres selama Firebase belum aktif.
-     Ganti/hapus data contoh ini sebelum situs dipublikasikan luas.
+  /* --- Data santri ------------------------------------------------------
+     Cadangan bila Google Sheets / Firebase belum aktif atau gagal dimuat.
+     Sumber utama diatur di site.config.js → sumber.
+
+     NIS memakai nomor urut 01–15. Data absensi & progres sengaja dikosongkan
+     karena akan diisi lewat spreadsheet (tab Absensi & Progres).
   -------------------------------------------------------------------- */
   santri: [
-    {
-      nis: "101",
-      nama: "Ahmad Fauzi",
-      kelas: "Iqra 3",
-      status: "Hadir",
-      tanggal: "2026-11-19",
-      bacaan: "Iqra 3 halaman 12",
-      hafalan: "An-Nas s.d. Al-'Adiyat",
-      catatan: "Bacaan sudah lancar, panjang pendek perlu diperhatikan.",
-    },
-    {
-      nis: "102",
-      nama: "Aisyah Putri",
-      kelas: "Tahfidz",
-      status: "Izin",
-      tanggal: "2026-11-19",
-      bacaan: "Al-Qur'an juz 30",
-      hafalan: "An-Naba' s.d. Al-Infitar",
-      catatan: "Izin karena kegiatan sekolah. Lanjutkan muroja'ah di rumah.",
-    },
-    {
-      nis: "103",
-      nama: "Budi Santoso",
-      kelas: "Iqra 1",
-      status: "Sakit",
-      tanggal: "2026-11-19",
-      bacaan: "Iqra 1 halaman 8",
-      hafalan: "Al-Fatihah",
-      catatan: "Sakit. Mohon istirahat dan menyusul setoran berikutnya.",
-    },
+    { nis: "01", nama: "Galih", kelas: "" },
+    { nis: "02", nama: "Azam", kelas: "" },
+    { nis: "03", nama: "Amar", kelas: "" },
+    { nis: "04", nama: "Adam", kelas: "" },
+    { nis: "05", nama: "Gilang", kelas: "" },
+    { nis: "06", nama: "Fauzan", kelas: "" },
+    { nis: "07", nama: "Tole", kelas: "" },
+    { nis: "08", nama: "Fatih", kelas: "" },
+    { nis: "09", nama: "Rafael", kelas: "" },
+    { nis: "10", nama: "Asaka", kelas: "" },
+    { nis: "11", nama: "Aca", kelas: "" },
+    { nis: "12", nama: "Aisyah", kelas: "" },
+    { nis: "13", nama: "Alya", kelas: "" },
+    { nis: "14", nama: "Alma", kelas: "" },
+    { nis: "15", nama: "Soraya", kelas: "" },
   ],
 };

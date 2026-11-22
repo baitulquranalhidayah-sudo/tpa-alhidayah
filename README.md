@@ -18,6 +18,7 @@ tpa-alhidayah/
 │  ├─ css/style.css           ← hasil build Tailwind (jangan diedit manual)
 │  ├─ js/site.config.js       ← DATA KONTAK & IDENTITAS  ← paling sering diedit
 │  ├─ js/data.js              ← pengajar, jadwal, materi, berita, galeri, santri
+│  ├─ js/sumber.js            ← pengambil data absensi/progres (Sheets/Firebase)
 │  ├─ js/app.js               ← logika navigasi & formulir
 │  ├─ img/                    ← logo, favicon, og-image
 │  └─ dokumen/                ← berkas unduhan (buku prestasi)
@@ -36,8 +37,9 @@ Buka `assets/js/site.config.js`, ubah bagian berikut:
 
 | Variabel | Keterangan |
 |---|---|
-| `wa.tampil` | nomor yang tampil di layar, contoh `0831-5314-5931` |
+| `wa.tampil` | nomor admin utama yang tampil di tombol & formulir |
 | `wa.internasional` | untuk tautan WhatsApp, contoh `6283153145931` |
+| `admin` | daftar admin (nama + nomor) yang tampil di halaman Kontak |
 | `grupWa` | tautan grup WhatsApp wali santri; kosongkan bila tidak dipakai |
 | `youtube` | tautan channel YouTube |
 | `youtubeChannelId` | ID channel (`UC…`) untuk keperluan embed |
@@ -45,8 +47,7 @@ Buka `assets/js/site.config.js`, ubah bagian berikut:
 | `youtubeThumb` | ID video untuk gambar sampul pemutar |
 | `youtubeEmbed` | `true` bila video boleh diputar di dalam situs (lihat catatan di bawah) |
 | `alamat.mapsUrl` | tempel tautan *Share* pin lokasi dari Google Maps |
-| `jamLayanan` | jam operasional |
-| `youtube` | tautan channel, contoh `https://youtube.com/@namaChannel` |
+| `jamLayanan` | jam layanan, saat ini Senin–Rabu · ba'da Maghrib s.d. Isya |
 
 Setelah disimpan, cukup refresh browser.
 
@@ -158,40 +159,117 @@ Ini membuat gambar pratinjau muncul saat tautan dibagikan di WhatsApp/Facebook.
 
 ## 5. Data absensi & progres
 
-Saat ini halaman **Absensi** dan **Progres** memakai data contoh di
-`assets/js/data.js` (NIS 101–103) dengan keterangan "data contoh" pada hasil.
+Halaman **Absensi** dan **Progres** mengambil data dari salah satu sumber berikut
+(diatur di `site.config.js` → `sumber.mode`):
 
-### Mengaktifkan Firebase (opsional)
+| Mode | Keterangan |
+|---|---|
+| `"lokal"` | Data identitas di `assets/js/data.js` (15 santri, NIS 01–15). Tanpa internet, tanpa setup. |
+| `"sheets"` | **Google Sheets** — dipakai sekarang untuk pendataan harian. |
+| `"firebase"` | Firestore. Aktifkan blok `firebase` (lihat bagian b). |
+
+Bila sumber yang dipilih gagal dimuat (offline, sheet belum dibagikan), situs
+otomatis kembali ke data identitas di `data.js` dan menampilkan keterangan kecil
+di bawah hasil.
+
+### a. Google Sheets (pendataan sementara, tanpa server)
+
+**Struktur spreadsheet — 3 tab** (nama tab harus sama dengan `site.config.js`):
+
+**Tab `Santri`** — data induk, diisi sekali:
+
+| nis | nama | jenis kelamin | kelas | aktif |
+|---|---|---|---|---|
+| 01 | Galih | Laki-laki | | Ya |
+
+**Tab `Kehadiran`** — daftar 15 santri, satu set baris per pertemuan
+(Senin–Rabu, Maghrib–Isya):
+
+| nis | nama | jenis kelamin | kelas | tanggal | kehadiran |
+|---|---|---|---|---|---|
+| 01 | Galih | Laki-laki | | 2026-11-02 | Hadir |
+| 02 | Azam | Laki-laki | | 2026-11-02 | Sakit |
+| … | … | … | | … | … |
+| 15 | Soraya | Perempuan | | 2026-11-02 | Alpa |
+
+- `kehadiran` berisi dropdown **Hadir / Sakit / Izin / Alpa**
+  (H/I/S/A juga dikenal). Alpa = tanpa kabar.
+- Isi `tanggal` dengan format `YYYY-MM-DD`, mis. `2026-11-02`.
+- Untuk pertemuan berikutnya: salin 15 baris ke bawah, ganti tanggalnya,
+  lalu pilih status baru.
+- Baris tanpa tanggal atau tanpa status diabaikan (belum dicatat, bukan Alpa).
+- Nama, jenis kelamin, dan kelas di tab ini hanya memudahkan pengisian —
+  identitas yang tampil di situs tetap diambil dari tab `Santri`.
+- Template sudah berisi 15 baris siap pakai dengan dropdown dan pewarnaan.
+
+**Tab `Progres`** — daftar 15 santri, satu baris setiap pertemuan:
+
+| nis | nama | tanggal | bacaan | catatan |
+|---|---|---|---|---|
+| 01 | Galih | 2026-11-02 | Iqra 3 hlm. 12 | Lancar, makhraj perlu diperbaiki |
+| 02 | Azam | 2026-11-02 | Iqra 1 hlm. 4 | Masih belajar makhraj |
+
+- Kolom `nama` sudah diisi di template untuk memudahkan pengisian; situs
+  tetap mengambil nama dari tab `Santri`.
+- `tanggal` sebaiknya diformat `YYYY-MM-DD`. Format `DD/MM/YYYY` juga diterima.
+- NIS boleh ditulis `01` atau `1` — situs menganggapnya sama.
+- Nama dan kelas cukup diisi di tab `Santri`; tab lain hanya perlu NIS.
+- Situs menampilkan data **terbaru** per NIS, **5 riwayat terakhir**, dan
+  **rekap kehadiran bulan berjalan** (Hadir/Izin/Sakit/Alpa). Santri yang belum
+  punya catatan tetap tampil dengan keterangan "Belum ada catatan", bukan
+  "data tidak ditemukan".
+- Template siap pakai: `assets/dokumen/Template Pendataan Santri.xlsx`
+  (sudah berisi 15 santri di tab `Santri`, `Kehadiran`, dan `Progres`; unggah
+  ke Google Drive → buka dengan Google Sheets → *Save as Google Sheets*).
+
+**Langkah mengaktifkan:**
+
+1. Buat spreadsheet dengan 3 tab di atas (atau unggah template).
+2. **Share** → *General access* → **Anyone with the link** → **Viewer**.
+3. Salin ID dari URL:
+   `https://docs.google.com/spreadsheets/d/`**`ID_PANJANG_INI`**`/edit`
+4. Buka `assets/js/site.config.js`, isi:
+   ```js
+   sumber: {
+     mode: "sheets",
+     sheets: { id: "ID_PANJANG_INI", tab: { santri: "Santri", absensi: "Kehadiran", progres: "Progres" }, cacheMenit: 5 },
+   },
+   ```
+5. Simpan, refresh situs. Perubahan di spreadsheet otomatis terbaca
+   (paling lambat 5 menit karena cache; isi `cacheMenit: 0` untuk selalu baru).
+
+> **Privasi.** Spreadsheet yang dibagikan "Anyone with the link" dapat dibaca
+> siapa pun yang memiliki tautannya. Karena itu isi hanya NIS, nama, jenis
+> kelamin, kelas, status, dan capaian. **Jangan** menaruh alamat, nomor HP wali,
+> atau tanggal lahir di spreadsheet ini.
+
+### b. Firebase (nanti, setelah siap)
+
+Struktur data dibuat sama dengan tab di atas, sehingga pindah sumber tidak
+mengubah tampilan:
+
 1. Buka <https://console.firebase.google.com> → **Add project**.
 2. **Build → Firestore Database → Create database** (mode *production*).
 3. **Project settings → Your apps → Web app** → salin `firebaseConfig`.
-4. Tempel ke `assets/js/site.config.js`, ubah `enabled: false` menjadi `true`.
-5. Atur *Rules* Firestore:
+4. Tempel ke `assets/js/site.config.js`, ubah `enabled: false` menjadi `true`,
+   lalu ubah `sumber.mode` menjadi `"firebase"`.
+5. Atur *Rules* Firestore (hanya baca):
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /santri/{nis} {
-      allow read: if true;
+    match /{koleksi}/{dokumen} {
+      allow read: if koleksi in ["santri", "kehadiran", "progres"];
       allow write: if false;
     }
   }
 }
 ```
 
-6. Tambah dokumen pada koleksi `santri`, dengan **ID dokumen = NIS**:
-
-| Field | Contoh |
-|---|---|
-| `nama` | Ahmad Fauzi |
-| `nis` | 101 |
-| `kelas` | Iqra 3 |
-| `status` | Hadir / Izin / Sakit / Alfa |
-| `tanggal` | 2026-11-19 |
-| `bacaan` | Iqra 3 halaman 12 |
-| `hafalan` | An-Nas s.d. Al-'Adiyat |
-| `catatan` | Bacaan sudah lancar… |
+6. Buat koleksi `santri` (ID dokumen = NIS, field `nama`, `kelas`), koleksi
+   `kehadiran` (field `nis`, `tanggal`, `status`) dan `progres` (field `nis`,
+   `tanggal`, `bacaan`, `catatan`).
 
 > Jangan menyimpan alamat, nomor HP, atau tanggal lahir di koleksi ini karena
 > dapat dibaca publik. Cukup nama, kelas, status, dan capaian.
@@ -200,10 +278,11 @@ service cloud.firestore {
 
 ## 6. Yang masih perlu dilengkapi
 
+- [x] Isi `sumber.sheets.id` dengan ID spreadsheet pendataan santri
+- [ ] Isi baris kehadiran & progres di spreadsheet (template masih kosong)
 - [ ] Tautan channel YouTube (`site.config.js` → `youtube`)
 - [ ] Tautan pin Google Maps (`site.config.js` → `alamat.mapsUrl`)
 - [ ] Foto kegiatan (`assets/img/galeri/` + `data.js` → `galeri`)
-- [ ] Jadwal final (`data.js` → `jadwal`) — saat ini jadwal sementara
 - [ ] Foto pengajar (`data.js` → `pengajar[].foto`)
 - [ ] Berita tambahan (`data.js` → `berita`)
 - [ ] Alamat surel, Instagram, Facebook (opsional)
