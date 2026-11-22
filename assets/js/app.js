@@ -297,7 +297,7 @@
       .map(
         ([label, nilai]) => `<div class="rounded-lg bg-brand-50/70 px-3 py-2">
           <p class="text-[10px] font-semibold uppercase tracking-wider text-brand-400">${esc(label)}</p>
-          <p class="mt-0.5 text-sm font-medium text-brand-800">${esc(nilai)}</p>
+          <p class="mt-0.5 whitespace-pre-line text-sm font-medium text-brand-800">${esc(nilai)}</p>
         </div>`
       )
       .join("");
