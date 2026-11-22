@@ -34,13 +34,18 @@ jobs:
         run: npm run build:css
 
       - name: Bersihkan berkas pengembangan
-        run: rm -rf node_modules src tools
+        run: rm -rf node_modules src tools .git
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
           path: "."
+
+      # deploy-pages mencari artifact lewat API. Beri waktu agar indeksnya
+      # siap; tanpa jeda ini kadang "No artifacts named github-pages found".
+      - name: Tunggu indeks artifact
+        run: sleep 15
 
       - id: deployment
         uses: actions/deploy-pages@v4
