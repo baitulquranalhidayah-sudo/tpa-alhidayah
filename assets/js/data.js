@@ -75,6 +75,18 @@ window.DATA = {
   -------------------------------------------------------------------- */
   berita: [
     {
+      tanggal: "2026-11-22",
+      kategori: "Pengumuman",
+      judul: "Peluncuran Perdana Website Baitul Qur'an Al-Hidayah",
+      ringkas:
+        "Malam ini website resmi Baitul Qur'an Al-Hidayah diluncurkan. Ini adalah versi pertama (beta) dan masih terus kami sempurnakan.",
+      isi:
+        "Dengan mengucap Bismillah, malam ini kami meluncurkan website resmi Baitul Qur'an Al-Hidayah.\n\n" +
+        "Website ini masih dalam tahap beta. Beberapa fitur, tampilan, dan data masih kami rapikan dari waktu ke waktu.\n\n" +
+        "Kami mohon doa, dukungan, dan masukan dari wali santri serta sahabat sekalian. Silakan gunakan menu Tanya Admin untuk menyampaikan saran atau laporan.\n\n" +
+        "Terima kasih atas kepercayaan dan dukungannya.",
+    },
+    {
       tanggal: "2026-11-19",
       kategori: "Pengumuman",
       judul: "Pendaftaran Santri Baru Dibuka",
