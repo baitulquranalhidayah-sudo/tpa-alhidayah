@@ -253,18 +253,17 @@
     }
     wrap.innerHTML = list
       .map(
-        (p) => `
+        (p, i) => `
       <article class="card overflow-hidden text-center transition hover:-translate-y-1 hover:shadow-soft">
-        <div class="relative h-44 bg-gradient-to-br from-brand-800 to-brand-600">
+        <button type="button" data-pengajar="${i}" aria-label="Lihat biodata ${esc(p.nama)}" class="group relative block h-44 w-full bg-gradient-to-br from-brand-800 to-brand-600">
           <div class="pattern-dots absolute inset-0 opacity-60"></div>
           ${
             p.foto
-              ? `<img src="${esc(p.foto)}" alt="Foto ${esc(p.nama)}" class="h-full w-full object-cover object-top" loading="lazy">`
-              : `<div class="flex h-full items-center justify-center">
-                   <span class="flex h-20 w-20 items-center justify-center rounded-full border border-gold-400/50 bg-brand-900/40 font-display text-2xl text-gold-300">${esc(p.inisial || "")}</span>
-                 </div>`
+              ? `<img src="${esc(p.foto)}" alt="Foto ${esc(p.nama)}" class="absolute inset-0 h-full w-full object-cover object-top" loading="lazy">`
+              : `<span class="absolute inset-0 flex items-center justify-center font-display text-5xl text-gold-300/80">${esc(p.inisial || "")}</span>`
           }
-        </div>
+          <span class="absolute inset-x-0 bottom-0 bg-brand-950/70 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-white opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100"><i class="fa-solid fa-expand mr-1"></i>Lihat biodata</span>
+        </button>
         <div class="p-6">
           <h3 class="font-display text-xl font-semibold text-brand-900">${esc(p.nama)}</h3>
           <p class="mt-1 text-sm font-medium text-gold-700">${esc(p.peran || "Pengajar")}</p>
@@ -273,6 +272,50 @@
       </article>`
       )
       .join("");
+
+    wrap.querySelectorAll("[data-pengajar]").forEach((btn) => {
+      btn.addEventListener("click", () => bukaBiodata(Number(btn.dataset.pengajar)));
+    });
+  }
+
+  /** Modal foto + biodata pengajar. */
+  function bukaBiodata(i) {
+    const p = (DATA.pengajar || [])[i];
+    if (!p) return;
+
+    const foto = p.foto
+      ? `<img src="${esc(p.foto)}" alt="Foto ${esc(p.nama)}" class="mx-auto max-h-[42vh] w-auto rounded-xl object-contain">`
+      : `<div class="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-brand-800 font-display text-3xl text-gold-300">${esc(p.inisial || "")}</div>`;
+
+    const rincian = [
+      ["Peran", p.peran],
+      ["Bidang", p.bidang],
+      ["Pendidikan", p.pendidikan],
+      ["Pengalaman", p.pengalaman],
+    ]
+      .filter(([, v]) => v && String(v).trim())
+      .map(
+        ([label, nilai]) => `<div class="rounded-lg bg-brand-50/70 px-3 py-2">
+          <p class="text-[10px] font-semibold uppercase tracking-wider text-brand-400">${esc(label)}</p>
+          <p class="mt-0.5 text-sm font-medium text-brand-800">${esc(nilai)}</p>
+        </div>`
+      )
+      .join("");
+
+    const bio = p.bio
+      ? `<div class="mt-5 border-t border-brand-100 pt-4">
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Biodata</p>
+          <p class="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-brand-600">${esc(p.bio)}</p>
+        </div>`
+      : `<p class="mt-5 border-t border-brand-100 pt-4 text-xs italic text-brand-400">Biodata lengkap belum tersedia.</p>`;
+
+    openModal(
+      p.nama,
+      `<div class="text-center">${foto}</div>
+       <div class="mt-5 grid gap-2 sm:grid-cols-2">${rincian}</div>
+       ${bio}`,
+      true
+    );
   }
 
   function renderJadwal() {
@@ -768,6 +811,9 @@
       if (e.target.id === "modal") closeModal();
     });
     $("#modal-close")?.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
 
     $("#tahun-footer").textContent = new Date().getFullYear();
     bindRouter();

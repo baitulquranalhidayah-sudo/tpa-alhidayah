@@ -5,6 +5,8 @@
 window.DATA = {
   /* --- Pengajar --------------------------------------------------------
      Tambah/hapus kartu sesuai kebutuhan. `inisial` dipakai jika foto kosong.
+     Klik foto kartu untuk membuka biodata. Isi `bio`, `pendidikan`, dan
+     `pengalaman` bila tersedia — kosongkan bila belum ada informasi.
   -------------------------------------------------------------------- */
   pengajar: [
     {
@@ -13,6 +15,9 @@ window.DATA = {
       bidang: "Bimbingan membaca Al-Qur'an",
       foto: "assets/img/nur-hidayat.webp",
       inisial: "NH",
+      pendidikan: "",
+      pengalaman: "",
+      bio: "",
     },
     {
       nama: "Fatimah",
@@ -20,6 +25,9 @@ window.DATA = {
       bidang: "Bimbingan Iqra & hafalan",
       foto: "",
       inisial: "F",
+      pendidikan: "",
+      pengalaman: "",
+      bio: "",
     },
   ],
 

@@ -62,9 +62,22 @@ Semua ada di `assets/js/data.js`. Contoh menambah pengajar:
 
 ```js
 pengajar: [
-  { nama: "Nur Hidayat", peran: "Pengajar", bidang: "Al-Qur'an", foto: "", inisial: "NH" },
+  {
+    nama: "Nur Hidayat",
+    peran: "Pengajar",
+    bidang: "Bimbingan membaca Al-Qur'an",
+    foto: "assets/img/nur-hidayat.webp",
+    inisial: "NH",
+    pendidikan: "",   // opsional
+    pengalaman: "",   // opsional
+    bio: "",          // opsional, tampil di modal saat foto diklik
+  },
 ],
 ```
+
+Klik foto pengajar untuk membuka modal berisi foto besar, peran, bidang,
+pendidikan, pengalaman, dan biodata. Field yang kosong tidak ditampilkan;
+bila `bio` kosong, modal menuliskan "Biodata lengkap belum tersedia".
 
 Menambah foto galeri:
 
