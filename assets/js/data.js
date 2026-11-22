@@ -11,7 +11,7 @@ window.DATA = {
       nama: "Nur Hidayat",
       peran: "Pengajar",
       bidang: "Bimbingan membaca Al-Qur'an",
-      foto: "", // contoh: "assets/img/pengajar/nur-hidayat.jpg"
+      foto: "assets/img/nur-hidayat.webp",
       inisial: "NH",
     },
     {

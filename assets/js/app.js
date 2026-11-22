@@ -259,7 +259,7 @@
           <div class="pattern-dots absolute inset-0 opacity-60"></div>
           ${
             p.foto
-              ? `<img src="${esc(p.foto)}" alt="Foto ${esc(p.nama)}" class="h-full w-full object-cover" loading="lazy">`
+              ? `<img src="${esc(p.foto)}" alt="Foto ${esc(p.nama)}" class="h-full w-full object-cover object-top" loading="lazy">`
               : `<div class="flex h-full items-center justify-center">
                    <span class="flex h-20 w-20 items-center justify-center rounded-full border border-gold-400/50 bg-brand-900/40 font-display text-2xl text-gold-300">${esc(p.inisial || "")}</span>
                  </div>`

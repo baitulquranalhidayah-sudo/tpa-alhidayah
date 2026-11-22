@@ -279,14 +279,15 @@ service cloud.firestore {
 ## 6. Yang masih perlu dilengkapi
 
 - [x] Isi `sumber.sheets.id` dengan ID spreadsheet pendataan santri
+- [x] Tautan channel YouTube (`site.config.js` → `youtube`)
+- [x] Tautan pin Google Maps (`site.config.js` → `alamat.mapsUrl`)
+- [x] `canonical` dan `og:image` sudah memakai domain GitHub Pages
+- [x] Foto Nur Hidayat (`assets/img/nur-hidayat.webp`)
 - [ ] Isi baris kehadiran & progres di spreadsheet (template masih kosong)
-- [ ] Tautan channel YouTube (`site.config.js` → `youtube`)
-- [ ] Tautan pin Google Maps (`site.config.js` → `alamat.mapsUrl`)
+- [ ] Foto Fatimah (`data.js` → `pengajar[1].foto`)
 - [ ] Foto kegiatan (`assets/img/galeri/` + `data.js` → `galeri`)
-- [ ] Foto pengajar (`data.js` → `pengajar[].foto`)
 - [ ] Berita tambahan (`data.js` → `berita`)
 - [ ] Alamat surel, Instagram, Facebook (opsional)
-- [ ] Ganti `USERNAME` pada `canonical` dan `og:image`
 
 ---
 

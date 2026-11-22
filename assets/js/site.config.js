@@ -19,9 +19,8 @@ window.SITE = {
     kabupaten: "Kab. Paser",
     provinsi: "Kalimantan Timur",
     negara: "Indonesia",
-    // Ganti dengan link "Share" pin lokasi dari Google Maps agar titiknya tepat.
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Desa+Keluang+Kecamatan+Kuaro+Kabupaten+Paser+Kalimantan+Timur",
+    // Link Share pin lokasi masjid (koordinat -1.867150, 116.121500).
+    mapsUrl: "https://maps.app.goo.gl/vEmBk4E2YX44DeTn9",
   },
 
   /* --- Kontak ---------------------------------------------------------- */
