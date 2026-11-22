@@ -394,9 +394,13 @@
     wrap.innerHTML = list
       .map(
         (b, i) => `
-      <article class="card flex flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-soft">
-        <div class="relative h-40 bg-gradient-to-br from-brand-800 via-brand-700 to-brand-500">
-          <div class="pattern-dots absolute inset-0 opacity-70"></div>
+      <article class="card group flex flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-soft">
+        <div class="relative h-40 overflow-hidden bg-gradient-to-br from-brand-800 via-brand-700 to-brand-500">
+          ${
+            b.gambar
+              ? `<img src="${esc(b.gambar)}" alt="${esc(b.judul)}" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-top transition duration-500 group-hover:scale-105">`
+              : `<div class="pattern-dots absolute inset-0 opacity-70"></div>`
+          }
           <span class="absolute left-4 top-4 rounded-full bg-gold-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-brand-900">${esc(b.kategori || "Informasi")}</span>
           <div class="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-gold-300 backdrop-blur">
             <i class="fa-regular fa-newspaper"></i>
@@ -420,7 +424,13 @@
       const btn = e.target.closest("[data-berita]");
       if (!btn) return;
       const item = list[Number(btn.dataset.berita)];
-      if (item && item.isi) openModal(item.judul, item.isi);
+      if (item && item.isi) {
+        const isi =
+          (item.gambar
+            ? `<img src="${esc(item.gambar)}" alt="${esc(item.judul)}" class="mb-4 w-full rounded-xl object-cover">`
+            : "") + esc(item.isi);
+        openModal(item.judul, isi, true);
+      }
     });
   }
 

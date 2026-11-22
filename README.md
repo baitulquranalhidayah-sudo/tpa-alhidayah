@@ -329,3 +329,7 @@ Saat ini tab `Progres` sudah berisi catatan pertama untuk Galih dan Azam
 - Ikon: Font Awesome 6 (CDN).
 - Logo aset dibuat ulang dengan `python3 tools/make-logo.py` dari berkas sumber
   di `Gambar/`.
+- Gambar berita "Pendaftaran Santri Baru Dibuka" bersumber dari **Openverse**,
+  lisensi **CC0 1.0**: *Writing in Notebook at Desk* oleh Image Catalog via
+  Flickr — https://www.flickr.com/photos/132795455@N08/18692128651
+- Gambar berita peluncuran adalah tangkapan layar website ini sendiri.

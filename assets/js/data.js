@@ -78,6 +78,7 @@ window.DATA = {
       tanggal: "2026-11-22",
       kategori: "Pengumuman",
       judul: "Peluncuran Perdana Website Baitul Qur'an Al-Hidayah",
+      gambar: "assets/img/berita/launching-website.webp",
       ringkas:
         "Malam ini website resmi Baitul Qur'an Al-Hidayah diluncurkan. Ini adalah versi pertama (beta) dan masih terus kami sempurnakan.",
       isi:
@@ -90,6 +91,7 @@ window.DATA = {
       tanggal: "2026-11-19",
       kategori: "Pengumuman",
       judul: "Pendaftaran Santri Baru Dibuka",
+      gambar: "assets/img/berita/pendaftaran-santri.webp",
       ringkas:
         "Pendaftaran santri baru Baitul Qur'an Al-Hidayah dibuka. Pendaftaran dapat dilakukan langsung melalui formulir online atau menghubungi admin.",
       isi: "",
