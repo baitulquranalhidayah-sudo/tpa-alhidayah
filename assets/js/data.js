@@ -15,7 +15,7 @@ window.DATA = {
       bidang: "Bimbingan membaca Al-Qur'an",
       foto: "assets/img/nur-hidayat.webp",
       inisial: "NH",
-      pendidikan: "Universitas Terbuka — Semester 7\nPernah menempuh pendidikan di Ponpes Almadaniyah Jaro",
+      pendidikan: "Universitas Terbuka — Ilmu Hukum, Semester 7\nPernah menempuh pendidikan di Ponpes Almadaniyah Jaro",
       pengalaman: "",
       bio: "",
     },
