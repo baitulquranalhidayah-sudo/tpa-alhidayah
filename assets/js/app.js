@@ -81,20 +81,35 @@
     $$("a[data-grup-wa]").forEach((a) => a.href = SITE.grupWa || "#");
     $$("[data-grup-wa-box]").forEach((el) => el.classList.toggle("hidden", !SITE.grupWa));
 
-    // Daftar admin di halaman Kontak.
+    // Daftar admin: dipakai di Kontak, kartu Pendaftaran, dan footer.
     const daftarAdmin =
       Array.isArray(SITE.admin) && SITE.admin.length
         ? SITE.admin
         : [{ nama: "Admin", wa: SITE.wa || {} }];
+    const infoAdmin = daftarAdmin.map((a) => {
+      const wa = a.wa || {};
+      const nomor = wa.internasional || String(wa.tampil || "").replace(/\D/g, "").replace(/^0/, "62");
+      return { nama: a.nama || "Admin", nomor, tampil: wa.tampil || nomor };
+    });
+    const tautanAdmin = (i, kelas) =>
+      `<a href="https://wa.me/${esc(infoAdmin[i].nomor)}" target="_blank" rel="noopener noreferrer" class="${kelas}">${esc(infoAdmin[i].nama)} — ${esc(infoAdmin[i].tampil)}</a>`;
+
     const adminList = $("#admin-wa-list");
     if (adminList) {
-      adminList.innerHTML = daftarAdmin
-        .map((a) => {
-          const wa = a.wa || {};
-          const nomor = wa.internasional || String(wa.tampil || "").replace(/\D/g, "").replace(/^0/, "62");
-          const tampil = wa.tampil || nomor;
-          return `<li><a href="https://wa.me/${esc(nomor)}" target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:text-white hover:underline">${esc(a.nama || "Admin")} — ${esc(tampil)}</a></li>`;
-        })
+      adminList.innerHTML = infoAdmin
+        .map((_, i) => `<li>${tautanAdmin(i, "underline-offset-4 hover:text-white hover:underline")}</li>`)
+        .join("");
+    }
+    const adminFooter = $("#footer-wa-list");
+    if (adminFooter) {
+      adminFooter.innerHTML = infoAdmin
+        .map((_, i) => `<span class="block">${tautanAdmin(i, "hover:text-white")}</span>`)
+        .join("");
+    }
+    const adminPendaftaran = $("#admin-wa-pendaftaran");
+    if (adminPendaftaran) {
+      adminPendaftaran.innerHTML = infoAdmin
+        .map((_, i) => `<div>${tautanAdmin(i, "text-brand-700 underline-offset-2 hover:text-brand-900 hover:underline")}</div>`)
         .join("");
     }
 
