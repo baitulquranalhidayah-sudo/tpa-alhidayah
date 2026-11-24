@@ -13,6 +13,8 @@
                      nis | nama | jenis kelamin | kelas | tanggal | kehadiran
      • Tab matriks : tanggal | 01 | 02 | 03 | …   (isi H/I/S/A)
                      (baris berisi nama di bawah header diabaikan otomatis)
+     • Tab live    : status | judul | link | keterangan
+                     status = "aktif" untuk siaran yang sedang berjalan
 
    Kolom "kehadiran" dibaca sebagai status. Nilai Hadir/Sakit/Izin/Alpa
    diterima apa adanya; H/I/S/A juga dikenal. Baris tanpa tanggal diabaikan.
@@ -33,6 +35,7 @@ window.SUMBER = (function () {
     santri: (sc.tab && sc.tab.santri) || "Santri",
     absensi: (sc.tab && sc.tab.absensi) || "Rekab Absen",
     progres: (sc.tab && sc.tab.progres) || "Progres",
+    live: (sc.tab && sc.tab.live) || "Live",
   };
   const CACHE_MENIT = Number(sc.cacheMenit) >= 0 ? Number(sc.cacheMenit) : 5;
 
@@ -376,6 +379,96 @@ window.SUMBER = (function () {
     return peta;
   }
 
+  /* --- Siaran langsung (vdo.ninja) ------------------------------------ */
+
+  // Hanya parameter penonton yang dibawa ke halaman. Parameter "push",
+  // "director", "password", dan sejenisnya sengaja dibuang: link itu memberi
+  // orang lain kendali atas siaran dan tidak boleh dipublikasikan.
+  const PARAM_LIVE = new Set(["view", "room"]);
+
+  /** Terima URL penonton vdo.ninja / kode room, hasilkan URL bersih. */
+  function urlVdoNinja(nilai) {
+    const s = String(nilai || "").trim();
+    if (!s) return "";
+
+    let u;
+    try {
+      if (/^https?:\/\//i.test(s)) u = new URL(s);
+      else if (/^(www\.)?vdo\.ninja\//i.test(s)) u = new URL("https://" + s);
+      else if (s.charAt(0) === "?") u = new URL("https://vdo.ninja/" + s);
+      else u = new URL("https://vdo.ninja/?view=" + encodeURIComponent(s));
+    } catch (err) {
+      return "";
+    }
+    if (!/^(www\.)?vdo\.ninja$/i.test(u.hostname)) return "";
+    u.protocol = "https:";
+
+    const param = new URLSearchParams();
+    u.searchParams.forEach((v, k) => {
+      const nama = k.toLowerCase();
+      const bersih = String(v || "").trim();
+      if (PARAM_LIVE.has(nama) && bersih) param.set(nama, bersih);
+    });
+
+    // Bentuk pendek: vdo.ninja/KODE (tanpa tanda "?").
+    if (!param.has("view")) {
+      const ruas = u.pathname.split("/").filter(Boolean);
+      if (ruas.length && /^[a-z0-9_-]{3,64}$/i.test(ruas[0])) param.set("view", ruas[0]);
+    }
+
+    const query = param.toString();
+    // Link "push"/director saja tidak menghasilkan view/room → ditolak.
+    return query ? "https://vdo.ninja/?" + query : "";
+  }
+
+  function barisLive(rows) {
+    if (!rows || rows.length < 2) return [];
+    const header = rows[0].map(kunci);
+    return rows
+      .slice(1)
+      .map((r, i) => {
+        const obj = {};
+        header.forEach((h, j) => {
+          if (h) obj[h] = String(r[j] == null ? "" : r[j]).trim();
+        });
+        return {
+          _i: i,
+          aktif: ambilKolom(obj, "aktif") || ambilKolom(obj, "status"),
+          judul: ambilKolom(obj, "judul") || ambilKolom(obj, "nama"),
+          link: ambilKolom(obj, "link") || ambilKolom(obj, "url"),
+          keterangan: ambilKolom(obj, "keterangan") || ambilKolom(obj, "catatan"),
+          tanggal: isoTanggal(parseTanggal(ambilKolom(obj, "tanggal"))),
+        };
+      })
+      .filter((r) => r.aktif || r.link || r.judul);
+  }
+
+  /** Ambil siaran aktif dari tab Live. null = tidak ada siaran. */
+  async function live(paksa) {
+    if (!aktif()) throw new Error("Sumber Google Sheets belum diaktifkan.");
+    const data = await muatTabel(TAB.live, paksa === true);
+    const siaran = barisLive(data.rows)
+      .filter((r) => !/^(tidak|no|n|0|false|nonaktif|non-aktif|mati)$/i.test(String(r.aktif || "").trim()))
+      .sort((a, b) => {
+        if (a.tanggal && b.tanggal && a.tanggal !== b.tanggal) return b.tanggal.localeCompare(a.tanggal);
+        return b._i - a._i;
+      });
+
+    for (const r of siaran) {
+      const link = urlVdoNinja(r.link);
+      if (!link) continue;
+      return {
+        judul: r.judul || "Siaran langsung",
+        link,
+        keterangan: r.keterangan || "",
+        tanggal: r.tanggal,
+        sumber: "sheets",
+        diperbarui: isoTanggal(new Date(data.waktu)),
+      };
+    }
+    return null;
+  }
+
   /* --- API publik ----------------------------------------------------- */
 
   function aktif() {
@@ -524,7 +617,9 @@ window.SUMBER = (function () {
     mode,
     ambil,
     tabelAbsensi,
+    live,
     hapusCache,
+    _urlVdoNinja: urlVdoNinja,
     _parseCsv: parseCsv,
     _parseTanggal: parseTanggal,
     _keMatriks: keMatriks,

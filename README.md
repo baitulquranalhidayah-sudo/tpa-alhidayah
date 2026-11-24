@@ -67,6 +67,11 @@ Setelah disimpan, cukup refresh browser.
 > video → **Detail** → *Tampilkan lebih banyak* → centang **Izinkan penyematan**
 > → simpan. Setelah itu ubah `youtubeEmbed` menjadi `true` di `site.config.js`.
 
+> **Siaran langsung.** Karena akun YouTube Baitul Qur'an Al-Hidayah sedang
+> mengalami kendala untuk *live streaming*, halaman **Siaran Langsung** untuk
+> sementara memakai **vdo.ninja**. Blok YouTube tetap disimpan di
+> `index.html` dalam keadaan tersembunyi (`#live-youtube`) untuk dipakai nanti.
+
 ### b. Pengajar, jadwal, materi, berita, galeri
 Semua ada di `assets/js/data.js`. Contoh menambah pengajar:
 
@@ -89,7 +94,8 @@ Klik foto pengajar untuk membuka modal berisi foto besar, peran, bidang,
 pendidikan, pengalaman, dan biodata. Field yang kosong tidak ditampilkan;
 bila `bio` kosong, modal menuliskan "Biodata lengkap belum tersedia".
 
-Menambah foto galeri:
+Galeri sengaja **dikosongkan dulu** (`galeri: []`), sehingga halaman
+menampilkan kartu "Galeri segera hadir". Nanti cukup isi array ini:
 
 ```js
 galeri: [
@@ -97,7 +103,7 @@ galeri: [
 ],
 ```
 
-Letakkan foto di `assets/img/kegiatan/`. Setelah `galeri` terisi, tampilan
+Letakkan foto di `assets/img/kegiatan/`. Setelah `galeri` terisi, kartu
 "Galeri segera hadir" otomatis berganti menjadi grid foto. Klik foto untuk
 membukanya dalam ukuran penuh. Foto sebaiknya WebP agar ukurannya ringan.
 
@@ -276,14 +282,33 @@ di bawah hasil.
   ditampilkan agar kartu tetap ringkas. **Cek Progres** menampilkan capaian
   terbaru dan 5 riwayat terakhir. Santri yang belum punya catatan tetap tampil
   dengan keterangan "Belum ada catatan", bukan "data tidak ditemukan".
+
+**Tab `Live`** — tautan siaran vdo.ninja (satu baris per rencana siaran):
+
+| status | judul | link | keterangan |
+|---|---|---|---|
+| aktif | Tasmi' Hafalan | `https://vdo.ninja/?view=ABCD1234` | Mulai 19.30 WITA |
+| nonaktif | Acara sebelumnya | `https://vdo.ninja/?view=XYZ999` | — |
+
+- Cara pakai: buat room di vdo.ninja → isi `link` dengan **tautan penonton**
+  (`?view=...`) → tulis `aktif` pada kolom `status`. Selesai siaran, ubah
+  `status` menjadi `nonaktif`. Cukup satu baris berstatus `aktif`.
+- Boleh juga menulis **kode room saja** (mis. `ABCD1234`) tanpa `https://...`;
+  situs akan membuatkan tautan penontonnya.
+- Situs mengambil tautan setiap halaman Siaran Langsung dibuka dan lewat
+  tombol **Perbarui** (tidak memakai cache 2 menit). Bila tidak ada baris
+  `aktif`, halaman menampilkan "Belum ada siaran langsung".
+- **Penting:** jangan pernah menaruh tautan `?push=`, director, atau password
+  di sheet. Tautan itu memberi orang lain kendali atas siaran. Situs otomatis
+  membuang parameter selain `view`/`room`.
 - Template siap pakai: `assets/dokumen/Template Pendataan Santri.xlsx`
   (sudah berisi 15 santri di tab `Santri`, `Rekab Absen`, dan `Progres`; unggah
   ke Google Drive → buka dengan Google Sheets → *Save as Google Sheets*).
 
 **Langkah mengaktifkan:**
 
-1. Buat spreadsheet dengan tab `Santri`, `Rekab Absen`, dan `Progres` (atau
-   unggah template yang sudah siap pakai).
+1. Buat spreadsheet dengan tab `Santri`, `Rekab Absen`, `Progres`, dan `Live`
+   (atau unggah template yang sudah siap pakai).
 2. **Share** → *General access* → **Anyone with the link** → **Viewer**.
 3. Salin ID dari URL:
    `https://docs.google.com/spreadsheets/d/`**`ID_PANJANG_INI`**`/edit`
@@ -291,7 +316,7 @@ di bawah hasil.
    ```js
    sumber: {
      mode: "sheets",
-     sheets: { id: "ID_PANJANG_INI", tab: { santri: "Santri", absensi: "Rekab Absen", progres: "Progres" }, cacheMenit: 2 },
+     sheets: { id: "ID_PANJANG_INI", tab: { santri: "Santri", absensi: "Rekab Absen", progres: "Progres", live: "Live" }, cacheMenit: 2 },
    },
    ```
 5. Simpan, refresh situs. Perubahan di spreadsheet otomatis terbaca
@@ -301,7 +326,8 @@ di bawah hasil.
 > **Privasi.** Spreadsheet yang dibagikan "Anyone with the link" dapat dibaca
 > siapa pun yang memiliki tautannya. Karena itu isi hanya NIS, nama, jenis
 > kelamin, kelas, status, dan capaian. **Jangan** menaruh alamat, nomor HP wali,
-> atau tanggal lahir di spreadsheet ini.
+> atau tanggal lahir di spreadsheet ini. Begitu pula pada tab `Live`, jangan
+> menaruh tautan `push`/director vdo.ninja.
 
 ### b. Firebase (nanti, setelah siap)
 
@@ -344,7 +370,8 @@ service cloud.firestore {
 - [x] `canonical` dan `og:image` sudah memakai domain GitHub Pages
 - [x] Foto Nur Hidayat (`assets/img/pengajar/nur-hidayat.webp`)
 - [x] Foto Fatimah (`assets/img/pengajar/fatimah.webp`)
-- [x] Foto kegiatan (`assets/img/kegiatan/` + `data.js` → `galeri`)
+- [ ] Foto kegiatan (`assets/img/kegiatan/` + `data.js` → `galeri`) — sengaja
+      dikosongkan dulu; halaman menampilkan "Galeri segera hadir"
 - [x] Aset dirapikan jadi 5 folder: `logo`, `icons`, `pengajar`, `kegiatan`, `berita`
 - [x] Berita tambahan + halaman penuh (`data.js` → `berita`, `berita/`)
 - [ ] Alamat surel, Instagram, Facebook (opsional)

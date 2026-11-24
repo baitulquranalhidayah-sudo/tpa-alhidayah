@@ -651,37 +651,80 @@
           <div class="max-w-2xl">
             <p class="text-xs font-semibold uppercase tracking-[.18em] text-gold-400">Siaran Langsung</p>
             <h1 class="mt-2 font-display text-3xl font-bold md:text-4xl">Ikuti kegiatan secara daring</h1>
-            <p class="mt-4 leading-relaxed text-brand-200">Siaran kegiatan seperti tasmi' hafalan dan acara santri dapat disaksikan melalui channel YouTube kami.</p>
+            <p class="mt-4 leading-relaxed text-brand-200">Siaran kegiatan seperti tasmi' hafalan dan acara santri dapat disaksikan secara langsung dari mana saja.</p>
           </div>
 
-          <div class="mt-10 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+          <!-- Pemberitahuan perpindahan platform siaran -->
+          <div class="mt-8 flex flex-wrap items-start gap-4 rounded-2xl border border-gold-200 bg-gold-50 px-6 py-5">
+            <span class="mt-0.5 text-lg text-gold-600"><i class="fa-solid fa-circle-info"></i></span>
+            <p class="flex-1 text-sm leading-relaxed text-brand-700">
+              Mohon maaf, siaran langsung melalui akun YouTube Baitul Qur'an Al-Hidayah sedang mengalami kendala teknis. Sebagai alternatif, untuk sementara kami menggunakan <strong class="font-semibold text-brand-900">vdo.ninja</strong>. Pemutar di bawah menampilkan siaran secara <strong class="font-semibold text-brand-900">langsung (realtime)</strong> dari ruang siaran kami.
+            </p>
+          </div>
+
+          <div id="live-vdo" class="mt-10 grid gap-6 md:grid-cols-[1.4fr_1fr]">
             <div>
-              <div id="yt-player" class="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-brand-950">
-                <button type="button" data-yt-play class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Tonton video di YouTube Baitul Qur'an Al-Hidayah">
-                  <img data-yt-thumb src="https://i.ytimg.com/vi/IvZvck9q5XY/hqdefault.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition group-hover:opacity-90" loading="lazy" referrerpolicy="no-referrer">
-                  <span class="absolute inset-0 bg-brand-950/35"></span>
-                  <span class="relative flex h-16 w-16 items-center justify-center rounded-full bg-rose-600 text-2xl shadow-xl transition group-hover:scale-105"><i class="fa-brands fa-youtube"></i></span>
-                  <span class="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-brand-950/80 px-4 py-1.5 text-xs font-semibold text-white">Tonton di YouTube</span>
-                </button>
-                <noscript>
-                  <div class="flex h-full items-center justify-center p-6 text-center text-sm text-brand-200">
-                    Aktifkan JavaScript atau <a data-youtube href="#" class="underline">buka channel di YouTube</a>.
-                  </div>
-                </noscript>
+              <div id="vdo-penonton" class="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-brand-950">
+                <div class="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+                  <i class="fa-solid fa-circle-notch fa-spin text-2xl text-gold-400"></i>
+                  <p class="text-sm text-brand-200">Memuat jadwal siaran…</p>
+                </div>
               </div>
-              <div class="mt-4 flex flex-wrap gap-3">
-                <a data-youtube href="#" target="_blank" rel="noopener" class="btn-gold"><i class="fa-brands fa-youtube"></i> Tonton di YouTube</a>
-                <a data-youtube-live href="#" target="_blank" rel="noopener" class="btn-outline-light"><i class="fa-solid fa-tower-broadcast"></i> Siaran Langsung</a>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <span id="vdo-badge" class="hidden flex items-center gap-2 rounded-full bg-rose-600 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-white"></span> LIVE · realtime vdo.ninja
+                </span>
+                <a id="vdo-buka" href="#" target="_blank" rel="noopener" class="btn-gold hidden"><i class="fa-solid fa-up-right-from-square"></i> Buka di vdo.ninja</a>
+                <button id="vdo-refresh" type="button" class="btn-outline-light"><i class="fa-solid fa-rotate"></i> Perbarui</button>
+              </div>
+              <div id="vdo-info" class="mt-4 hidden rounded-xl border border-white/10 bg-white/5 p-4">
+                <p id="vdo-judul" class="font-semibold text-gold-300"></p>
+                <p id="vdo-keterangan" class="mt-1 text-sm text-brand-200"></p>
               </div>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <h3 class="font-semibold text-gold-300">Video terbaru</h3>
-              <p class="mt-2 text-sm leading-relaxed text-brand-200">Pemutar menampilkan video terbaru dari channel kami. Tekan tombol putar untuk menonton di YouTube.</p>
-              <p class="mt-3 text-sm leading-relaxed text-brand-200">Saat kami sedang siaran langsung, gunakan tombol <strong class="text-white">Siaran Langsung</strong> untuk bergabung.</p>
+              <h3 class="font-semibold text-gold-300">Menonton siaran</h3>
+              <p class="mt-2 text-sm leading-relaxed text-brand-200">Tautan siaran diambil otomatis dari spreadsheet admin, jadi pemutar di atas selalu mengikuti ruang siaran yang sedang aktif.</p>
+              <p class="mt-3 text-sm leading-relaxed text-brand-200">Bila belum ada siaran, tunggu menjelang kegiatan atau tekan <strong class="text-white">Perbarui</strong> setelah admin memasang tautan.</p>
               <div class="mt-5 space-y-3 text-sm">
-                <p class="flex items-center gap-3"><i class="fa-solid fa-bell w-4 text-gold-400"></i>Aktifkan notifikasi channel</p>
-                <p class="flex items-center gap-3"><i class="fa-solid fa-comments w-4 text-gold-400"></i>Sampaikan pertanyaan di kolom komentar</p>
-                <p class="flex items-center gap-3"><i class="fa-solid fa-share-nodes w-4 text-gold-400"></i>Bagikan kepada wali santri lain</p>
+                <p class="flex items-center gap-3"><i class="fa-solid fa-wifi w-4 text-gold-400"></i>Gunakan koneksi internet yang stabil</p>
+                <p class="flex items-center gap-3"><i class="fa-solid fa-headphones w-4 text-gold-400"></i>Siapkan headset agar suara jelas</p>
+                <p class="flex items-center gap-3"><i class="fa-solid fa-comments w-4 text-gold-400"></i><a data-pilih-admin href="#" class="underline">Sampaikan pertanyaan lewat admin</a></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blok YouTube disimpan dulu untuk pemakaian berikutnya. -->
+          <div id="live-youtube" class="hidden">
+            <div class="mt-10 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+              <div>
+                <div id="yt-player" class="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-brand-950">
+                  <button type="button" data-yt-play class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label="Tonton video di YouTube Baitul Qur'an Al-Hidayah">
+                    <img data-yt-thumb src="https://i.ytimg.com/vi/IvZvck9q5XY/hqdefault.jpg" alt="" class="absolute inset-0 h-full w-full object-cover opacity-70 transition group-hover:opacity-90" loading="lazy" referrerpolicy="no-referrer">
+                    <span class="absolute inset-0 bg-brand-950/35"></span>
+                    <span class="relative flex h-16 w-16 items-center justify-center rounded-full bg-rose-600 text-2xl shadow-xl transition group-hover:scale-105"><i class="fa-brands fa-youtube"></i></span>
+                    <span class="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-brand-950/80 px-4 py-1.5 text-xs font-semibold text-white">Tonton di YouTube</span>
+                  </button>
+                  <noscript>
+                    <div class="flex h-full items-center justify-center p-6 text-center text-sm text-brand-200">
+                      Aktifkan JavaScript atau <a data-youtube href="#" class="underline">buka channel di YouTube</a>.
+                    </div>
+                  </noscript>
+                </div>
+                <div class="mt-4 flex flex-wrap gap-3">
+                  <a data-youtube href="#" target="_blank" rel="noopener" class="btn-gold"><i class="fa-brands fa-youtube"></i> Tonton di YouTube</a>
+                  <a data-youtube-live href="#" target="_blank" rel="noopener" class="btn-outline-light"><i class="fa-solid fa-tower-broadcast"></i> Siaran Langsung</a>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h3 class="font-semibold text-gold-300">Video terbaru</h3>
+                <p class="mt-2 text-sm leading-relaxed text-brand-200">Pemutar menampilkan video terbaru dari channel kami. Tekan tombol putar untuk menonton di YouTube.</p>
+                <p class="mt-3 text-sm leading-relaxed text-brand-200">Saat kami sedang siaran langsung, gunakan tombol <strong class="text-white">Siaran Langsung</strong> untuk bergabung.</p>
+                <div class="mt-5 space-y-3 text-sm">
+                  <p class="flex items-center gap-3"><i class="fa-solid fa-bell w-4 text-gold-400"></i>Aktifkan notifikasi channel</p>
+                  <p class="flex items-center gap-3"><i class="fa-solid fa-comments w-4 text-gold-400"></i>Sampaikan pertanyaan di kolom komentar</p>
+                  <p class="flex items-center gap-3"><i class="fa-solid fa-share-nodes w-4 text-gold-400"></i>Bagikan kepada wali santri lain</p>
+                </div>
               </div>
             </div>
           </div>

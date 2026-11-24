@@ -80,6 +80,8 @@ window.SITE = {
         santri: "Santri",
         absensi: "Rekab Absen",
         progres: "Progres",
+        // Tab siaran vdo.ninja: kolom status | judul | link | keterangan.
+        live: "Live",
       },
       // Lama cache di browser (menit). Tombol "Perbarui data" menimpa cache ini.
       cacheMenit: 2,

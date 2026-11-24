@@ -136,16 +136,11 @@ window.DATA = {
   ],
 
   /* --- Galeri ----------------------------------------------------------
-     Foto kegiatan ada di assets/img/kegiatan/ (kegiatan-1 … kegiatan-5.webp).
+     Sengaja dikosongkan dulu: halaman menampilkan "Galeri segera hadir".
+     Nanti cukup isi array ini; foto diletakkan di assets/img/kegiatan/.
      Klik foto untuk membuka versi besar di modal.
   -------------------------------------------------------------------- */
-  galeri: [
-    { src: "assets/img/kegiatan/kegiatan-1.webp", judul: "Kegiatan belajar Al-Qur'an" },
-    { src: "assets/img/kegiatan/kegiatan-2.webp", judul: "Kegiatan belajar Al-Qur'an" },
-    { src: "assets/img/kegiatan/kegiatan-3.webp", judul: "Kegiatan belajar Al-Qur'an" },
-    { src: "assets/img/kegiatan/kegiatan-4.webp", judul: "Kegiatan belajar Al-Qur'an" },
-    { src: "assets/img/kegiatan/kegiatan-5.webp", judul: "Kegiatan belajar Al-Qur'an" },
-  ],
+  galeri: [],
 
   /* --- Data santri ------------------------------------------------------
      Cadangan bila Google Sheets / Firebase belum aktif atau gagal dimuat.

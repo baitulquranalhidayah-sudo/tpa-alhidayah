@@ -155,6 +155,9 @@
       if (basi) muatTabelAbsensi(true, nisTersorot);
     }
 
+    // Tautan siaran vdo.ninja diambil baru setiap halaman live dibuka.
+    if (target === "live") muatLive(true);
+
     $$("[data-route]").forEach((el) => {
       const on = el.dataset.route === target;
       el.classList.toggle("nav-link-active", on);
@@ -996,6 +999,89 @@
   }
 
   /* --------------------------------------------------------------------
+     Siaran langsung vdo.ninja — tautan diambil dari tab "Live" sheets.
+  -------------------------------------------------------------------- */
+  let liveMemuat = false;
+
+  function vdoKosong(judul, keterangan) {
+    const box = $("#vdo-penonton");
+    if (!box) return;
+    box.innerHTML = `
+      <div class="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+        <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-2xl text-gold-300"><i class="fa-solid fa-tower-broadcast"></i></span>
+        <p class="font-display text-lg font-semibold text-white">${esc(judul)}</p>
+        <p class="max-w-sm text-sm leading-relaxed text-brand-200">${esc(keterangan)}</p>
+      </div>`;
+  }
+
+  async function muatLive(paksa) {
+    const box = $("#vdo-penonton");
+    if (!box || liveMemuat) return;
+    liveMemuat = true;
+
+    const badge = $("#vdo-badge");
+    const buka = $("#vdo-buka");
+    const info = $("#vdo-info");
+    badge?.classList.add("hidden");
+    buka?.classList.add("hidden");
+    info?.classList.add("hidden");
+    box.innerHTML = `
+      <div class="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+        <i class="fa-solid fa-circle-notch fa-spin text-2xl text-gold-400"></i>
+        <p class="text-sm text-brand-200">Memuat jadwal siaran…</p>
+      </div>`;
+
+    try {
+      if (!window.SUMBER || !window.SUMBER.aktif()) {
+        vdoKosong("Belum ada siaran langsung", "Tautan siaran akan tersedia menjelang kegiatan.");
+        return;
+      }
+
+      const hasil = await window.SUMBER.live(paksa !== false);
+      if (!hasil) {
+        vdoKosong(
+          "Belum ada siaran langsung",
+          "Tautan siaran akan tersedia menjelang kegiatan. Tekan Perbarui setelah admin memasang tautan."
+        );
+        return;
+      }
+
+      // src diisi lewat properti DOM, bukan string HTML, agar tautan dari sheet
+      // tidak bisa menyuntikkan atribut lain ke halaman.
+      const frame = document.createElement("iframe");
+      frame.src = hasil.link;
+      frame.title = hasil.judul || "Siaran langsung vdo.ninja";
+      frame.className = "absolute inset-0 h-full w-full";
+      frame.allow = "autoplay; fullscreen; encrypted-media; picture-in-picture";
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      box.replaceChildren(frame);
+
+      if (buka) {
+        buka.href = hasil.link;
+        buka.classList.remove("hidden");
+      }
+      badge?.classList.remove("hidden");
+
+      const judul = $("#vdo-judul");
+      const keterangan = $("#vdo-keterangan");
+      if (judul && keterangan && info) {
+        judul.textContent = hasil.judul;
+        keterangan.textContent = hasil.keterangan;
+        info.classList.remove("hidden");
+      }
+    } catch (err) {
+      console.warn("[live] Tab Live tidak terbaca:", err.message);
+      vdoKosong(
+        "Belum ada siaran langsung",
+        "Tautan siaran belum tersedia. Tekan Perbarui bila admin sudah memasang tautan."
+      );
+    } finally {
+      liveMemuat = false;
+    }
+  }
+
+  /* --------------------------------------------------------------------
      Pemutar YouTube (click-to-play, privasi lebih aman)
   -------------------------------------------------------------------- */
   function initYoutubeEmbed() {
@@ -1079,6 +1165,7 @@
     bindLookup("form-absensi", "absensi");
     bindLookup("form-progres", "progres");
     bindTabelAbsensi();
+    $("#vdo-refresh")?.addEventListener("click", () => muatLive(true));
 
     $("#tahun-footer").textContent = new Date().getFullYear();
     bindRouter();
