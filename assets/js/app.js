@@ -89,6 +89,11 @@
     $$("a[data-saweria]").forEach((a) => (a.href = SITE.saweria || "#"));
     $$("[data-saweria-box]").forEach((el) => el.classList.toggle("hidden", !SITE.saweria));
 
+    // DANA: QR bisa diklik untuk diperbesar, tombol membuka tautan DANA.
+    $$("a[data-dana]").forEach((a) => (a.href = SITE.dana || "#"));
+    $$("[data-dana-box]").forEach((el) => el.classList.toggle("hidden", !SITE.dana));
+    $$("[data-dana-qr]").forEach((b) => b.addEventListener("click", bukaQrDana));
+
     // Grup WhatsApp: sembunyikan seluruh blok bila tautan belum diisi.
     $$("a[data-grup-wa]").forEach((a) => a.href = SITE.grupWa || "#");
     $$("[data-grup-wa-box]").forEach((el) => el.classList.toggle("hidden", !SITE.grupWa));
@@ -477,6 +482,23 @@
     m.classList.add("hidden");
     m.classList.remove("flex");
     document.body.classList.remove("overflow-hidden");
+  }
+
+  /** Perbesar QR DANA; tombol di dalam modal membuka tautan DANA. */
+  function bukaQrDana() {
+    const tautan = SITE.dana || "";
+    const lanjut = tautan
+      ? `<a href="${esc(tautan)}" target="_blank" rel="noopener" class="btn-gold mt-4"><i class="fa-solid fa-up-right-from-square"></i> Buka DANA</a>`
+      : "";
+    openModal(
+      "Sedekah via DANA",
+      `<div class="text-center">
+        <img src="assets/img/qr/dana.png" alt="QR DANA untuk sedekah" class="mx-auto max-w-sm rounded-xl bg-white p-3">
+        <p class="mt-3 text-xs text-brand-500">Pindai dengan aplikasi DANA, atau buka langsung lewat tombol di bawah.</p>
+        ${lanjut}
+      </div>`,
+      true
+    );
   }
 
   /** Modal pilih admin: dipakai tombol Tanya Admin dan Kirim via WhatsApp. */

@@ -57,6 +57,7 @@ Buka `assets/js/site.config.js`, ubah bagian berikut:
 | `youtubeThumb` | ID video untuk gambar sampul pemutar |
 | `youtubeEmbed` | `true` bila video boleh diputar di dalam situs (lihat catatan di bawah) |
 | `saweria` | tautan Saweria untuk sedekah/donasi; kartu di halaman Siaran Langsung otomatis tersembunyi bila dikosongkan |
+| `dana` | tautan minta/sedekah DANA; kartu QR di halaman Siaran Langsung otomatis tersembunyi bila dikosongkan. QR versi bersih disimpan di `assets/img/qr/dana.png` (sudah dipotong dari latar biru, hitam-putih tajam, dan diberi *quiet zone* putih) |
 | `alamat.mapsUrl` | tempel tautan *Share* pin lokasi dari Google Maps |
 | `jamLayanan` | jam layanan, saat ini Senin–Rabu · ba'da Maghrib s.d. Isya |
 
