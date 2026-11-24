@@ -777,7 +777,6 @@
           <td class="px-4 py-2.5 text-brand-900">${esc(r.nama || "-")}</td>
           <td class="px-4 py-2.5 text-brand-600">${esc(r.kelas || "-")}</td>
           <td class="px-4 py-2.5"><span class="whitespace-nowrap rounded px-2 py-0.5 text-[11px] font-bold uppercase ${warna}">${esc(status)}</span></td>
-          <td class="px-4 py-2.5 text-brand-500">${esc(r.keterangan || "-")}</td>
         </tr>`;
       })
       .join("");
