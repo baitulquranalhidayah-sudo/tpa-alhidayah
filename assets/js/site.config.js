@@ -57,6 +57,9 @@ window.SITE = {
   // pemutaran di situs lain, sehingga tombol putar membuka YouTube.
   // Aktifkan "Izinkan penyematan" di YouTube Studio, lalu ubah menjadi true.
   youtubeEmbed: false,
+  // Saweria: tempat wali santri bisa bersedekah / mendukung kegiatan.
+  // Kosongkan ("") untuk menyembunyikan kartu donasi di halaman Siaran Langsung.
+  saweria: "https://saweria.co/baitulquranalhidayah",
   instagram: "",
   facebook: "",
 

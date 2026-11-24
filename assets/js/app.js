@@ -85,6 +85,10 @@
         : "https://www.youtube.com/results?search_query=Baitul+Quran+Al+Hidayah+live";
     });
 
+    // Saweria: kartu donasi disembunyikan bila tautan belum diisi.
+    $$("a[data-saweria]").forEach((a) => (a.href = SITE.saweria || "#"));
+    $$("[data-saweria-box]").forEach((el) => el.classList.toggle("hidden", !SITE.saweria));
+
     // Grup WhatsApp: sembunyikan seluruh blok bila tautan belum diisi.
     $$("a[data-grup-wa]").forEach((a) => a.href = SITE.grupWa || "#");
     $$("[data-grup-wa-box]").forEach((el) => el.classList.toggle("hidden", !SITE.grupWa));

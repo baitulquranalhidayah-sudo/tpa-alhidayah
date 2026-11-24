@@ -56,6 +56,7 @@ Buka `assets/js/site.config.js`, ubah bagian berikut:
 | `youtubePlaylist` | ID playlist unggahan (`UU…`) yang diputar di halaman Siaran Langsung |
 | `youtubeThumb` | ID video untuk gambar sampul pemutar |
 | `youtubeEmbed` | `true` bila video boleh diputar di dalam situs (lihat catatan di bawah) |
+| `saweria` | tautan Saweria untuk sedekah/donasi; kartu di halaman Siaran Langsung otomatis tersembunyi bila dikosongkan |
 | `alamat.mapsUrl` | tempel tautan *Share* pin lokasi dari Google Maps |
 | `jamLayanan` | jam layanan, saat ini Senin–Rabu · ba'da Maghrib s.d. Isya |
 
