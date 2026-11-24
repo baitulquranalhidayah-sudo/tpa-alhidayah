@@ -5,3 +5,8 @@ node_modules/
 # berkas sementara Office / OnlyOffice / LibreOffice
 .~lock.*
 ~$*
+
+# kredensial lokal
+.env
+.env.*
+!.env.example
