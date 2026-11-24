@@ -387,8 +387,11 @@ window.SUMBER = (function () {
     const riwayat = baris.map((r) => {
       const dasar = {
         nis: m.nis || String(r.nis || nis).trim(),
-        nama: m.nama || r.nama || "",
-        kelas: m.kelas || r.kelas || "",
+        // Nama & kelas mengikuti tab yang sedang dibuka (Kehadiran/Progres),
+        // karena di situlah pengajar mengisi data. Tab Santri hanya cadangan
+        // bila kolom nama di tab tersebut kosong.
+        nama: r.nama || m.nama || "",
+        kelas: r.kelas || m.kelas || "",
         tanggal: r.tanggal,
       };
       if (jenis === "progres") {

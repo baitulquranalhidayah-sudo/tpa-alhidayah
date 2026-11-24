@@ -156,7 +156,7 @@ window.DATA = {
      memakai nama terbaru dari spreadsheet, bukan daftar ini.
   -------------------------------------------------------------------- */
   santri: [
-    { nis: "01", nama: "Galih", kelas: "SD Kelas 6" },
+    { nis: "01", nama: "Galih Pambudy", kelas: "SD Kelas 6" },
     { nis: "02", nama: "Ahmad Azzam Putra", kelas: "SD Kelas 6" },
     { nis: "03", nama: "Sayyid Ammar Susanto", kelas: "SD Kelas 4" },
     { nis: "04", nama: "Adam", kelas: "TK Nol Kecil" },

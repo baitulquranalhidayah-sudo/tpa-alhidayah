@@ -347,15 +347,17 @@ ke dalam kode. Pengajar cukup mengisi baris pada tab `Kehadiran` dan `Progres`;
 situs otomatis menampilkan perubahannya (maks. 2 menit karena cache, atau
 langsung setelah tombol **Perbarui data** diklik pada form pencarian).
 
-Nama dan kelas santri juga diambil langsung dari tab `Santri`, sehingga bila
-nama di spreadsheet diubah, hasil pencarian di situs ikut berubah tanpa perlu
+Nama dan kelas pada hasil **Cek Absensi** diambil langsung dari tab
+`Kehadiran`, sedangkan hasil **Cek Progres** diambil dari tab `Progres`.
+Bila kolom nama di tab tersebut kosong, situs memakai nama dari tab `Santri`
+sebagai cadangan. Dengan begitu, mengubah nama di tab `Kehadiran` atau
+`Progres` langsung mengubah nama yang tampil di halaman masing-masing tanpa
 menyunting kode. Daftar `santri` di `assets/js/data.js` hanya cadangan saat
-Sheets gagal dimuat; isinya diselaraskan dengan tab `Santri`.
+Sheets gagal dimuat.
 
-Saat ini tab `Kehadiran` sudah berisi baris bertanggal 24/11/2026, tetapi kolom
-statusnya masih kosong, dan tab `Progres` belum berisi catatan. Baris yang
-statusnya kosong tidak ditampilkan sebagai catatan (bukan dianggap Alpa),
-sehingga situs menampilkan "Belum ada catatan" sampai pengajar mengisinya.
+Saat ini tab `Kehadiran` sudah terisi untuk pertemuan 24/11/2026, dan tab
+`Progres` sudah berisi catatan untuk NIS 01–03. Santri yang belum punya baris
+tercatat tetap menampilkan identitasnya dengan keterangan "Belum ada catatan".
 
 ---
 
