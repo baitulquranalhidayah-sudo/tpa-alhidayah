@@ -78,7 +78,7 @@ window.SITE = {
       // Nama tab (bukan nama berkas) di dalam spreadsheet.
       tab: {
         santri: "Santri",
-        absensi: "Kehadiran",
+        absensi: "Rekab Absen",
         progres: "Progres",
       },
       // Lama cache di browser (menit). Tombol "Perbarui data" menimpa cache ini.

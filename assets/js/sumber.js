@@ -31,7 +31,7 @@ window.SUMBER = (function () {
   const ID = idSpreadsheet(sc.id);
   const TAB = {
     santri: (sc.tab && sc.tab.santri) || "Santri",
-    absensi: (sc.tab && sc.tab.absensi) || "Kehadiran",
+    absensi: (sc.tab && sc.tab.absensi) || "Rekab Absen",
     progres: (sc.tab && sc.tab.progres) || "Progres",
   };
   const CACHE_MENIT = Number(sc.cacheMenit) >= 0 ? Number(sc.cacheMenit) : 5;
@@ -238,13 +238,15 @@ window.SUMBER = (function () {
     );
   }
 
-  async function muatTabel(tab) {
-    if (memori.has(tab)) return memori.get(tab);
+  async function muatTabel(tab, paksa) {
+    if (!paksa && memori.has(tab)) return memori.get(tab);
 
-    const cache = bacaCache(tab);
-    if (cache) {
-      memori.set(tab, cache);
-      return cache;
+    if (!paksa) {
+      const cache = bacaCache(tab);
+      if (cache) {
+        memori.set(tab, cache);
+        return cache;
+      }
     }
 
     const res = await fetch(urlTab(tab), { cache: "no-store", credentials: "omit" });
@@ -287,10 +289,18 @@ window.SUMBER = (function () {
     });
   }
 
-  /** Tab absensi boleh berbentuk log (kolom nis) atau matriks (kolom NIS). */
+  /** Tab absensi boleh berbentuk log (kolom nis) atau matriks (kolom NIS).
+   *  Tab seperti "Rekab Absen" kadang hanya punya kolom nama + tanggal +
+   *  kehadiran (tanpa NIS); bentuk itu tetap dianggap log. */
   function apakahLog(rows) {
     if (!rows || !rows.length) return true;
-    return rows[0].map(kunci).includes("nis");
+    const h = rows[0].map(kunci);
+    return (
+      h.includes("nis") ||
+      (h.includes("nama") &&
+        h.includes("tanggal") &&
+        (h.includes("kehadiran") || h.includes("status")))
+    );
   }
 
   /** Ubah tabel matriks (tanggal × santri) menjadi baris log per santri. */
@@ -331,12 +341,28 @@ window.SUMBER = (function () {
     return hasil;
   }
 
+  /**
+   * Isi NIS dari nama bila tab log tidak punya kolom NIS.
+   * Tab "Rekab Absen" saat ini memakai kolom "no" + nama, bukan NIS.
+   * Bila nanti kolom nis ditambahkan, nilai dari sheet tetap dipakai.
+   */
+  function lengkapiNis(baris, master) {
+    const peta = new Map();
+    master.forEach((m) => {
+      if (m.nama) peta.set(kunci(m.nama), m.nis);
+    });
+    return baris.map((r) => {
+      if (!r.nis && r.nama) r.nis = peta.get(kunci(r.nama)) || "";
+      return r;
+    });
+  }
+
   /** Tab master santri; opsional — bila belum ada, situs tetap jalan. */
-  async function muatSantri() {
+  async function muatSantri(paksa) {
     const peta = new Map();
     let data;
     try {
-      data = await muatTabel(TAB.santri);
+      data = await muatTabel(TAB.santri, paksa);
     } catch (err) {
       console.warn("[sumber] Tab santri tidak terbaca:", err.message);
       return peta;
@@ -374,12 +400,15 @@ window.SUMBER = (function () {
 
     const [master, tabel] = await Promise.all([muatSantri(), muatTabel(tab)]);
 
-    const baris = (apakahLog(tabel.rows) ? keObjek(tabel.rows) : keMatriks(tabel.rows))
-      // Baris yang tanggalnya sudah diisi tetapi status/bacaannya masih kosong
-      // berarti belum dicatat — jangan tampil sebagai catatan kosong / Alpa.
-      .filter((r) => (jenis === "progres" ? !!(r.bacaan || r.catatan) : !!r.status))
-      // Baris contoh di template belum bertanggal; jangan dianggap catatan.
-      .filter((r) => !!r.tanggal)
+    const baris = lengkapiNis(
+      (apakahLog(tabel.rows) ? keObjek(tabel.rows) : keMatriks(tabel.rows))
+        // Baris yang tanggalnya sudah diisi tetapi status/bacaannya masih kosong
+        // berarti belum dicatat — jangan tampil sebagai catatan kosong / Alpa.
+        .filter((r) => (jenis === "progres" ? !!(r.bacaan || r.catatan) : !!r.status))
+        // Baris contoh di template belum bertanggal; jangan dianggap catatan.
+        .filter((r) => !!r.tanggal),
+      master
+    )
       .filter((r) => normalNis(r.nis) === cari)
       .sort((a, b) => b._ms - a._ms || b._i - a._i);
 
@@ -387,7 +416,7 @@ window.SUMBER = (function () {
     const riwayat = baris.map((r) => {
       const dasar = {
         nis: m.nis || String(r.nis || nis).trim(),
-        // Nama & kelas mengikuti tab yang sedang dibuka (Kehadiran/Progres),
+        // Nama & kelas mengikuti tab yang sedang dibuka (Rekab Absen/Progres),
         // karena di situlah pengajar mengisi data. Tab Santri hanya cadangan
         // bila kolom nama di tab tersebut kosong.
         nama: r.nama || m.nama || "",
@@ -421,5 +450,83 @@ window.SUMBER = (function () {
     };
   }
 
-  return { aktif, mode, ambil, hapusCache, _parseCsv: parseCsv, _parseTanggal: parseTanggal, _keMatriks: keMatriks };
+  /**
+   * Tabel absensi satu pertemuan (tanggal terbaru di sheet).
+   * Dipakai untuk menampilkan absensi hari ini di halaman Cek Absensi.
+   * @param {boolean} paksa true untuk melewati cache (data terbaru)
+   * @returns {Promise<{tanggal: string, daftar: object[], sumber: string, diperbarui: string}>}
+   */
+  async function tabelAbsensi(paksa) {
+    if (!aktif()) throw new Error("Sumber Google Sheets belum diaktifkan.");
+
+    const [master, tabel] = await Promise.all([
+      muatSantri(paksa),
+      muatTabel(TAB.absensi, paksa),
+    ]);
+
+    const semua = lengkapiNis(
+      (apakahLog(tabel.rows) ? keObjek(tabel.rows) : keMatriks(tabel.rows))
+        .filter((r) => !!r.tanggal)
+        .filter((r) => !!r.status),
+      master
+    );
+
+    const diperbarui = isoTanggal(new Date(tabel.waktu));
+
+    // Daftar semua santri aktif; status kosong = belum dicatat.
+    const daftar = [];
+    master.forEach((m) => {
+      daftar.push({ nis: m.nis, nama: m.nama, kelas: m.kelas, status: "", keterangan: "" });
+    });
+
+    if (!semua.length) {
+      return { tanggal: "", daftar, sumber: "sheets", diperbarui };
+    }
+
+    const terbaru = semua.reduce((a, b) => (b._ms > a._ms ? b : a), semua[0]);
+    const tanggal = terbaru.tanggal;
+
+    const perNis = new Map();
+    semua
+      .filter((r) => r.tanggal === tanggal)
+      .forEach((r) => {
+        const k = normalNis(r.nis);
+        if (k) perNis.set(k, r);
+      });
+
+    // Isi status ke daftar master, sekaligus sorot nama dari tab absensi.
+    daftar.forEach((d) => {
+      const r = perNis.get(normalNis(d.nis));
+      if (!r) return;
+      d.nama = r.nama || d.nama;
+      d.kelas = r.kelas || d.kelas;
+      d.status = r.status;
+      d.keterangan = r.keterangan || "";
+      perNis.delete(normalNis(d.nis));
+    });
+
+    // Baris yang namanya tidak cocok dengan tab Santri tetap ditampilkan.
+    perNis.forEach((r) => {
+      daftar.push({
+        nis: r.nis || "-",
+        nama: r.nama || "-",
+        kelas: r.kelas || "",
+        status: r.status,
+        keterangan: r.keterangan || "",
+      });
+    });
+
+    return { tanggal, daftar, sumber: "sheets", diperbarui };
+  }
+
+  return {
+    aktif,
+    mode,
+    ambil,
+    tabelAbsensi,
+    hapusCache,
+    _parseCsv: parseCsv,
+    _parseTanggal: parseTanggal,
+    _keMatriks: keMatriks,
+  };
 })();

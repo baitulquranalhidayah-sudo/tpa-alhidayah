@@ -149,6 +149,12 @@
     const section = document.getElementById(target);
     if (section) section.classList.add("active");
 
+    // Muat tabel absensi saat halaman Cek Absensi dibuka (data maks. 1 menit).
+    if (target === "absensi") {
+      const basi = !tabelAbsensiData || Date.now() - tabelAbsensiWaktu > 60000;
+      if (basi) muatTabelAbsensi(true, nisTersorot);
+    }
+
     $$("[data-route]").forEach((el) => {
       const on = el.dataset.route === target;
       el.classList.toggle("nav-link-active", on);
@@ -656,13 +662,13 @@
 
     const bulan = terakhir.tanggal.slice(0, 7);
     const sebulan = list.filter((r) => String(r.tanggal || "").slice(0, 7) === bulan);
-    const hitung = { Hadir: 0, Izin: 0, Sakit: 0, Alfa: 0 };
+    const hitung = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
     sebulan.forEach((r) => {
       const k = String(r.status || "").toLowerCase();
       if (k === "hadir") hitung.Hadir++;
       else if (k === "izin") hitung.Izin++;
       else if (k === "sakit") hitung.Sakit++;
-      else if (k === "alfa" || k === "alpa" || k === "alpha") hitung.Alfa++;
+      else if (k === "alfa" || k === "alpa" || k === "alpha") hitung.Alpa++;
     });
 
     const label = new Date(+bulan.slice(0, 4), +bulan.slice(5, 7) - 1, 1).toLocaleDateString("id-ID", {
@@ -673,7 +679,7 @@
       ["Hadir", "bg-emerald-50", "text-emerald-700", "text-emerald-600"],
       ["Izin", "bg-sky-50", "text-sky-700", "text-sky-600"],
       ["Sakit", "bg-amber-50", "text-amber-700", "text-amber-600"],
-      ["Alfa", "bg-rose-50", "text-rose-700", "text-rose-600"],
+      ["Alpa", "bg-rose-50", "text-rose-700", "text-rose-600"],
     ]
       .map(
         ([nama, bg, kuat, lembut]) => `<div class="rounded-lg ${bg} px-2 py-2 text-center">
@@ -683,11 +689,165 @@
       )
       .join("");
 
+    const total = sebulan.length;
+    const persen = total ? Math.round((hitung.Hadir / total) * 100) : 0;
     el.innerHTML = `
       <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Rekap ${esc(label)}</p>
       <div class="mt-2 grid grid-cols-4 gap-2">${kotak}</div>
-      <p class="mt-2 text-[11px] text-brand-500">Dari ${sebulan.length} pertemuan tercatat.</p>`;
+      <p class="mt-3 text-sm font-semibold text-brand-800">Hadir ${hitung.Hadir} kali dari ${total} pertemuan (${persen}%)</p>
+      <p class="mt-1 text-[11px] text-brand-500">Rekap bulan ini dihitung otomatis dari tab Rekab Absen.</p>`;
     el.classList.remove("hidden");
+  }
+
+  /* --------------------------------------------------------------------
+     Tabel absensi pertemuan terbaru (realtime dari spreadsheet)
+  -------------------------------------------------------------------- */
+  let tabelAbsensiData = null;
+  let tabelAbsensiWaktu = 0;
+  let nisTersorot = "";
+
+  function isoHariIni() {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
+
+  function renderTabelAbsensi(data, nis) {
+    const wrap = $("#tabel-absensi-wrap");
+    if (!wrap) return;
+    const body = $("#tabel-absensi-body");
+    const isi = $("#tabel-absensi-isi");
+    const kosong = $("#tabel-absensi-kosong");
+    const loading = $("#tabel-absensi-loading");
+    const judulTanggal = $("#tabel-absensi-tanggal");
+    const ringkasEl = $("#tabel-absensi-ringkas");
+    const note = $("#tabel-absensi-note");
+    const daftar = (data && data.daftar) || [];
+    const cari = normalNis(nis || "");
+    const adaData = !!(data && data.tanggal);
+
+    loading.classList.add("hidden");
+    wrap.classList.remove("hidden");
+
+    if (!daftar.length) {
+      isi.classList.add("hidden");
+      kosong.classList.remove("hidden");
+      judulTanggal.textContent = "";
+      return;
+    }
+
+    kosong.classList.add("hidden");
+
+    judulTanggal.textContent = adaData
+      ? (data.tanggal === isoHariIni() ? "Hari ini, " : "Pertemuan terakhir, ") +
+        tanggalPanjang(data.tanggal)
+      : "Belum ada pertemuan tercatat";
+
+    const hitung = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
+    daftar.forEach((r) => {
+      const s = String(r.status || "").toLowerCase();
+      if (s === "hadir") hitung.Hadir++;
+      else if (s === "izin") hitung.Izin++;
+      else if (s === "sakit") hitung.Sakit++;
+      else if (s === "alfa" || s === "alpa" || s === "alpha") hitung.Alpa++;
+    });
+    const tercatat = daftar.filter((r) => r.status).length;
+
+    ringkasEl.innerHTML = [
+      ["Hadir", "bg-emerald-50", "text-emerald-700"],
+      ["Izin", "bg-sky-50", "text-sky-700"],
+      ["Sakit", "bg-amber-50", "text-amber-700"],
+      ["Alpa", "bg-rose-50", "text-rose-700"],
+    ]
+      .map(
+        ([nama, bg, warna]) => `<div class="rounded-lg ${bg} px-3 py-2 text-center">
+          <p class="text-lg font-bold leading-tight ${warna}">${hitung[nama]}</p>
+          <p class="text-[10px] font-semibold uppercase tracking-wide ${warna}">${nama}</p>
+        </div>`
+      )
+      .join("");
+
+    body.innerHTML = daftar
+      .map((r) => {
+        const status = r.status || "Belum dicatat";
+        const warna = r.status ? kelasStatus(r.status) : "bg-brand-50 text-brand-500";
+        const sorot = cari && normalNis(r.nis) === cari ? "bg-gold-50" : "";
+        return `<tr class="${sorot}">
+          <td class="whitespace-nowrap px-4 py-2.5 font-semibold text-brand-700">${esc(r.nis || "-")}</td>
+          <td class="px-4 py-2.5 text-brand-900">${esc(r.nama || "-")}</td>
+          <td class="px-4 py-2.5 text-brand-600">${esc(r.kelas || "-")}</td>
+          <td class="px-4 py-2.5"><span class="whitespace-nowrap rounded px-2 py-0.5 text-[11px] font-bold uppercase ${warna}">${esc(status)}</span></td>
+          <td class="px-4 py-2.5 text-brand-500">${esc(r.keterangan || "-")}</td>
+        </tr>`;
+      })
+      .join("");
+
+    const sumber = data.sumber === "sheets" ? "Google Sheets" : "data lokal";
+    note.innerHTML =
+      `<i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Sumber: ${esc(sumber)}` +
+      (data.diperbarui ? ` · diperbarui ${esc(tanggalPanjang(data.diperbarui))}` : "") +
+      ` · ${tercatat} dari ${daftar.length} santri tercatat. Data hanya dapat diubah admin melalui spreadsheet.`;
+  }
+
+  async function muatTabelAbsensi(paksa, nis, senyap) {
+    const wrap = $("#tabel-absensi-wrap");
+    if (!wrap) return;
+    const loading = $("#tabel-absensi-loading");
+    const isi = $("#tabel-absensi-isi");
+    const kosong = $("#tabel-absensi-kosong");
+
+    if (!senyap) {
+      wrap.classList.remove("hidden");
+      loading.classList.remove("hidden");
+      isi.classList.add("hidden");
+      kosong.classList.add("hidden");
+    }
+
+    try {
+      if (!window.SUMBER || !window.SUMBER.aktif()) {
+        const daftar = (DATA.santri || []).map((s) => ({
+          nis: s.nis,
+          nama: s.nama,
+          kelas: s.kelas,
+          status: "",
+          keterangan: "",
+        }));
+        tabelAbsensiData = { tanggal: "", daftar, sumber: "lokal", diperbarui: "" };
+        tabelAbsensiWaktu = Date.now();
+        renderTabelAbsensi(tabelAbsensiData, nis);
+        return;
+      }
+
+      const data = await window.SUMBER.tabelAbsensi(!!paksa);
+      tabelAbsensiData = data;
+      tabelAbsensiWaktu = Date.now();
+      renderTabelAbsensi(data, nis);
+    } catch (err) {
+      console.warn("Tabel absensi gagal dimuat:", err);
+      if (!senyap) {
+        loading.classList.add("hidden");
+        isi.classList.add("hidden");
+        kosong.classList.remove("hidden");
+        kosong.textContent = "Tabel absensi belum dapat dimuat. Klik Perbarui untuk mencoba lagi.";
+      }
+    }
+  }
+
+  function bindTabelAbsensi() {
+    const btn = $("#toggle-tabel-absensi");
+    const isi = $("#tabel-absensi-isi");
+    if (btn && isi) {
+      btn.addEventListener("click", () => {
+        const buka = isi.classList.contains("hidden");
+        isi.classList.toggle("hidden", !buka);
+        btn.setAttribute("aria-expanded", String(buka));
+        const label = btn.querySelector("span");
+        if (label) label.textContent = buka ? "Sembunyikan tabel" : "Lihat tabel";
+      });
+    }
+    $("#refresh-tabel-absensi")?.addEventListener("click", () => {
+      muatTabelAbsensi(true, nisTersorot);
+    });
   }
 
   function aturCatatan(el, res) {
@@ -794,6 +954,11 @@
       renderRekap(rekapEl, res.riwayat);
       renderRiwayat(riwayatEl, res.riwayat, jenis);
       result.classList.remove("hidden");
+      if (jenis === "absensi") {
+        nisTersorot = normalNis(d.nis || nis);
+        if (tabelAbsensiData) renderTabelAbsensi(tabelAbsensiData, nisTersorot);
+        muatTabelAbsensi(true, nisTersorot, true);
+      }
       result.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }
@@ -913,6 +1078,7 @@
     bindPendaftaran();
     bindLookup("form-absensi", "absensi");
     bindLookup("form-progres", "progres");
+    bindTabelAbsensi();
 
     $("#tahun-footer").textContent = new Date().getFullYear();
     bindRouter();
