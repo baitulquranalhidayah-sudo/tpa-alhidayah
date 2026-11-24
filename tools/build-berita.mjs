@@ -377,6 +377,25 @@ function tulisArtikel(b) {
         </section>`
       : "";
 
+  const galeriSiaran =
+    b.slug === "siaran-langsung-vdo-ninja"
+      ? `<section class="mt-10 rounded-2xl border border-brand-100 bg-white p-6">
+          <h2 class="font-display text-xl font-semibold text-brand-900">Dokumentasi kendala &amp; siaran alternatif</h2>
+          <p class="mt-2 text-sm leading-relaxed text-brand-600">Dua gambar berikut menunjukkan pembatasan siaran YouTube dan tampilan siaran alternatif melalui vdo.ninja.</p>
+          <div class="mt-5 grid gap-5 sm:grid-cols-2">
+            <figure class="overflow-hidden rounded-xl border border-brand-100">
+              <img src="assets/img/berita/blokir.png" alt="Tampilan pembatasan siaran langsung YouTube" class="h-44 w-full object-cover">
+              <figcaption class="bg-brand-50 px-4 py-3 text-center text-xs text-brand-500">Siaran YouTube terkena pembatasan usia / dinonaktifkan</figcaption>
+            </figure>
+            <figure class="overflow-hidden rounded-xl border border-brand-100">
+              <img src="assets/img/berita/live.png" alt="Tampilan siaran langsung alternatif melalui vdo.ninja" class="h-44 w-full object-cover">
+              <figcaption class="bg-brand-50 px-4 py-3 text-center text-xs text-brand-500">Siaran langsung realtime melalui vdo.ninja</figcaption>
+            </figure>
+          </div>
+          <div class="mt-5"><a href="index.html#live" class="btn-gold"><i class="fa-solid fa-tower-broadcast"></i> Buka Siaran Langsung</a></div>
+        </section>`
+      : "";
+
   const isi = `<div class="container-bq py-8">
       <nav class="text-xs text-brand-400">
         <a href="index.html#beranda" class="hover:text-brand-700">Beranda</a>
@@ -404,6 +423,7 @@ function tulisArtikel(b) {
         <div class="mt-10 rounded-2xl border border-brand-100 bg-white p-6 sm:p-8">
           ${isiKeHtml(b.isi)}
           ${jalurPendaftaran}
+          ${galeriSiaran}
         </div>
 
         <div class="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-brand-800 p-5 text-white">

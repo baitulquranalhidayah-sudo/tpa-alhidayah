@@ -75,6 +75,37 @@ window.DATA = {
   -------------------------------------------------------------------- */
   berita: [
     {
+      slug: "siaran-langsung-vdo-ninja",
+      tanggal: "2026-11-25",
+      kategori: "Pengumuman",
+      judul: "Siaran Langsung YouTube Dinonaktifkan — Kami Beralih ke vdo.ninja",
+      gambar: "assets/img/berita/blokir.png",
+      ringkas:
+        "Live streaming di akun YouTube Baitul Qur'an Al-Hidayah sedang dinonaktifkan sampai waktu yang tidak menentu. Untuk sementara, siaran langsung kami jalankan lewat vdo.ninja.",
+      isi:
+        "Dengan mengucap Bismillahirrahmanirrahim, kami sampaikan pengumuman yang mungkin sudah beberapa hari ini Anda perhatikan: siaran langsung Baitul Qur'an Al-Hidayah melalui YouTube untuk sementara tidak dapat kami jalankan.\n\n" +
+        "Kami memahami ini bukan kabar yang menyenangkan. Bagi sebagian wali santri, menonton tasmi' hafalan atau acara TPQ lewat YouTube sudah menjadi kebiasaan. Karena itu, kami ingin menjelaskan apa yang sebenarnya terjadi dengan terus terang, bukan sekadar menghilangkan tombol siaran tanpa penjelasan.\n\n" +
+        "## Mengapa siaran YouTube dihentikan\n\n" +
+        "Kegiatan kami sebagian besar melibatkan santri yang masih di bawah umur. YouTube memiliki kebijakan khusus untuk konten yang menampilkan anak-anak, termasuk pembatasan usia dan pembatasan terkait perlindungan anak. Ketika siaran kami menampilkan kegiatan santri secara langsung, sistem menilai sebagian tayangan masuk dalam kategori yang sensitif dan akhirnya ditandai sebagai pelanggaran kebijakan.\n\n" +
+        "Dampaknya, fitur live streaming pada akun kami dinonaktifkan. Kami belum bisa memastikan kapan pengaktifan kembali akan dilakukan, karena proses banding dan peninjauan sepenuhnya berada di luar kendali kami. Bisa jadi singkat, bisa jadi memakan waktu lebih lama. Karena itu kami memilih untuk tidak memberi janji waktu yang belum pasti.\n\n" +
+        "Satu hal yang ingin kami tegaskan: ini bukan karena niat kami melanggar aturan. Kami sedang belajar menyesuaikan cara menyiarkan kegiatan anak-anak agar tetap aman, nyaman, dan sesuai ketentuan platform. Mohon maaf atas ketidaknyamanan yang timbul dari perubahan ini.\n\n" +
+        "## Alternatif sementara: vdo.ninja\n\n" +
+        "Supaya wali santri tetap bisa mengikuti kegiatan, untuk sementara kami memakai vdo.ninja sebagai pengganti YouTube Live. Singkatnya, vdo.ninja adalah layanan siaran audio dan video secara langsung yang berjalan langsung di peramban. Tidak perlu mengunduh aplikasi, tidak perlu membuat akun untuk menonton, dan yang dibutuhkan hanyalah tautan ruang siaran.\n\n" +
+        "Pembawa acara membagikan satu tautan untuk penonton. Siapa pun yang memiliki tautan itu bisa membuka halaman siaran dan menonton apa yang sedang berlangsung secara realtime, hampir tanpa jeda. Karena sifatnya yang sederhana, layanan ini cocok untuk kegiatan kecil seperti setoran hafalan, tasmi', atau pertemuan singkat di TPQ.\n\n" +
+        "Berbeda dengan YouTube, vdo.ninja tidak menyimpan siaran sebagai video publik di kanal kami. Jadi setelah siaran selesai, tautan tidak lagi menampilkan acara tersebut. Ini justru kami nilai lebih aman untuk kegiatan yang melibatkan anak-anak.\n\n" +
+        "## Cara menonton siaran sekarang\n\n" +
+        "Buka menu Siaran Langsung di website ini. Halaman akan mengambil tautan terbaru secara otomatis saat dibuka. Bila Anda membuka halaman ini sebelum tautan dipasang, tekan tombol Perbarui setelah admin memasang tautan siaran.\n\n" +
+        "- Buka menu Siaran Langsung di website Baitul Qur'an Al-Hidayah.\n" +
+        "- Tunggu beberapa saat sampai pemutar menampilkan siaran.\n" +
+        "- Bila belum muncul, tekan tombol Perbarui.\n" +
+        "- Gunakan koneksi internet yang stabil dan siapkan headset agar suara jelas.\n" +
+        "- Tombol Buka di vdo.ninja tersedia bila Anda ingin membuka pemutar di jendela terpisah.\n\n" +
+        "Tautan penonton berubah setiap kali kami mengadakan siaran. Admin menyimpan tautan yang aktif di spreadsheet internal, lalu website otomatis menampilkannya. Setelah acara selesai, tautan dinonaktifkan supaya tidak menampilkan siaran lama.\n\n" +
+        "## Komitmen kami\n\n" +
+        "Kami sedang menyiapkan mekanisme yang lebih rapi untuk siaran ke depan, termasuk kemungkinan kembali ke YouTube bila akun kami sudah dipulihkan. Blok pemutar YouTube masih kami simpan di kode website dan akan diaktifkan kembali ketika saatnya tiba.\n\n" +
+        "Terima kasih atas pengertian dan doa Anda. Kami mohon maaf atas ketidaknyamanan ini, dan insyaAllah kegiatan belajar serta setoran hafalan tetap berjalan seperti biasa. Silakan hubungi admin lewat tombol Tanya Admin bila Anda mengalami kendala mengakses siaran.",
+    },
+    {
       slug: "peluncuran-website",
       tanggal: "2026-11-22",
       kategori: "Pengumuman",
