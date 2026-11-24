@@ -60,7 +60,8 @@ window.SITE = {
   // Saweria: tempat wali santri bisa bersedekah / mendukung kegiatan.
   // Kosongkan ("") untuk menyembunyikan kartu donasi di halaman Siaran Langsung.
   saweria: "https://saweria.co/baitulquranalhidayah",
-  // DANA: tautan minta/sedekah. QR versi bersih ada di assets/img/qr/dana.png.
+  // DANA: tautan minta/sedekah. QR di assets/img/qr/dana.png sengaja dibuat
+  // ulang agar berisi tautan ini (bukan qr.dana.id lama yang sudah tidak ditemukan).
   // Kosongkan ("") untuk menyembunyikan kartu DANA di halaman Siaran Langsung.
   dana: "https://m.dana.id/n/link/minta?full_url=https://qr.dana.id/v1/281012012023101462959227",
   instagram: "",
