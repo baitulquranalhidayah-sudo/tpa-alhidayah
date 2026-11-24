@@ -375,6 +375,9 @@ window.SUMBER = (function () {
     const [master, tabel] = await Promise.all([muatSantri(), muatTabel(tab)]);
 
     const baris = (apakahLog(tabel.rows) ? keObjek(tabel.rows) : keMatriks(tabel.rows))
+      // Baris yang tanggalnya sudah diisi tetapi status/bacaannya masih kosong
+      // berarti belum dicatat — jangan tampil sebagai catatan kosong / Alpa.
+      .filter((r) => (jenis === "progres" ? !!(r.bacaan || r.catatan) : !!r.status))
       // Baris contoh di template belum bertanggal; jangan dianggap catatan.
       .filter((r) => !!r.tanggal)
       .filter((r) => normalNis(r.nis) === cari)

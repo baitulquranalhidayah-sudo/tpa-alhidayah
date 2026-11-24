@@ -151,24 +151,25 @@ window.DATA = {
      Cadangan bila Google Sheets / Firebase belum aktif atau gagal dimuat.
      Sumber utama diatur di site.config.js → sumber.
 
-     NIS memakai nomor urut 01–15. Data absensi & progres sengaja dikosongkan
-     karena akan diisi lewat spreadsheet (tab Absensi & Progres).
+     NIS memakai nomor urut 01–15. Nama & kelas di bawah ini diselaraskan
+     dengan tab "Santri" pada spreadsheet. Saat Sheets aktif, situs selalu
+     memakai nama terbaru dari spreadsheet, bukan daftar ini.
   -------------------------------------------------------------------- */
   santri: [
-    { nis: "01", nama: "Galih", kelas: "" },
-    { nis: "02", nama: "Azam", kelas: "" },
-    { nis: "03", nama: "Amar", kelas: "" },
-    { nis: "04", nama: "Adam", kelas: "" },
-    { nis: "05", nama: "Gilang", kelas: "" },
-    { nis: "06", nama: "Fauzan", kelas: "" },
-    { nis: "07", nama: "Tole", kelas: "" },
-    { nis: "08", nama: "Fatih", kelas: "" },
-    { nis: "09", nama: "Rafael", kelas: "" },
-    { nis: "10", nama: "Asaka", kelas: "" },
-    { nis: "11", nama: "Aca", kelas: "" },
-    { nis: "12", nama: "Aisyah", kelas: "" },
-    { nis: "13", nama: "Alya", kelas: "" },
-    { nis: "14", nama: "Alma", kelas: "" },
-    { nis: "15", nama: "Soraya", kelas: "" },
+    { nis: "01", nama: "Galih", kelas: "SD Kelas 6" },
+    { nis: "02", nama: "Ahmad Azzam Putra", kelas: "SD Kelas 6" },
+    { nis: "03", nama: "Sayyid Ammar Susanto", kelas: "SD Kelas 4" },
+    { nis: "04", nama: "Adam", kelas: "TK Nol Kecil" },
+    { nis: "05", nama: "Afkar Gilang Sanjaya", kelas: "SMP/MTs Kelas 1" },
+    { nis: "06", nama: "Fauzan", kelas: "SMA/SMK/MA Kelas 1" },
+    { nis: "07", nama: "Tole", kelas: "SD Kelas 2" },
+    { nis: "08", nama: "Fatih", kelas: "TK Nol Kecil" },
+    { nis: "09", nama: "Rafael", kelas: "SD Kelas 5" },
+    { nis: "10", nama: "Arsaka", kelas: "TK Nol Kecil" },
+    { nis: "11", nama: "Aca", kelas: "TK Nol Kecil" },
+    { nis: "12", nama: "Aisyah farisa Sanjaya", kelas: "SD Kelas 1" },
+    { nis: "13", nama: "Alya", kelas: "SD Kelas 3" },
+    { nis: "14", nama: "Alma", kelas: "Belum Sekolah" },
+    { nis: "15", nama: "Soraya", kelas: "SD Kelas 1" },
   ],
 };

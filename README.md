@@ -347,8 +347,15 @@ ke dalam kode. Pengajar cukup mengisi baris pada tab `Kehadiran` dan `Progres`;
 situs otomatis menampilkan perubahannya (maks. 2 menit karena cache, atau
 langsung setelah tombol **Perbarui data** diklik pada form pencarian).
 
-Saat ini tab `Progres` sudah berisi catatan pertama untuk Galih dan Azam
-(21/11/2026), sedangkan tab `Kehadiran` masih menunggu diisi pengajar.
+Nama dan kelas santri juga diambil langsung dari tab `Santri`, sehingga bila
+nama di spreadsheet diubah, hasil pencarian di situs ikut berubah tanpa perlu
+menyunting kode. Daftar `santri` di `assets/js/data.js` hanya cadangan saat
+Sheets gagal dimuat; isinya diselaraskan dengan tab `Santri`.
+
+Saat ini tab `Kehadiran` sudah berisi baris bertanggal 24/11/2026, tetapi kolom
+statusnya masih kosong, dan tab `Progres` belum berisi catatan. Baris yang
+statusnya kosong tidak ditampilkan sebagai catatan (bukan dianggap Alpa),
+sehingga situs menampilkan "Belum ada catatan" sampai pengajar mengisinya.
 
 ---
 
