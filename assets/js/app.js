@@ -874,7 +874,8 @@
     const loading = $(jenis === "absensi" ? "#loading-absensi" : "#loading-progres");
     const result = $(jenis === "absensi" ? "#result-absensi" : "#result-progres");
     const notfound = $(jenis === "absensi" ? "#notfound-absensi" : "#notfound-progres");
-    const riwayatEl = $(jenis === "absensi" ? "#riwayat-absensi" : "#riwayat-progres");
+    // Riwayat hanya dipakai Cek Progres; Cek Absensi cukup rekap + tabel hari ini.
+    const riwayatEl = jenis === "progres" ? $("#riwayat-progres") : null;
     const rekapEl = jenis === "absensi" ? $("#rekap-absensi") : null;
     const note = $(jenis === "absensi" ? "#note-absensi" : "#note-progres");
     const hint = $(jenis === "absensi" ? "#hint-absensi" : "#hint-progres");

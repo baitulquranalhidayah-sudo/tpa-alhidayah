@@ -271,10 +271,11 @@ di bawah hasil.
 - NIS boleh ditulis `01` atau `1` — situs menganggapnya sama.
 - NIS boleh kosong di tab `Rekab Absen` (dicocokkan dari nama). Di tab
   `Progres`, NIS tetap disarankan diisi agar riwayatnya tidak tertukar.
-- Situs menampilkan data **terbaru** per NIS, **5 riwayat terakhir**, dan
-  **rekap kehadiran bulan berjalan** (Hadir/Izin/Sakit/Alpa). Santri yang belum
-  punya catatan tetap tampil dengan keterangan "Belum ada catatan", bukan
-  "data tidak ditemukan".
+- **Cek Absensi** menampilkan status terbaru, **rekap kehadiran bulan berjalan**
+  (Hadir/Izin/Sakit/Alpa), dan tabel pertemuan terbaru; daftar riwayat tidak
+  ditampilkan agar kartu tetap ringkas. **Cek Progres** menampilkan capaian
+  terbaru dan 5 riwayat terakhir. Santri yang belum punya catatan tetap tampil
+  dengan keterangan "Belum ada catatan", bukan "data tidak ditemukan".
 - Template siap pakai: `assets/dokumen/Template Pendataan Santri.xlsx`
   (sudah berisi 15 santri di tab `Santri`, `Rekab Absen`, dan `Progres`; unggah
   ke Google Drive → buka dengan Google Sheets → *Save as Google Sheets*).
