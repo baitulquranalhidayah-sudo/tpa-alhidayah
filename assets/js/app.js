@@ -951,18 +951,30 @@
       let res;
       try {
         // Selalu paksa data baru: spreadsheet bisa berubah kapan saja.
-        res = await cariSantri(nis, jenis, true);
+        const batas = new Promise((_, tolak) =>
+          setTimeout(() => tolak(new Error("Waktu permintaan habis.")), 15000)
+        );
+        res = await Promise.race([cariSantri(nis, jenis, true), batas]);
       } catch (err) {
         console.error(err);
         res = { data: null };
-        if (!senyap) nfText.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi.";
+        if (!senyap) {
+          nfText.textContent =
+            err && err.message === "Waktu permintaan habis."
+              ? "Permintaan terlalu lama. Cek koneksi lalu klik Perbarui data."
+              : "Terjadi kesalahan saat mengambil data. Coba lagi.";
+        }
       } finally {
         lookupMemuat[jenis] = false;
       }
 
+      if (!senyap) loading.classList.add("hidden");
+
       if (!res.data) {
-        result.classList.add("hidden");
-        notfound.classList.remove("hidden");
+        if (!senyap) {
+          result.classList.add("hidden");
+          notfound.classList.remove("hidden");
+        }
         return;
       }
 

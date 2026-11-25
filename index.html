@@ -25,8 +25,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Amiri:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Amiri:wght@400;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
   <link rel="stylesheet" href="assets/css/style.css">
 
   <script type="application/ld+json">
@@ -71,7 +74,7 @@
   <header class="sticky top-0 z-50 bg-brand-800/95 shadow-soft backdrop-blur">
     <div class="container-bq flex items-center justify-between gap-4 py-3">
       <a href="#beranda" class="flex items-center gap-3" aria-label="Beranda Baitul Qur'an Al-Hidayah">
-        <img src="assets/img/logo/logo-mark.png" alt="Logo Baitul Qur'an Al-Hidayah" width="44" height="44" class="h-11 w-11 rounded-full ring-1 ring-gold-500/40">
+        <img src="assets/img/logo/logo-mark.webp" alt="Logo Baitul Qur'an Al-Hidayah" width="256" height="256" decoding="async" class="h-11 w-11 rounded-full ring-1 ring-gold-500/40">
         <span class="leading-tight">
           <span class="block font-display text-lg font-semibold text-white sm:text-xl">Baitul Qur'an</span>
           <span class="block text-[11px] font-medium uppercase tracking-[.2em] text-gold-400">Al-Hidayah</span>
@@ -174,7 +177,7 @@
             <div class="absolute inset-0 -rotate-6 rounded-[2rem] border border-gold-500/25"></div>
             <div class="absolute inset-0 rotate-3 rounded-[2rem] border border-white/10"></div>
             <div class="relative rounded-[2rem] border border-white/15 bg-white/5 p-8 text-center backdrop-blur">
-              <img src="assets/img/logo/logo-full.png" alt="Logo Baitul Qur'an Al-Hidayah" width="256" height="256" class="mx-auto h-44 w-44 drop-shadow-2xl md:h-52 md:w-52">
+              <img src="assets/img/logo/logo-full.webp" alt="Logo Baitul Qur'an Al-Hidayah" width="512" height="512" fetchpriority="high" decoding="async" class="mx-auto h-44 w-44 drop-shadow-2xl md:h-52 md:w-52">
               <p class="mt-6 font-arabic text-2xl leading-relaxed text-gold-300" dir="rtl">رَبِّ زِدْنِي عِلْمًا</p>
               <p class="mt-1 text-sm text-brand-200">“Ya Tuhanku, tambahkanlah ilmu kepadaku.”</p>
               <p class="mt-4 text-[11px] uppercase tracking-[.18em] text-brand-300">Desa Keluang · Kuaro · Paser</p>
@@ -293,7 +296,7 @@
             <div class="card overflow-hidden">
               <div class="relative bg-brand-800 p-6 text-center">
                 <div class="pattern-dots absolute inset-0 opacity-50"></div>
-                <img src="assets/img/logo/logo-mark.png" alt="Logo" class="relative mx-auto h-24 w-24 rounded-full ring-1 ring-gold-500/40">
+                <img src="assets/img/logo/logo-mark.webp" width="256" height="256" loading="lazy" decoding="async" alt="Logo" class="relative mx-auto h-24 w-24 rounded-full ring-1 ring-gold-500/40">
               </div>
               <div class="p-6 text-sm">
                 <h3 class="font-semibold text-brand-900">Identitas</h3>
@@ -927,7 +930,7 @@
     <div class="container-bq grid gap-10 py-14 md:grid-cols-4">
       <div class="md:col-span-2">
         <div class="flex items-center gap-3">
-          <img src="assets/img/logo/logo-mark.png" alt="Logo" class="h-10 w-10 rounded-full ring-1 ring-gold-500/30">
+          <img src="assets/img/logo/logo-mark.webp" width="256" height="256" loading="lazy" decoding="async" alt="Logo" class="h-10 w-10 rounded-full ring-1 ring-gold-500/30">
           <div>
             <p class="font-display text-lg font-semibold text-white">Baitul Qur'an Al-Hidayah</p>
             <p class="text-xs uppercase tracking-[.18em] text-gold-500">Taman Pendidikan Al-Qur'an</p>
