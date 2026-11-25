@@ -233,8 +233,8 @@ di bawah hasil.
 
 ### a. Google Sheets (pendataan sementara, tanpa server)
 
-**Struktur spreadsheet — 3 tab yang dibaca situs** (nama tab harus sama dengan
-`site.config.js`; tab `Petunjuk` boleh ada tetapi tidak dibaca):
+**Struktur spreadsheet — 4 tab yang dibaca situs** (nama tab harus sama dengan
+`site.config.js`; tab `Petunjuk` dan `Rekab Absen` boleh ada tetapi tidak dibaca):
 
 **Tab `Santri`** — data induk, diisi sekali:
 
@@ -242,7 +242,7 @@ di bawah hasil.
 |---|---|---|---|---|
 | 01 | Galih Pambudy | Laki-laki | SD Kelas 6 | Ya |
 
-**Tab `Rekab Absen`** — log absensi harian, satu set baris per pertemuan
+**Tab `Kehadiran`** — log absensi harian, satu set baris per pertemuan
 (Senin–Rabu, Maghrib–Isya). Ini satu-satunya sumber data absensi:
 
 | nis | nama | jenis kelamin | kelas | tanggal | kehadiran |
@@ -258,13 +258,19 @@ di bawah hasil.
 - Untuk pertemuan berikutnya: salin 15 baris ke bawah, ganti tanggalnya,
   lalu pilih status baru.
 - Baris tanpa tanggal atau tanpa status diabaikan (belum dicatat, bukan Alpa).
-- Kolom `nis` **boleh kosong**. Situs mencocokkan NIS dari `nama` ke tab
-  `Santri`. Bila ada kolom `nis`, nilainya tetap dipakai.
+- Kolom `nis` sebaiknya diisi. Bila kosong, situs mencocokkan dari `nama` ke
+  tab `Santri`.
+- Tabel absensi **hanya menampilkan baris yang ada di tab `Kehadiran`** pada
+  tanggal pertemuan terbaru. Nama yang hanya ada di tab `Santri` tidak muncul;
+  tambahkan barisnya di `Kehadiran` agar tampil.
+- Sel `kehadiran` yang kosong ditampilkan sebagai **“Belum dicatat”**. Tanggal
+  terbaru tetap tampil walaupun semua status belum diisi.
 - Nama dan kelas di tab ini yang tampil di hasil **Cek Absensi**; tab `Santri`
   hanya cadangan bila kolomnya kosong.
 - Situs menampilkan **tabel pertemuan terbaru** (ringkasan Hadir/Izin/Sakit/Alpa
   + tabel yang bisa dibuka) dan **rekap bulan berjalan** yang dihitung otomatis
   dari log ini — tidak perlu membuat rekap manual.
+- Tab `Rekab Absen` (tab lama tanpa kolom `nis`) **tidak dibaca** website.
 
 **Tab `Progres`** — daftar 15 santri, satu baris setiap pertemuan:
 
@@ -277,13 +283,14 @@ di bawah hasil.
   hanya cadangan bila kolomnya kosong.
 - `tanggal` sebaiknya diformat `YYYY-MM-DD`. Format `DD/MM/YYYY` juga diterima.
 - NIS boleh ditulis `01` atau `1` — situs menganggapnya sama.
-- NIS boleh kosong di tab `Rekab Absen` (dicocokkan dari nama). Di tab
-  `Progres`, NIS tetap disarankan diisi agar riwayatnya tidak tertukar.
 - **Cek Absensi** menampilkan status terbaru, **rekap kehadiran bulan berjalan**
   (Hadir/Izin/Sakit/Alpa), dan tabel pertemuan terbaru; daftar riwayat tidak
-  ditampilkan agar kartu tetap ringkas. **Cek Progres** menampilkan capaian
-  terbaru dan 5 riwayat terakhir. Santri yang belum punya catatan tetap tampil
-  dengan keterangan "Belum ada catatan", bukan "data tidak ditemukan".
+  ditampilkan agar kartu tetap ringkas. Baris di `Kehadiran` yang belum diisi
+  statusnya tampil sebagai **“Belum dicatat”**.
+- **Cek Progres** menampilkan capaian terbaru dan 5 riwayat terakhir dari
+  baris yang ada di tab `Progres`. Baris kosong tampil sebagai **“Belum ada
+  catatan”**. NIS yang tidak ada di tab `Progres` akan ditampilkan sebagai data
+  tidak ditemukan.
 
 **Tab `Live`** — tautan siaran vdo.ninja (satu baris per rencana siaran):
 
@@ -298,7 +305,7 @@ di bawah hasil.
 - Boleh juga menulis **kode room saja** (mis. `ABCD1234`) tanpa `https://...`;
   situs akan membuatkan tautan penontonnya.
 - Situs mengambil tautan setiap halaman Siaran Langsung dibuka dan lewat
-  tombol **Perbarui** (tidak memakai cache 2 menit). Bila tidak ada baris
+  tombol **Perbarui** (tidak memakai cache 30 detik). Bila tidak ada baris
   `aktif`, halaman menampilkan "Belum ada siaran langsung".
 - **Penting:** jangan pernah menaruh tautan `?push=`, director, atau password
   di sheet. Tautan itu memberi orang lain kendali atas siaran. Situs otomatis
@@ -309,7 +316,7 @@ di bawah hasil.
 
 **Langkah mengaktifkan:**
 
-1. Buat spreadsheet dengan tab `Santri`, `Rekab Absen`, `Progres`, dan `Live`
+1. Buat spreadsheet dengan tab `Santri`, `Kehadiran`, `Progres`, dan `Live`
    (atau unggah template yang sudah siap pakai).
 2. **Share** → *General access* → **Anyone with the link** → **Viewer**.
 3. Salin ID dari URL:
@@ -318,12 +325,12 @@ di bawah hasil.
    ```js
    sumber: {
      mode: "sheets",
-     sheets: { id: "ID_PANJANG_INI", tab: { santri: "Santri", absensi: "Rekab Absen", progres: "Progres", live: "Live" }, cacheMenit: 2 },
+     sheets: { id: "ID_PANJANG_INI", tab: { santri: "Santri", absensi: "Kehadiran", progres: "Progres", live: "Live" }, cacheMenit: 0.5 },
    },
    ```
-5. Simpan, refresh situs. Perubahan di spreadsheet otomatis terbaca
-   (paling lambat 2 menit karena cache; tombol **Perbarui** pada tabel absensi
-   mengambil data terbaru seketika).
+5. Simpan, refresh situs. Halaman Absensi/Progres memuat data baru otomatis
+   tiap 30 detik dan saat tab browser kembali aktif; tombol **Perbarui** juga
+   langsung mengambil data terbaru.
 
 > **Privasi.** Spreadsheet yang dibagikan "Anyone with the link" dapat dibaca
 > siapa pun yang memiliki tautannya. Karena itu isi hanya NIS, nama, jenis
@@ -380,28 +387,22 @@ service cloud.firestore {
 
 ### Catatan operasional: kehadiran & progres
 
-Data absensi **dibaca langsung dari tab `Rekab Absen`**, data progres dari tab
+Data absensi **dibaca langsung dari tab `Kehadiran`**, data progres dari tab
 `Progres`, bukan disalin ke dalam kode. Pengajar cukup mengisi baris di sheet;
-situs otomatis menampilkan perubahannya. Halaman **Cek Absensi** memuat ulang
-tabel setiap dibuka (data dianggap basi setelah 1 menit), dan tombol
-**Perbarui** mengambil data terbaru seketika. Tombol **Perbarui data** pada form
-pencarian juga membersihkan cache sebelum mencari.
+situs menampilkan perubahannya otomatis (segarkan ≤30 detik saat halaman aktif,
+atau klik **Perbarui** untuk seketika). Tombol **Perbarui data** pada form
+pencarian juga memaksa pembacaan data baru.
 
-Saat halaman Cek Absensi dibuka, tampil ringkasan Hadir/Izin/Sakit/Alpa untuk
-pertemuan terbaru. Tombol **Lihat tabel** membuka tabel lengkap 15 santri
-(baris santri yang dicari disorot). Rekap bulan berjalan dihitung otomatis dari
-seluruh log `Rekab Absen` — tidak ada tab rekap manual yang perlu diisi.
+Tabel absensi **hanya menampilkan baris yang ada di tab `Kehadiran`** pada
+tanggal pertemuan terbaru. Sel status yang kosong tampil sebagai **“Belum
+dicatat”**. Ringkasan Hadir/Izin/Sakit/Alpa dan rekap bulan berjalan dihitung
+dari data tab `Kehadiran`. Baris santri yang dicari akan disorot.
 
-Nama dan kelas pada hasil **Cek Absensi** diambil dari tab `Rekab Absen`,
+Nama dan kelas pada hasil **Cek Absensi** diambil dari tab `Kehadiran`,
 sedangkan **Cek Progres** dari tab `Progres`. Bila kolom nama kosong, situs
-memakai nama dari tab `Santri` sebagai cadangan. Karena tab `Rekab Absen`
-saat ini belum punya kolom `nis`, NIS dicocokkan dari nama; bila kolom `nis`
-ditambahkan kemudian, situs akan memakainya. Daftar `santri` di
-`assets/js/data.js` hanya cadangan saat Sheets gagal dimuat.
-
-Saat ini `Rekab Absen` berisi pertemuan 23–24/11/2026 dan `Progres` berisi
-catatan untuk NIS 01–03. Santri yang belum punya baris tercatat tetap tampil
-dengan identitasnya dan keterangan "Belum ada catatan".
+memakai nama dari tab `Santri` sebagai cadangan. Hanya baris yang ada di tab
+bersangkutan yang ditampilkan. Daftar `santri` di `assets/js/data.js` hanya
+cadangan saat Sheets gagal dimuat.
 
 ---
 

@@ -35,6 +35,10 @@
     if (isNaN(d)) return iso;
     return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
   };
+  const jamPembaruan = (ms) => {
+    if (!ms) return "";
+    return new Date(ms).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  };
   const esc = (s) =>
     String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
@@ -616,7 +620,7 @@
     return { data: local, riwayat: [local], sumber: "lokal" };
   }
 
-  async function cariSantri(nis, jenis) {
+  async function cariSantri(nis, jenis, paksa) {
     const reader = await getFirestoreReader();
     if (reader) {
       const data = await reader(nis);
@@ -625,7 +629,7 @@
 
     if (window.SUMBER && window.SUMBER.aktif()) {
       try {
-        return await window.SUMBER.ambil(nis, jenis);
+        return await window.SUMBER.ambil(nis, jenis, !!paksa);
       } catch (err) {
         // Sheets belum dibagikan / offline: situs tetap jalan dengan data contoh.
         console.warn("Google Sheets gagal dimuat, memakai data contoh:", err);
@@ -724,7 +728,7 @@
       <p class="text-[11px] font-semibold uppercase tracking-wider text-brand-400">Rekap ${esc(label)}</p>
       <div class="mt-2 grid grid-cols-4 gap-2">${kotak}</div>
       <p class="mt-3 text-sm font-semibold text-brand-800">Hadir ${hitung.Hadir} kali dari ${total} pertemuan (${persen}%)</p>
-      <p class="mt-1 text-[11px] text-brand-500">Rekap bulan ini dihitung otomatis dari tab Rekab Absen.</p>`;
+      <p class="mt-1 text-[11px] text-brand-500">Rekap bulan ini dihitung otomatis dari tab Kehadiran.</p>`;
     el.classList.remove("hidden");
   }
 
@@ -813,13 +817,20 @@
     const sumber = data.sumber === "sheets" ? "Google Sheets" : "data lokal";
     note.innerHTML =
       `<i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Sumber: ${esc(sumber)}` +
-      (data.diperbarui ? ` · diperbarui ${esc(tanggalPanjang(data.diperbarui))}` : "") +
+      (data.diperbaruiPada
+        ? ` · diperbarui pukul ${esc(jamPembaruan(data.diperbaruiPada))}`
+        : data.diperbarui
+        ? ` · diperbarui ${esc(tanggalPanjang(data.diperbarui))}`
+        : "") +
       ` · ${tercatat} dari ${daftar.length} santri tercatat. Data hanya dapat diubah admin melalui spreadsheet.`;
   }
 
+  let tabelMemuat = false;
+
   async function muatTabelAbsensi(paksa, nis, senyap) {
     const wrap = $("#tabel-absensi-wrap");
-    if (!wrap) return;
+    if (!wrap || tabelMemuat) return;
+    tabelMemuat = true;
     const loading = $("#tabel-absensi-loading");
     const isi = $("#tabel-absensi-isi");
     const kosong = $("#tabel-absensi-kosong");
@@ -858,6 +869,8 @@
         kosong.classList.remove("hidden");
         kosong.textContent = "Tabel absensi belum dapat dimuat. Klik Perbarui untuk mencoba lagi.";
       }
+    } finally {
+      tabelMemuat = false;
     }
   }
 
@@ -883,7 +896,11 @@
     if (res.sumber === "sheets") {
       el.innerHTML =
         `<i class="fa-solid fa-circle-info mr-1.5 text-gold-600"></i>Sumber: Google Sheets` +
-        (res.diperbarui ? ` · diperbarui ${esc(tanggalPanjang(res.diperbarui))}` : "");
+        (res.diperbaruiPada
+          ? ` · diperbarui pukul ${esc(jamPembaruan(res.diperbaruiPada))}`
+          : res.diperbarui
+          ? ` · diperbarui ${esc(tanggalPanjang(res.diperbarui))}`
+          : "");
       el.classList.remove("hidden");
     } else if (res.sumber === "lokal") {
       el.innerHTML = res.data && res.data.tanggal
@@ -895,6 +912,11 @@
     }
   }
 
+  // Registry supaya hasil pencarian yang sedang tampil bisa disegarkan otomatis.
+  const pencarian = { absensi: null, progres: null };
+  const lookupTerakhir = { absensi: "", progres: "" };
+  const lookupMemuat = { absensi: false, progres: false };
+
   function bindLookup(formId, jenis) {
     const form = document.getElementById(formId);
     if (!form) return;
@@ -904,7 +926,7 @@
     const notfound = $(jenis === "absensi" ? "#notfound-absensi" : "#notfound-progres");
     // Riwayat hanya dipakai Cek Progres; Cek Absensi cukup rekap + tabel hari ini.
     const riwayatEl = jenis === "progres" ? $("#riwayat-progres") : null;
-    const rekapEl = jenis === "absensi" ? $("#rekap-absensi") : null;
+    const rekapElNode = jenis === "absensi" ? $("#rekap-absensi") : null;
     const note = $(jenis === "absensi" ? "#note-absensi" : "#note-progres");
     const hint = $(jenis === "absensi" ? "#hint-absensi" : "#hint-progres");
     const refresh = $(jenis === "absensi" ? "#refresh-absensi" : "#refresh-progres");
@@ -912,51 +934,39 @@
     const nfPesanAsli = nfText.textContent;
     const sheetsAktif = !!(window.SUMBER && window.SUMBER.aktif());
 
-    if (refresh) {
-      refresh.classList.toggle("hidden", !sheetsAktif);
-      refresh.addEventListener("click", () => {
-        if (!input.value.trim()) {
-          input.focus();
-          return;
-        }
-        window.SUMBER.hapusCache();
-        if (typeof form.requestSubmit === "function") form.requestSubmit();
-        else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-      });
-    }
+    async function jalankan(nis, senyap) {
+      nis = String(nis || "").trim();
+      if (!nis || lookupMemuat[jenis]) return;
+      lookupMemuat[jenis] = true;
 
-    if (hint) {
-      hint.textContent = sheetsAktif
-        ? "Masukkan NIS yang terdaftar. Klik Perbarui data bila baru saja ada perubahan."
-        : "Masukkan NIS santri, contoh: 01.";
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const nis = (input.value || "").trim();
-      if (!nis) return;
-      loading.classList.remove("hidden");
-      result.classList.add("hidden");
-      notfound.classList.add("hidden");
-      if (riwayatEl) riwayatEl.classList.add("hidden");
-      if (rekapEl) rekapEl.classList.add("hidden");
-      nfText.textContent = nfPesanAsli;
+      if (!senyap) {
+        loading.classList.remove("hidden");
+        result.classList.add("hidden");
+        notfound.classList.add("hidden");
+        if (riwayatEl) riwayatEl.classList.add("hidden");
+        if (rekapElNode) rekapElNode.classList.add("hidden");
+        nfText.textContent = nfPesanAsli;
+      }
 
       let res;
       try {
-        res = await cariSantri(nis, jenis);
+        // Selalu paksa data baru: spreadsheet bisa berubah kapan saja.
+        res = await cariSantri(nis, jenis, true);
       } catch (err) {
         console.error(err);
         res = { data: null };
-        nfText.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi.";
+        if (!senyap) nfText.textContent = "Terjadi kesalahan saat mengambil data. Coba lagi.";
+      } finally {
+        lookupMemuat[jenis] = false;
       }
 
-      loading.classList.add("hidden");
       if (!res.data) {
+        result.classList.add("hidden");
         notfound.classList.remove("hidden");
         return;
       }
 
+      lookupTerakhir[jenis] = nis;
       const d = res.data;
       const belumAda = !d.tanggal;
       if (jenis === "absensi") {
@@ -965,30 +975,74 @@
         $("#res-kelas-absensi").textContent = d.kelas || "-";
         $("#date-absensi").textContent = belumAda ? "Belum ada catatan" : tanggalPanjang(d.tanggal);
         const badge = $("#res-status-absensi");
-        badge.textContent = d.status || "Belum ada catatan";
-        badge.className = "rounded-lg px-4 py-1 text-sm font-black uppercase " + kelasStatus(d.status);
+        badge.textContent = d.status || (belumAda ? "Belum ada catatan" : "Belum dicatat");
+        badge.className =
+          "rounded-lg px-4 py-1 text-sm font-black uppercase " + kelasStatus(d.status);
       } else {
         $("#date-progres").textContent = belumAda ? "Belum ada catatan" : "Update: " + tanggalPanjang(d.tanggal);
         $("#res-nama-progres").textContent = d.nama || "-";
         $("#res-nis-progres").textContent = "NIS " + (d.nis || nis);
-        $("#res-bacaan-progres").textContent = d.bacaan || (belumAda ? "Belum ada catatan" : "-");
+        $("#res-bacaan-progres").textContent = d.bacaan || "Belum ada catatan";
         $("#res-catatan-progres").textContent = d.catatan
           ? `“${d.catatan}”`
-          : belumAda
-          ? "Belum ada catatan dari pengajar."
-          : "-";
+          : "Belum ada catatan dari pengajar.";
       }
 
       aturCatatan(note, res);
-      renderRekap(rekapEl, res.riwayat);
+      renderRekap(rekapElNode, res.riwayat);
       renderRiwayat(riwayatEl, res.riwayat, jenis);
       result.classList.remove("hidden");
       if (jenis === "absensi") {
         nisTersorot = normalNis(d.nis || nis);
         if (tabelAbsensiData) renderTabelAbsensi(tabelAbsensiData, nisTersorot);
-        muatTabelAbsensi(true, nisTersorot, true);
+        if (!senyap) muatTabelAbsensi(true, nisTersorot, true);
       }
-      result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      if (!senyap) result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    pencarian[jenis] = jalankan;
+
+    if (refresh) {
+      refresh.classList.toggle("hidden", !sheetsAktif);
+      refresh.addEventListener("click", () => {
+        const nis = (input.value || "").trim();
+        if (!nis) {
+          input.focus();
+          return;
+        }
+        if (window.SUMBER && window.SUMBER.aktif()) window.SUMBER.hapusCache();
+        jalankan(nis, false);
+        if (jenis === "absensi") muatTabelAbsensi(true, normalNis(nis), true);
+      });
+    }
+
+    if (hint) {
+      hint.textContent = sheetsAktif
+        ? "Masukkan NIS santri. Data diperbarui otomatis dari spreadsheet."
+        : "Masukkan NIS santri, contoh: 01.";
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      jalankan((input.value || "").trim(), false);
+    });
+  }
+
+  /* --------------------------------------------------------------------
+     Pembaruan otomatis (tanpa reload) saat halaman aktif.
+  -------------------------------------------------------------------- */
+  function segarkanHalamanAktif() {
+    if (document.hidden) return;
+    const aktif = $(".page-section.active");
+    const id = aktif && aktif.id;
+    if (id === "absensi") muatTabelAbsensi(true, nisTersorot, true);
+    if (pencarian[id] && lookupTerakhir[id]) pencarian[id](lookupTerakhir[id], true);
+  }
+
+  function bindAutoRefresh() {
+    setInterval(segarkanHalamanAktif, 30000);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) segarkanHalamanAktif();
     });
   }
 
@@ -1191,6 +1245,7 @@
     bindLookup("form-absensi", "absensi");
     bindLookup("form-progres", "progres");
     bindTabelAbsensi();
+    bindAutoRefresh();
     $("#vdo-refresh")?.addEventListener("click", () => muatLive(true));
 
     $("#tahun-footer").textContent = new Date().getFullYear();

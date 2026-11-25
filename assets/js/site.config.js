@@ -85,13 +85,16 @@ window.SITE = {
       // Nama tab (bukan nama berkas) di dalam spreadsheet.
       tab: {
         santri: "Santri",
-        absensi: "Rekab Absen",
+        // Tab yang benar-benar diisi pengajar (punya kolom nis). "Rekab Absen"
+        // adalah tab lama dan sengaja tidak dibaca website.
+        absensi: "Kehadiran",
         progres: "Progres",
         // Tab siaran vdo.ninja: kolom status | judul | link | keterangan.
         live: "Live",
       },
-      // Lama cache di browser (menit). Tombol "Perbarui data" menimpa cache ini.
-      cacheMenit: 2,
+      // Lama cache di browser (menit). Halaman Absensi/Progres juga menyegarkan
+      // sendiri tiap 30 detik; tombol "Perbarui" langsung melewati cache ini.
+      cacheMenit: 0.5,
     },
   },
 
